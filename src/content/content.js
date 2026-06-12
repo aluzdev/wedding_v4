@@ -54,8 +54,9 @@ export const content = {
   es: {
     nav: { rsvp: 'Confirmar' },
     hero: {
-      eyebrow: 'Nos casamos',
+      announce: '¡Nos casamos!',
       names: 'Cris & Pris',
+      invite: 'y nos encantaría celebrar este día contigo',
       dateLine: '10 de octubre de 2026 · 5:00 pm',
       venueLine: 'Casa de Lago — Jardín de Eventos · Cuautitlán Izcalli',
       cta: 'Confirmar asistencia',
@@ -109,8 +110,9 @@ export const content = {
   en: {
     nav: { rsvp: 'RSVP' },
     hero: {
-      eyebrow: "We're getting married",
+      announce: "We're getting married!",
       names: 'Cris & Pris',
+      invite: "and we'd love to celebrate this day with you",
       dateLine: 'October 10, 2026 · 5:00 pm',
       venueLine: 'Casa de Lago — Jardín de Eventos · Cuautitlán Izcalli',
       cta: 'RSVP',

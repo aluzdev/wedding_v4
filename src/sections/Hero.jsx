@@ -19,13 +19,14 @@ export default function Hero() {
 
       <div className="relative z-10 mx-auto w-full max-w-6xl px-6 pb-40 pt-28 sm:px-10 sm:pb-32 sm:pt-24">
         <div className="max-w-xl [text-shadow:0_1px_12px_rgba(20,40,70,0.35)]">
-          <p className="mb-4 text-[11px] uppercase tracking-[0.35em] text-white/85">
-            {t.hero.eyebrow}
+          <p className="mb-2 font-display text-2xl italic text-white sm:text-3xl">
+            {t.hero.announce}
           </p>
           <h1 className="font-display text-[clamp(3rem,11vw,5.5rem)] leading-none tracking-tight text-white">
             Cris <span className="font-light italic">&amp;</span> Pris
           </h1>
-          <p className="mt-5 text-lg font-medium text-white sm:text-xl">{t.hero.dateLine}</p>
+          <p className="mt-3 text-base italic text-white/95 sm:text-lg">{t.hero.invite}</p>
+          <p className="mt-4 text-lg font-semibold text-white sm:text-xl">{t.hero.dateLine}</p>
           <p className="mt-1 text-sm text-white/85 sm:text-base">{t.hero.venueLine}</p>
           <div className="mt-7 flex flex-wrap items-center gap-3 [text-shadow:none]">
             <a
