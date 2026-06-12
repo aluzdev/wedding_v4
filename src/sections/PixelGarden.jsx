@@ -22,6 +22,30 @@ function lakeRows() {
   return rows
 }
 
+function drawSprite(ctx, map, pal, x, y) {
+  for (let j = 0; j < map.length; j++) {
+    const row = map[j]
+    for (let i = 0; i < row.length; i++) {
+      const c = pal[row[i]]
+      if (c) {
+        ctx.fillStyle = c
+        ctx.fillRect(x + i, y + j, 1, 1)
+      }
+    }
+  }
+}
+
+// the couple — groom in formal suit, bride in wedding dress with veil
+const GROOM_PAL = { h: '#2b2118', f: '#e8b48c', s: '#23262b', w: '#f5f5f0', p: '#1a1d21', b: '#3a2c1e' }
+const GROOM_BODY = ['.hhhh.', '.hffh.', '..ff..', '.ssss.', 'sswwss', 's.ww.s', '.swws.', '.ssss.']
+const GROOM_LEGS_A = ['.pppp.', '.p..p.', '.p..p.', '.b..b.']
+const GROOM_LEGS_B = ['.pppp.', '.p.p..', 'p..p..', 'b..b..']
+const BRIDE_PAL = { h: '#4a3220', f: '#e8b48c', v: '#ffffff', d: '#ffffff', q: '#e3e3da', k: '#e88ab0' }
+const BRIDE_BODY = ['.hhh.v.', '.fff.v.', '.fff.v.', '..d..v.', '.dddd..', '.ddddq.']
+const BRIDE_SKIRT_A = ['.ddddq.', 'ddddddq', 'ddddddq', 'dddddqq', 'ddddddq', 'ddddddq']
+const BRIDE_SKIRT_B = ['.ddddq.', 'ddddddq', 'ddddddq', 'dddddqq', '.dddddq', 'dddddd.']
+const COUPLE = { groomX0: 192, groomX1: 233, brideX0: 292, brideX1: 240, feetY: 208, meetT: 7 }
+
 // deterministic PRNG so the garden is identical every load
 function mulberry32(seed) {
   let a = seed
@@ -351,6 +375,33 @@ function buildStatic(seed) {
     }
   }
 
+  // floral wedding arch where the couple meets
+  const archX = 239
+  const archBase = 205
+  g.fillStyle = '#f4f4ee'
+  g.fillRect(archX - 8, archBase - 14, 2, 14)
+  g.fillRect(archX + 8, archBase - 14, 2, 14)
+  g.fillRect(archX - 7, archBase - 16, 16, 2)
+  g.fillRect(archX - 5, archBase - 17, 12, 1)
+  const archFlowers = ['#e86a6a', '#e88ab0', '#f2c94c', '#f3f3ef']
+  for (let i = 0; i < 14; i++) {
+    const along = rnd()
+    let fx
+    let fy
+    if (along < 0.35) {
+      fx = archX - 9 + ((rnd() * 3) | 0)
+      fy = archBase - 14 + rnd() * 12
+    } else if (along < 0.7) {
+      fx = archX + 7 + ((rnd() * 3) | 0)
+      fy = archBase - 14 + rnd() * 12
+    } else {
+      fx = archX - 7 + rnd() * 15
+      fy = archBase - 17 + ((rnd() * 3) | 0)
+    }
+    g.fillStyle = rnd() < 0.3 ? '#3f8239' : archFlowers[(rnd() * archFlowers.length) | 0]
+    g.fillRect(fx | 0, fy | 0, 1, 1)
+  }
+
   // foreground dark foliage band
   const fgPalette = ['#16381f', '#1f4a2a', '#2a5c33', '#356b3c']
   for (let y = 210; y < H; y++) {
@@ -449,6 +500,75 @@ export default function PixelGarden() {
       ctx.fillStyle = 'rgba(255,255,255,0.35)'
       ctx.fillRect(dir > 0 ? x - 3 : x + 4, y + 2, 3, 1)
     }
+    const hearts = []
+    const petalRnd = mulberry32(55)
+    const petals = Array.from({ length: 11 }, () => ({
+      x: petalRnd() * W,
+      y: petalRnd() * 150,
+      vx: 5 + petalRnd() * 7,
+      vy: 2.5 + petalRnd() * 3,
+      ph: petalRnd() * Math.PI * 2,
+      c: petalRnd() < 0.5 ? '#f7c8d4' : '#e88ab0',
+    }))
+    let lastHeart = 0
+
+    function drawCouple(t) {
+      const k = Math.min(t / COUPLE.meetT, 1)
+      const ease = k * k * (3 - 2 * k) // smoothstep stroll
+      const gx = (COUPLE.groomX0 + (COUPLE.groomX1 - COUPLE.groomX0) * ease) | 0
+      const bx = (COUPLE.brideX0 + (COUPLE.brideX1 - COUPLE.brideX0) * ease) | 0
+      const walking = k < 1
+      const step = ((t * 4) | 0) % 2 === 0
+      const gBob = walking && step ? -1 : 0
+      const bBob = walking && !step ? -1 : 0
+      const groomTop = COUPLE.feetY - 12 + gBob
+      drawSprite(ctx, GROOM_BODY, GROOM_PAL, gx, groomTop)
+      drawSprite(ctx, walking && step ? GROOM_LEGS_B : GROOM_LEGS_A, GROOM_PAL, gx, groomTop + 8)
+      const brideTop = COUPLE.feetY - 12 + bBob
+      drawSprite(ctx, BRIDE_BODY, BRIDE_PAL, bx, brideTop)
+      drawSprite(ctx, walking && !step ? BRIDE_SKIRT_B : BRIDE_SKIRT_A, BRIDE_PAL, bx, brideTop + 6)
+      // bouquet in the bride's outer hand
+      ctx.fillStyle = '#e88ab0'
+      ctx.fillRect(bx + 5, brideTop + 5, 2, 1)
+      ctx.fillStyle = '#f2c94c'
+      ctx.fillRect(bx + 5, brideTop + 4, 1, 1)
+      if (!walking) {
+        // holding hands
+        ctx.fillStyle = '#e8b48c'
+        ctx.fillRect(COUPLE.groomX1 + 6, COUPLE.feetY - 7, COUPLE.brideX1 - COUPLE.groomX1 - 6, 1)
+        // hearts rise above the couple
+        if (t - lastHeart > 2.6) {
+          lastHeart = t
+          hearts.push({ x: COUPLE.groomX1 + 5 + ((t * 13) % 7 | 0), y: COUPLE.feetY - 16, born: t })
+        }
+      }
+      for (let i = hearts.length - 1; i >= 0; i--) {
+        const h2 = hearts[i]
+        const age = t - h2.born
+        if (age > 2.2) {
+          hearts.splice(i, 1)
+          continue
+        }
+        const hy = (h2.y - age * 5) | 0
+        ctx.globalAlpha = Math.max(0, 1 - age / 2.2)
+        ctx.fillStyle = '#e86a6a'
+        ctx.fillRect(h2.x, hy, 1, 1)
+        ctx.fillRect(h2.x + 2, hy, 1, 1)
+        ctx.fillRect(h2.x, hy + 1, 3, 1)
+        ctx.fillRect(h2.x + 1, hy + 2, 1, 1)
+        ctx.globalAlpha = 1
+      }
+    }
+
+    function drawPetals(t) {
+      for (const pt of petals) {
+        const px2 = (pt.x + t * pt.vx) % (W + 10) - 5
+        const py2 = (pt.y + t * pt.vy + Math.sin(t * 1.5 + pt.ph) * 4) % (200)
+        ctx.fillStyle = pt.c
+        ctx.fillRect(px2 | 0, py2 | 0, pt.ph > 3 ? 2 : 1, 1)
+      }
+    }
+
     const shimmerRnd = mulberry32(99)
     const shimmers = Array.from({ length: 70 }, () => ({
       x: (shimmerRnd() * W) | 0,
@@ -495,6 +615,8 @@ export default function PixelGarden() {
         }
         ctx.drawImage(ground, 0, 0)
         drawSunflower(t)
+        drawCouple(t)
+        drawPetals(t)
         // grass shimmer
         for (const s of shimmers) {
           if (Math.sin(t * 1.8 + s.ph) > 0.86) {
@@ -535,6 +657,7 @@ export default function PixelGarden() {
       for (const cl of clouds) ctx.drawImage(cl.sprite, cl.x, cl.y)
       ctx.drawImage(ground, 0, 0)
       drawSunflower(0)
+      drawCouple(COUPLE.meetT + 1)
       drawSwan(LAKE.cx - 12, LAKE.cy - 2, 1)
       drawSwan(LAKE.cx + 20, LAKE.cy + 7, -1)
       ctx.drawImage(rays, 0, 0)
