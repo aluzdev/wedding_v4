@@ -8,6 +8,19 @@ import { useEffect, useRef } from 'react'
 const W = 480
 const H = 270
 const HORIZON = 118
+const LAKE = { cx: 240, cy: HORIZON + 50, rx: 56, ry: 21 }
+
+// stepped-edge ellipse rows for the lake (quantized for pixel-art banks)
+function lakeRows() {
+  const rows = []
+  for (let dy = -LAKE.ry; dy <= LAKE.ry; dy++) {
+    const f = 1 - (dy * dy) / (LAKE.ry * LAKE.ry)
+    if (f <= 0) continue
+    const hw = ((Math.sqrt(f) * LAKE.rx) | 0) & ~1
+    rows.push([LAKE.cx - hw, LAKE.cx + hw, LAKE.cy + dy])
+  }
+  return rows
+}
 
 // deterministic PRNG so the garden is identical every load
 function mulberry32(seed) {
@@ -150,40 +163,6 @@ function drawSmallTree(ctx, rnd, x, y, s) {
   }
 }
 
-function drawTent(ctx) {
-  // white wedding marquee, focal like the reference laptop
-  // roof: stepped pyramid with peak pennant
-  ctx.fillStyle = '#f7f7f2'
-  ctx.fillRect(232, 96, 36, 6)
-  ctx.fillRect(224, 102, 52, 6)
-  ctx.fillRect(216, 108, 68, 6)
-  ctx.fillStyle = '#e3e3d6'
-  ctx.fillRect(250, 96, 18, 6)
-  ctx.fillRect(254, 102, 22, 6)
-  ctx.fillRect(258, 108, 26, 6)
-  ctx.fillStyle = '#c5566b'
-  ctx.fillRect(248, 88, 2, 8)
-  ctx.fillRect(250, 89, 5, 3)
-  // body
-  ctx.fillStyle = '#fbfbf6'
-  ctx.fillRect(218, 114, 64, 32)
-  ctx.fillStyle = '#e6e6da'
-  ctx.fillRect(266, 114, 16, 32)
-  // scallop edge
-  ctx.fillStyle = '#d4d4c6'
-  for (let i = 0; i < 8; i++) ctx.fillRect(218 + i * 8, 114, 4, 3)
-  // opening + inner warmth
-  ctx.fillStyle = '#6e7b86'
-  ctx.fillRect(242, 122, 16, 24)
-  ctx.fillStyle = '#8d9aa6'
-  ctx.fillRect(242, 122, 16, 3)
-  ctx.fillStyle = '#e8c84c'
-  ctx.fillRect(248, 132, 4, 4)
-  // ground shadow
-  ctx.fillStyle = 'rgba(40,80,45,0.30)'
-  ctx.fillRect(214, 146, 72, 4)
-}
-
 function drawBench(ctx, x, y) {
   ctx.fillStyle = '#8a5a3b'
   ctx.fillRect(x, y, 22, 3)
@@ -301,15 +280,77 @@ function buildStatic(seed) {
   drawSmallTree(g, rnd, 44, HORIZON + 18, 22)
   drawSmallTree(g, rnd, 318, HORIZON + 6, 12)
   drawBench(g, 78, HORIZON + 16)
-  drawTent(g)
   drawTree(g, rnd)
   // mid-field bushes
   for (let i = 0; i < 7; i++) {
     const bx = 20 + rnd() * 300
     const by = HORIZON + 30 + rnd() * 40
+    const ddx = (bx - LAKE.cx) / (LAKE.rx + 10)
+    const ddy = (by - LAKE.cy) / (LAKE.ry + 8)
+    if (ddx * ddx + ddy * ddy < 1) continue
     blob(g, rnd, bx, by, 8 + rnd() * 6, 4 + rnd() * 3, '#3f8239', 0.9)
     blob(g, rnd, bx - 2, by - 2, 5, 2.5, '#54994a', 0.85)
   }
+  // ---- the lake (Casa de Lago) ----
+  const rows = lakeRows()
+  // bank: dark grass rim on the far side, sand only on the near shore
+  for (const [x0, x1, y] of rows) {
+    const isNear = y > LAKE.cy + LAKE.ry * 0.2
+    g.fillStyle = isNear ? '#cfae6e' : '#3f8239'
+    g.fillRect(x0 - 1, y, x1 - x0 + 2, 1)
+  }
+  g.fillStyle = '#3f8239'
+  g.fillRect(rows[0][0], rows[0][2] - 1, rows[0][1] - rows[0][0], 1)
+  g.fillStyle = '#cfae6e'
+  g.fillRect(rows[rows.length - 1][0], rows[rows.length - 1][2] + 1, rows[rows.length - 1][1] - rows[rows.length - 1][0], 1)
+  // water: sky-lit far band -> deep near band, dithered
+  for (const [x0, x1, y] of rows) {
+    const t = (y - (LAKE.cy - LAKE.ry)) / (2 * LAKE.ry)
+    const base = t < 0.35 ? '#7cc3ec' : t < 0.7 ? '#549fd9' : '#3d7fbf'
+    g.fillStyle = base
+    g.fillRect(x0, y, x1 - x0, 1)
+    const dither = t < 0.35 ? '#549fd9' : t < 0.7 ? '#3d7fbf' : '#326a9f'
+    g.fillStyle = dither
+    for (let x = x0; x < x1; x++) if (rnd() < 0.12) g.fillRect(x, y, 1, 1)
+  }
+  // big-tree reflection, lower-right of the water
+  g.fillStyle = 'rgba(46,92,62,0.55)'
+  for (const [x0, x1, y] of rows) {
+    if (y < LAKE.cy) continue
+    for (let x = Math.max(x0, LAKE.cx + 14); x < x1 - 2; x++) {
+      if (rnd() < 0.3) g.fillRect(x, y, 2, 1)
+    }
+  }
+  // pale sky-reflection streaks
+  g.fillStyle = '#a8d8f2'
+  for (let i = 0; i < 14; i++) {
+    const [x0, x1, y] = rows[(rnd() * rows.length * 0.5) | 0]
+    const sx = x0 + rnd() * (x1 - x0 - 8)
+    g.fillRect(sx | 0, y, 4 + ((rnd() * 6) | 0), 1)
+  }
+  // lily pads + blossom
+  for (const [lx, ly] of [[LAKE.cx - 32, LAKE.cy + 8], [LAKE.cx + 20, LAKE.cy + 13], [LAKE.cx + 36, LAKE.cy + 2]]) {
+    g.fillStyle = '#3f8239'
+    g.fillRect(lx, ly, 4, 2)
+    g.fillStyle = '#54994a'
+    g.fillRect(lx, ly, 2, 1)
+  }
+  g.fillStyle = '#e88ab0'
+  g.fillRect(LAKE.cx + 21, LAKE.cy + 12, 1, 1)
+  // reeds on both banks
+  for (const [bx, by, n] of [[LAKE.cx - LAKE.rx - 4, LAKE.cy + 6, 4], [LAKE.cx + LAKE.rx - 2, LAKE.cy + 10, 5], [LAKE.cx - LAKE.rx + 6, LAKE.cy + 16, 3]]) {
+    for (let i = 0; i < n; i++) {
+      const rx2 = bx + i * 2 + ((rnd() * 2) | 0)
+      const rh = 4 + ((rnd() * 4) | 0)
+      g.fillStyle = '#2a6334'
+      g.fillRect(rx2, by - rh, 1, rh)
+      if (rnd() < 0.6) {
+        g.fillStyle = '#6e4730'
+        g.fillRect(rx2, by - rh - 2, 1, 2)
+      }
+    }
+  }
+
   // foreground dark foliage band
   const fgPalette = ['#16381f', '#1f4a2a', '#2a5c33', '#356b3c']
   for (let y = 210; y < H; y++) {
@@ -379,11 +420,35 @@ export default function PixelGarden() {
       { sprite: buildCloudSprite(cloudRnd, 76, 28), x: 120, y: 48, v: 3.6 },
     ]
     // swaying sunflower (tall, like the reference) + flowers, drawn per frame
-    const sunflower = { x: 330, y: 208 }
+    const sunflower = { x: 296, y: 210 }
     const butterflies = [
-      { cx: 180, cy: 160, rx: 40, ry: 18, sp: 0.45, ph: 0, c: '#fef3c0' },
-      { cx: 360, cy: 180, rx: 45, ry: 14, sp: 0.3, ph: 2.1, c: '#f3f3ef' },
+      { cx: 232, cy: 146, rx: 36, ry: 12, sp: 0.45, ph: 0, c: '#fef3c0' },
+      { cx: 358, cy: 178, rx: 40, ry: 14, sp: 0.3, ph: 2.1, c: '#f3f3ef' },
     ]
+    const waterRnd = mulberry32(31)
+    const sparkles = Array.from({ length: 46 }, () => {
+      const a = waterRnd() * Math.PI * 2
+      const r = Math.sqrt(waterRnd()) * 0.88
+      return {
+        x: (LAKE.cx + Math.cos(a) * LAKE.rx * r) | 0,
+        y: (LAKE.cy + Math.sin(a) * LAKE.ry * r) | 0,
+        ph: waterRnd() * Math.PI * 2,
+      }
+    })
+    const swans = [
+      { x0: LAKE.cx - 18, y: LAKE.cy - 2, amp: 16, sp: 0.10, ph: 0 },
+      { x0: LAKE.cx + 16, y: LAKE.cy + 7, amp: 12, sp: 0.07, ph: 2.4 },
+    ]
+    function drawSwan(x, y, dir) {
+      ctx.fillStyle = '#f6f8f7'
+      ctx.fillRect(x, y, 4, 2)
+      ctx.fillRect(dir > 0 ? x + 3 : x, y - 3, 1, 3)
+      ctx.fillRect(dir > 0 ? x + 3 : x - 1, y - 3, 2, 1)
+      ctx.fillStyle = '#e8a33c'
+      ctx.fillRect(dir > 0 ? x + 5 : x - 2, y - 3, 1, 1)
+      ctx.fillStyle = 'rgba(255,255,255,0.35)'
+      ctx.fillRect(dir > 0 ? x - 3 : x + 4, y + 2, 3, 1)
+    }
     const shimmerRnd = mulberry32(99)
     const shimmers = Array.from({ length: 70 }, () => ({
       x: (shimmerRnd() * W) | 0,
@@ -437,6 +502,20 @@ export default function PixelGarden() {
             ctx.fillRect(s.x, s.y, 1, 1)
           }
         }
+        // water sparkle
+        for (const sp2 of sparkles) {
+          if (Math.sin(t * 2.2 + sp2.ph) > 0.78) {
+            ctx.fillStyle = 'rgba(225,246,255,0.9)'
+            ctx.fillRect(sp2.x, sp2.y, 1, 1)
+          }
+        }
+        // gliding swans
+        for (const sw of swans) {
+          const xx = sw.x0 + Math.sin(t * sw.sp + sw.ph) * sw.amp
+          const dir = Math.cos(t * sw.sp + sw.ph) >= 0 ? 1 : -1
+          const bob = Math.sin(t * 1.3 + sw.ph) > 0.6 ? 1 : 0
+          drawSwan(xx | 0, (sw.y + bob) | 0, dir)
+        }
         // butterflies
         for (const b of butterflies) {
           const bx = b.cx + Math.cos(t * b.sp + b.ph) * b.rx
@@ -456,6 +535,8 @@ export default function PixelGarden() {
       for (const cl of clouds) ctx.drawImage(cl.sprite, cl.x, cl.y)
       ctx.drawImage(ground, 0, 0)
       drawSunflower(0)
+      drawSwan(LAKE.cx - 12, LAKE.cy - 2, 1)
+      drawSwan(LAKE.cx + 20, LAKE.cy + 7, -1)
       ctx.drawImage(rays, 0, 0)
     } else {
       raf = requestAnimationFrame(frame)
@@ -469,7 +550,7 @@ export default function PixelGarden() {
       width={W}
       height={H}
       aria-hidden="true"
-      className="absolute inset-0 h-full w-full object-cover object-[85%_center] [image-rendering:pixelated] sm:object-center"
+      className="absolute inset-0 h-full w-full object-cover [image-rendering:pixelated]"
     />
   )
 }
