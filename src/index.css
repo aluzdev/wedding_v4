@@ -1,1 +1,36 @@
 @import "tailwindcss";
+
+@theme {
+  --color-night: #141711;
+  --color-night-soft: #1d211b;
+  --color-cream: #fbf9f4;
+  --color-cream-soft: #f1ede3;
+  --color-ink: #27251e;
+  --color-linen: #efebe0;
+  --color-sage: #8a9b7c;
+  --color-moss: #5c6b4f;
+  --color-gold: #c5a572;
+  --font-display: "Fraunces", Georgia, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* fade-up entry: content visible by default; animation only applies
+   when JS adds .js-reveal to <html> — never hides anything */
+.reveal {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js-reveal .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .js-reveal .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
