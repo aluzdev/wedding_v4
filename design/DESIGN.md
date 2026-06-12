@@ -24,7 +24,7 @@ Dress-code swatches: 4 placeholders defined in content file (`#536878`, `#7B5B45
 - Scale (mobile-first): h1 clamp(2.5rem→4.5rem), h2 clamp(1.75rem→2.5rem), body 16px.
 
 ## Section rhythm (alternating, from inspiration)
-1. **Hero** — night: layered botanical CSS gradients + SVG leaf silhouettes (no photo dependency), eyebrow "NOS CASAMOS", serif "Cris & Pris", date + venue line, frosted-glass RSVP pill CTA, scroll hint
+1. **Hero** — REDIRECTED by user (2026-06-12) to cofounder.co register: animated pixel-art day scene built in pure SVG/CSS (no raster/video — bad-cellular budget). Pixel garden = the real venue: lawn, white event tent, big framing tree right, path, bench, flowers. Constant motion: clouds drifting at 3 speeds, flowers swaying; all inside `prefers-reduced-motion: no-preference`. Left-aligned white headline block (serif names kept), white solid RSVP pill + frosted secondary. Sky `#4FA8E8→#8FCDF4`, grass `#5FA84F` family. Sections below hero keep night/cream rhythm.
 2. **Countdown** — night, gold numerals strip
 3. **Nuestra historia** — cream: 5 moments, vertical timeline, photo placeholder frames
 4. **Ceremonia** — night: when/where card, tappable map button (geo pin), address

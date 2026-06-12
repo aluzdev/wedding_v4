@@ -17,6 +17,28 @@ html {
   scroll-behavior: smooth;
 }
 
+/* pixel hero: constant gentle motion, disabled for reduced-motion users */
+@media (prefers-reduced-motion: no-preference) {
+  .drift {
+    animation: drift var(--dur, 90s) linear infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes drift {
+    from { transform: translateX(-120px); }
+    to { transform: translateX(400px); }
+  }
+  .sway {
+    animation: sway 3.5s ease-in-out infinite alternate;
+    animation-delay: var(--delay, 0s);
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+  }
+  @keyframes sway {
+    from { transform: rotate(-5deg); }
+    to { transform: rotate(5deg); }
+  }
+}
+
 /* fade-up entry: content visible by default; animation only applies
    when JS adds .js-reveal to <html> — never hides anything */
 .reveal {
