@@ -24,7 +24,7 @@ Dress-code swatches: 4 placeholders defined in content file (`#536878`, `#7B5B45
 - Scale (mobile-first): h1 clamp(2.5rem→4.5rem), h2 clamp(1.75rem→2.5rem), body 16px.
 
 ## Section rhythm (alternating, from inspiration)
-1. **Hero** — REDIRECTED by user (2026-06-12) to cofounder.co register: animated pixel-art day scene built in pure SVG/CSS (no raster/video — bad-cellular budget). Pixel garden = the real venue: lawn, white event tent, big framing tree right, path, bench, flowers. Constant motion: clouds drifting at 3 speeds, flowers swaying; all inside `prefers-reduced-motion: no-preference`. Left-aligned white headline block (serif names kept), white solid RSVP pill + frosted secondary. Sky `#4FA8E8→#8FCDF4`, grass `#5FA84F` family. Sections below hero keep night/cream rhythm.
+1. **Hero** — back to perplexity register (user, 2026-06-12; pixel hero archived at git tag `pixel-garden-hero` + `~/personal-projects/saved-components/`): full-bleed dark misty-forest photo (Unsplash 1448375240586, free license; WebP 1600w desktop + 820×1460 portrait crop mobile via `<picture>`), radial scrim + bottom fade into `night`, imperceptible 24s zoom (`slow-breathe`, reduced-motion-safe). Centered serif block: italic announce, huge Fraunces names, invite line, gold date between sage rules, venue line, cream solid RSVP pill + frosted directions pill, fine-print deadline.
 2. **Countdown** — night, gold numerals strip
 3. **Nuestra historia** — cream: 5 moments, vertical timeline, photo placeholder frames
 4. **Ceremonia** — night: when/where card, tappable map button (geo pin), address
@@ -44,6 +44,6 @@ Dress-code swatches: 4 placeholders defined in content file (`#536878`, `#7B5B45
 CSS-only: soft fade-up on section entry via IntersectionObserver adding a class — content fully visible without JS/animation (visible-by-default rule). `prefers-reduced-motion: reduce` disables all. No parallax, no bounce.
 
 ## Performance budget
-- No raster decoration. Hero = gradients + inline SVG.
+- Raster only in hero: one WebP per viewport (~270KB desktop / ~225KB mobile), `fetchpriority=high`. No other decorative rasters.
 - Google Form iframe lazy-loaded on approach.
 - One webfont family, one weight, subset. Total JS < 100KB gz.

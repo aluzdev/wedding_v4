@@ -17,25 +17,14 @@ html {
   scroll-behavior: smooth;
 }
 
-/* pixel hero: constant gentle motion, disabled for reduced-motion users */
+/* hero backdrop: imperceptibly slow zoom so the forest feels alive */
 @media (prefers-reduced-motion: no-preference) {
-  .drift {
-    animation: drift var(--dur, 90s) linear infinite;
-    animation-delay: var(--delay, 0s);
+  .slow-breathe {
+    animation: slow-breathe 24s ease-in-out infinite alternate;
   }
-  @keyframes drift {
-    from { transform: translateX(-120px); }
-    to { transform: translateX(400px); }
-  }
-  .sway {
-    animation: sway 3.5s ease-in-out infinite alternate;
-    animation-delay: var(--delay, 0s);
-    transform-box: fill-box;
-    transform-origin: 50% 100%;
-  }
-  @keyframes sway {
-    from { transform: rotate(-5deg); }
-    to { transform: rotate(5deg); }
+  @keyframes slow-breathe {
+    from { transform: scale(1); }
+    to { transform: scale(1.07); }
   }
 }
 
