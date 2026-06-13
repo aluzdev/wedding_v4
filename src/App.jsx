@@ -2,6 +2,8 @@ import { LangProvider } from './i18n.jsx'
 import { useReveal } from './useReveal.js'
 import Nav from './sections/Nav.jsx'
 import Hero from './sections/Hero.jsx'
+import Countdown from './sections/Countdown.jsx'
+import Story from './sections/Story.jsx'
 
 function Page() {
   useReveal()
@@ -10,6 +12,8 @@ function Page() {
       <Nav />
       <main>
         <Hero />
+        <Countdown />
+        <Story />
       </main>
     </>
   )

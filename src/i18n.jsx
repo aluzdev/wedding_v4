@@ -21,6 +21,7 @@ export function LangProvider({ children }) {
   )
 }
 
+// eslint-disable-next-line react-refresh/only-export-components -- provider + hook belong together
 export function useLang() {
   return useContext(LangContext)
 }

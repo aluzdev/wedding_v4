@@ -18,6 +18,16 @@ export function useReveal() {
       { rootMargin: '0px 0px -10% 0px' },
     )
     for (const el of document.querySelectorAll('.reveal')) observer.observe(el)
-    return () => observer.disconnect()
+    // failsafe: if the observer never fires (broken IO impl, exotic embed),
+    // un-hide everything rather than ship an invisible page
+    const failsafe = setTimeout(() => {
+      if (!document.querySelector('.reveal.is-visible')) {
+        for (const el of document.querySelectorAll('.reveal')) el.classList.add('is-visible')
+      }
+    }, 2000)
+    return () => {
+      observer.disconnect()
+      clearTimeout(failsafe)
+    }
   }, [])
 }
