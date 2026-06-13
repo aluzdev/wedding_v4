@@ -26,6 +26,13 @@ html {
     from { transform: scale(1); }
     to { transform: scale(1.07); }
   }
+  .scroll-cue {
+    animation: scroll-cue 2.2s ease-in-out infinite;
+  }
+  @keyframes scroll-cue {
+    0%, 100% { transform: translateY(0); opacity: 0.7; }
+    50% { transform: translateY(6px); opacity: 1; }
+  }
 }
 
 /* fade-up entry: content visible by default; animation only applies

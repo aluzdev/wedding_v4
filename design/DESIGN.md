@@ -24,7 +24,7 @@ Dress-code swatches: 4 placeholders defined in content file (`#536878`, `#7B5B45
 - Scale (mobile-first): h1 clamp(2.5rem→4.5rem), h2 clamp(1.75rem→2.5rem), body 16px.
 
 ## Section rhythm (alternating, from inspiration)
-1. **Hero** — back to perplexity register (user, 2026-06-12; pixel hero archived at git tag `pixel-garden-hero` + `~/personal-projects/saved-components/`): full-bleed dark misty-forest photo (Unsplash 1448375240586, free license; WebP 1600w desktop + 820×1460 portrait crop mobile via `<picture>`), radial scrim + bottom fade into `night`, imperceptible 24s zoom (`slow-breathe`, reduced-motion-safe). Centered serif block: italic announce, huge Fraunces names, invite line, gold date between sage rules, venue line, cream solid RSVP pill + frosted directions pill, fine-print deadline.
+1. **Hero** — perplexity register, venue-matched (user, 2026-06-12; pixel hero archived at git tag `pixel-garden-hero` + `~/personal-projects/saved-components/`): full-bleed golden-hour calm-lake photo with green treeline + open sky (Unsplash 1599707647972, free license — chosen to echo the real venue's lake; WebP 1800w desktop + 820×1460 portrait crop mobile via `<picture>`), vignette scrim + desktop text-spot scrim + bottom fade into `night`, 24s `slow-breathe` zoom. **Scroll motion (user loves parallax):** background drifts at 0.1× scroll, content lifts at -0.12× and fades out, animated scroll cue chevron — all rAF, all inside `prefers-reduced-motion: no-preference`. Centered serif block: italic announce, huge Fraunces names, invite line, gold date between sage rules, venue line, cream solid RSVP pill + frosted directions pill, fine-print deadline.
 2. **Countdown** — night, gold numerals strip
 3. **Nuestra historia** — cream: 5 moments, vertical timeline, photo placeholder frames
 4. **Ceremonia** — night: when/where card, tappable map button (geo pin), address
@@ -41,7 +41,7 @@ Dress-code swatches: 4 placeholders defined in content file (`#536878`, `#7B5B45
 - Sticky bottom RSVP bar on mobile after scrolling past hero
 
 ## Motion
-CSS-only: soft fade-up on section entry via IntersectionObserver adding a class — content fully visible without JS/animation (visible-by-default rule). `prefers-reduced-motion: reduce` disables all. No parallax, no bounce.
+Soft fade-up on section entry via IntersectionObserver adding a class — content fully visible without JS/animation (visible-by-default rule). Hero gets rAF parallax (bg 0.1×, content -0.12× + fade); later sections may use gentle parallax accents — user explicitly loves parallax/scroll animations (2026-06-12). `prefers-reduced-motion: reduce` disables all. No bounce.
 
 ## Performance budget
 - Raster only in hero: one WebP per viewport (~270KB desktop / ~225KB mobile), `fetchpriority=high`. No other decorative rasters.
