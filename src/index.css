@@ -33,6 +33,32 @@ html {
     0%, 100% { transform: translateY(0); opacity: 0.7; }
     50% { transform: translateY(6px); opacity: 1; }
   }
+  /* ambient petals drifting down a section */
+  .petal {
+    animation-name: petal-fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes petal-fall {
+    0% { transform: translate3d(0, -10%, 0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% {
+      transform: translate3d(var(--drift, 40px), 105vh, 0) rotate(320deg);
+      opacity: 0;
+    }
+  }
+  /* twinkling fireflies over the countdown */
+  .firefly {
+    animation: firefly-glow var(--dur, 4s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+    will-change: opacity, transform;
+  }
+  @keyframes firefly-glow {
+    0%, 100% { opacity: 0; transform: translateY(0) scale(0.8); }
+    50% { opacity: 1; transform: translateY(-8px) scale(1.1); }
+  }
 }
 
 /* fade-up entry: content visible by default; animation only applies
