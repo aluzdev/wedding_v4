@@ -24,7 +24,7 @@ function Moment({ moment, index, lang }) {
       <div className="mb-5 sm:mb-0 sm:w-1/2">
         <div
           ref={frameRef}
-          className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-moss/35 via-sage/30 to-moss/45 shadow-lg ring-1 ring-moss/20"
+          className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl bg-cream/85 shadow-xl ring-1 ring-white/60"
         >
           {moment.photo ? (
             <img
@@ -34,7 +34,7 @@ function Moment({ moment, index, lang }) {
               className="h-full w-full object-cover"
             />
           ) : (
-            <svg viewBox="0 0 24 24" className="h-16 w-16 text-cream/70" fill="currentColor">
+            <svg viewBox="0 0 24 24" className="h-16 w-16 text-moss/40" fill="currentColor">
               <path d="M12 2C7 7 6 12 12 22 18 12 17 7 12 2Zm0 4c2 3 2.5 6 0 11-2.5-5-2-8 0-11Z" />
             </svg>
           )}
@@ -55,17 +55,26 @@ export default function Story() {
   return (
     <section
       id="historia"
-      className="relative overflow-hidden bg-cream px-6 py-24 text-ink sm:py-32"
+      className="relative overflow-hidden bg-[linear-gradient(180deg,#e7ecdd_0%,#dde4cf_45%,#d3dcc4_100%)] px-6 py-24 text-ink sm:py-32"
     >
-      {/* faded foliage band keeps the lush nature feel inside the light section */}
+      {/* faded foliage bands top + bottom — lush green framing the eucalyptus wash */}
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-64 bg-cover bg-center opacity-[0.14]"
+        className="absolute inset-x-0 top-0 h-72 bg-cover bg-center opacity-25"
         style={{ backgroundImage: `url(${leaves})` }}
       />
       <div
         aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-64 bg-gradient-to-b from-cream/30 to-cream"
+        className="absolute inset-x-0 bottom-0 h-72 -scale-y-100 bg-cover bg-center opacity-25"
+        style={{ backgroundImage: `url(${leaves})` }}
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-[#e7ecdd]/40 to-[#e7ecdd]"
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-[#d3dcc4]/40 to-[#d3dcc4]"
       />
       <Petals tone="light" />
 
