@@ -83,35 +83,10 @@ export default function Hero() {
         <h1 className="mt-3 font-display text-[clamp(3.25rem,12vw,6.5rem)] leading-[0.95] tracking-tight text-cream">
           Cris <span className="font-light italic text-sage">&amp;</span> Pris
         </h1>
-        <p className="mx-auto mt-5 max-w-md text-base italic text-linen/85 sm:text-lg">
-          {t.hero.invite}
-        </p>
-
-        <div className="mx-auto mt-8 flex items-center justify-center gap-4 text-linen">
-          <span aria-hidden="true" className="h-px w-10 bg-sage/60 sm:w-16" />
-          <p className="text-base font-medium tracking-wide text-gold sm:text-lg">
-            {t.hero.dateLine}
-          </p>
-          <span aria-hidden="true" className="h-px w-10 bg-sage/60 sm:w-16" />
-        </div>
+  
         <p className="mt-2 text-balance text-sm text-linen/75 sm:text-base">{t.hero.venueLine}</p>
 
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-          <a
-            href="#rsvp"
-            className="rounded-full bg-cream px-8 py-3.5 text-sm font-semibold text-night shadow-xl transition hover:bg-white"
-          >
-            {t.hero.cta}
-          </a>
-          <a
-            href={config.mapsUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="rounded-full bg-white/10 px-7 py-3.5 text-sm font-medium text-linen ring-1 ring-white/20 backdrop-blur-md transition hover:bg-white/20"
-          >
-            {t.ceremony.directions}
-          </a>
-        </div>
+       
         <p className="mt-5 text-xs text-linen/65">{t.hero.deadline}</p>
       </div>
 

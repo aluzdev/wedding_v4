@@ -28,8 +28,6 @@ export default function Dress() {
             </li>
           ))}
         </ul>
-
-        <p className="reveal mt-10 text-xs italic text-ink/45">{t.dress.pending}</p>
       </div>
     </section>
   )

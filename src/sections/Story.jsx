@@ -95,6 +95,9 @@ export default function Story() {
             <Moment key={moment[lang].title} moment={moment} index={i} lang={lang} />
           ))}
         </ol>
+
+      
+
       </div>
     </section>
   )

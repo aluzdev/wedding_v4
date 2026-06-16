@@ -18,8 +18,8 @@ function Page() {
       <Nav />
       <main>
         <Hero />
-        <Countdown />
         <Story />
+        <Countdown />
         <Ceremony />
         <Dress />
         <Rsvp />

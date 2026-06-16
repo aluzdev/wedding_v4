@@ -25,6 +25,38 @@ export default function Registry() {
           {t.registry.note}
         </p>
 
+
+
+
+
+        {config.mapsUrlLiverpool ? (
+          <a
+            href={config.mapsUrlLiverpool}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="reveal mt-8 inline-block rounded-full bg-gold px-7 py-3 text-sm font-medium tracking-wide text-night transition-opacity hover:opacity-90"
+          >
+            {t.registry.ctaLiver}
+
+          </a>
+        ) : null}
+        
+        {config.mapsUrlAmazon ? (
+          <a
+            href={config.mapsUrlAmazon}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="reveal mt-8 inline-block rounded-full bg-gold px-7 py-3 text-sm font-medium tracking-wide text-night transition-opacity hover:opacity-90"
+          >
+          {t.registry.ctaAmazon}
+
+          </a>
+        ) : null}
+        
+
+        <p className="reveal mx-auto mt-8 max-w-md text-sm leading-relaxed text-linen/70 sm:text-base">
+          {t.registry.note2}
+        </p>
         {config.registryUrl ? (
           <a
             href={config.registryUrl}
@@ -32,9 +64,11 @@ export default function Registry() {
             rel="noopener noreferrer"
             className="reveal mt-8 inline-block rounded-full bg-gold px-7 py-3 text-sm font-medium tracking-wide text-night transition-opacity hover:opacity-90"
           >
-            {t.registry.cta}
+            {t.registry.ctaBanco}
           </a>
         ) : null}
+
+         
       </div>
     </section>
   )

@@ -6,13 +6,14 @@
 
 export const config = {
   // Fecha y hora de la ceremonia (zona CDMX)
-  weddingDateISO: '2026-10-10T17:00:00-06:00',
-  rsvpDeadline: '2026-09-01',
+  weddingDateISO: '2026-10-17T17:12:00-21:00',
+  rsvpDeadline: '2026-09-10',
 
   // Lugar
   venueName: 'Casa de Lago — Jardín de Eventos',
   venueAddress: '2do. Rtno. de Bosques de Viena Ocho 172, Bosques del Lago, 54766 Cuautitlán Izcalli, Méx.',
-  mapsUrl: 'https://www.google.com/maps/search/?api=1&query=19.6188061,-99.250275',
+  mapsUrlAmazon: 'https://maps.app.goo.gl/TuKR8VZhTP3TEcze7',
+  mapsUrlLiverpool: 'https://maps.app.goo.gl/TuKR8VZhTP3TEcze7',
 
   // Mesa de regalos
   registryUrl: 'https://www.amazon.com.mx/wedding/share/bodacrisypris',
@@ -27,10 +28,11 @@ export const config = {
 
   // Colores del código de vestimenta — cambiar hex y nombre cuando estén definidos
   dressColors: [
-    { hex: '#536878', es: 'Por definir 1', en: 'TBD 1' },
-    { hex: '#7B5B45', es: 'Por definir 2', en: 'TBD 2' },
-    { hex: '#5C6B4F', es: 'Por definir 3', en: 'TBD 3' },
-    { hex: '#8E5A63', es: 'Por definir 4', en: 'TBD 4' },
+    { hex: '#c86a7a', es: 'Rosa' },
+    { hex: '#b7a9c9', es: 'Lila' },
+    { hex: '#a8bba2', es: 'Verde' },
+    { hex: '#e2b087', es: 'Ocre' },
+    { hex: '#90b1d8', es: 'Azul' },
   ],
 
   // Hoteles sugeridos — llenar cuando haya tarifas; photo opcional (ruta en /public)
@@ -54,37 +56,31 @@ export const content = {
   es: {
     nav: { rsvp: 'Confirmar' },
     hero: {
-      announce: '¡Nos casamos!',
+      announce: '¡Nos casamos!!!',
       names: 'Cris & Pris',
-      invite: 'y nos encantaría celebrar este día contigo',
-      dateLine: '10 de octubre de 2026 · 5:00 pm',
-      venueLine: 'Casa de Lago — Jardín de Eventos · Cuautitlán Izcalli',
-      cta: 'Confirmar asistencia',
-      deadline: 'Por favor responde antes del 1 de septiembre de 2026',
     },
     countdown: {
-      title: 'Faltan',
+      title: 'faltan',
       days: 'días', hours: 'horas', minutes: 'min', seconds: 'seg',
       passed: '¡Llegó el gran día!',
     },
     story: { eyebrow: 'Los novios', title: 'Nuestra historia' },
     ceremony: {
-      eyebrow: 'La ceremonia',
+
       title: 'Cuándo y dónde',
-      dateLabel: 'Viernes 10 de octubre de 2026',
-      timeLabel: 'Ceremonia · 5:00 pm',
+      dateLabel: '17 de octubre de 2026',
+      timeLabel: '12:00 pm',
       directions: 'Cómo llegar',
     },
     dress: {
       eyebrow: 'Código de vestimenta',
-      title: 'Formal',
-      note: 'Nos encantaría verte en uno de estos cuatro colores:',
-      pending: 'Los colores finales se anunciarán pronto.',
+      title: 'Formal de día',
+      note: 'Paleta sugerida:',
     },
     rsvp: {
       eyebrow: 'Tu respuesta',
       title: 'Confirma tu asistencia',
-      deadline: 'Responde antes del 1 de septiembre de 2026',
+      deadline: 'Responde antes del 10 de septiembre de 2026',
       note: 'Nos ayuda muchísimo para apartar tu lugar.',
       open: 'Abrir formulario',
       comingSoon: 'El formulario estará disponible muy pronto. ¡Vuelve por aquí!',
@@ -93,7 +89,10 @@ export const content = {
       eyebrow: 'Mesa de regalos',
       title: 'Tu presencia es nuestro mejor regalo',
       note: 'Si además quieres tener un detalle con nosotros:',
-      cta: 'Ver mesa de regalos en Amazon',
+      ctaLiver: 'Ver mesa de regalos en Liperpool',
+      ctaAmazon: 'Ver mesa de regalos en Amazon',
+      note2: 'O si prefieres apoyarnos para nuestra Luna de miel',
+      ctaBanco: 'Ver datos bacarios',
     },
     hotels: {
       eyebrow: 'Hospedaje',
