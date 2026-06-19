@@ -5,10 +5,9 @@ export default function Dress() {
   const { lang, t } = useLang()
 
   return (
-    <section id="dress-code" className="bg-cream px-6 py-24 text-ink sm:py-32">
+    <section id="dress-code" className="bg-cream px-6 pt-12 pb-24 text-ink sm:pt-16 sm:pb-32">
       <div className="mx-auto max-w-2xl text-center">
         <header className="reveal">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-moss">{t.dress.eyebrow}</p>
           <h2 className="mt-3 font-display text-[clamp(1.75rem,5vw,2.75rem)]">{t.dress.title}</h2>
           <span aria-hidden="true" className="mx-auto mt-5 block h-px w-16 bg-moss/40" />
         </header>
@@ -17,7 +16,7 @@ export default function Dress() {
           {t.dress.note}
         </p>
 
-        <ul className="reveal mt-10 flex flex-wrap items-start justify-center gap-6 sm:gap-10">
+        <ul className="reveal mx-auto mt-10 grid w-fit grid-cols-3 justify-items-center gap-6 sm:gap-10 lg:grid-cols-5">
           {config.dressColors.map((color, i) => (
             <li key={i} className="flex flex-col items-center gap-3">
               <span

@@ -55,7 +55,7 @@ export default function Story() {
   return (
     <section
       id="historia"
-      className="relative overflow-hidden bg-[linear-gradient(180deg,#e7ecdd_0%,#dde4cf_45%,#d3dcc4_100%)] px-6 py-24 text-ink sm:py-32"
+      className="relative overflow-hidden bg-[linear-gradient(180deg,#e7ecdd_0%,#dde4cf_45%,#d3dcc4_100%)] px-6 pt-12 pb-24 text-ink sm:pt-16 sm:pb-32"
     >
       {/* faded foliage bands top + bottom — lush green framing the eucalyptus wash */}
       <div
@@ -80,7 +80,6 @@ export default function Story() {
 
       <div className="relative mx-auto max-w-3xl">
         <header className="reveal text-center">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-moss">{t.story.eyebrow}</p>
           <h2 className="mt-3 font-display text-[clamp(1.75rem,5vw,2.75rem)]">{t.story.title}</h2>
           <span aria-hidden="true" className="mx-auto mt-5 block h-px w-16 bg-moss/40" />
         </header>

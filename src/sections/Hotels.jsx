@@ -5,10 +5,9 @@ export default function Hotels() {
   const { lang, t } = useLang()
 
   return (
-    <section id="hospedaje" className="bg-cream px-6 py-24 text-ink sm:py-32">
+    <section id="hospedaje" className="bg-cream px-6 pt-12 pb-24 text-ink sm:pt-16 sm:pb-32">
       <div className="mx-auto max-w-4xl">
         <header className="reveal text-center">
-          <p className="text-[11px] uppercase tracking-[0.25em] text-moss">{t.hotels.eyebrow}</p>
           <h2 className="mt-3 font-display text-[clamp(1.75rem,5vw,2.75rem)]">{t.hotels.title}</h2>
           <span aria-hidden="true" className="mx-auto mt-5 block h-px w-16 bg-moss/40" />
         </header>
