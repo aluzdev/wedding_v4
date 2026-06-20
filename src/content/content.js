@@ -14,7 +14,7 @@ export const config = {
   weddingDateISO: '2026-10-17T00:00:00-06:00',
   weddingMonth: 'octubre',
   weddingDay: '17',
-  weddingYear: '2026',
+  weddingYear: ' 2026  ',
   weddingWeekday: 'sábado',
   weddingTime: '12:00 pm',
   rsvpDeadline: '10/septiembre',
@@ -105,7 +105,7 @@ export const content = {
   },
   registry: {
     eyebrow: 'Mesa de regalos',
-    title: 'Tu presencia es nuestro regalo',
+    title: 'Tu presencia es nuestro regalo',  
     note: 'Si deseas tener un detalle con nosotros:',
     ctaLiver: 'Ver opciones en Liverpool',
     ctaAmazon: 'Ver opciones en Amazon',

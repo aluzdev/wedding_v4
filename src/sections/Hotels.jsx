@@ -16,7 +16,7 @@ export default function Hotels() {
           {t.hotels.note}
         </p>
 
-        <ul className="reveal mt-12 grid gap-6 sm:grid-cols-3">
+        <ul className="reveal mt-12 grid gap-6 sm:grid-cols-2">
           {config.hotels.map((hotel, i) => {
             const body = (
               <>

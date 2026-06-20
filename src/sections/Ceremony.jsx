@@ -22,14 +22,8 @@ export default function Ceremony() {
       className="relative overflow-hidden bg-night px-3 pt-12 pb-24 text-linen sm:pt-16 sm:pb-32">
       <Petals tone="dark" />
 
-
-
-
-
-
-
       <div className="reveal relative mx-auto max-w-xl rounded-2xl bg-red/10 px-6 py-12 text-center ring-1 ring-white/15 backdrop-blur-md sm:px-12">
-        <p className="text-[11px] uppercase tracking-[0.3em] text-linen/80 sm:text-xs ml-7">
+        <p className="text-[11px] uppercase tracking-[0.3em] text-linen/80 sm:text-xs">
           {config.weddingMonth}
         </p>
         {/* save-the-date: weekday | month + big day | year, flanked by hairlines */}
@@ -40,15 +34,15 @@ export default function Ceremony() {
           </span>
           <span aria-hidden="true" className="h-px flex-1 bg-gold/30" />
           <span className="font-display text-6xl  leading-none text-gold sm:text-7xl">
-              {config.weddingDay}
+            {config.weddingDay}
           </span>
           <span aria-hidden="true" className="h-px flex-1 bg-gold/30" />
-          <span className="text-[11px] uppercase tracking-[0.25em] text-linen/70 sm:text-xs">
+          <span className="whitespace-nowrap text-[11px] uppercase tracking-[0.25em] text-linen/70 sm:text-xs px-2">
             {config.weddingYear}
           </span>
         </div>
 
-        <p className="text-sm uppercase tracking-[0.15em] text-linen/70 ml-5">
+        <p className="text-sm uppercase tracking-[0.15em] text-linen/70">
           {t.ceremony.timeLabel}
         </p>
 
