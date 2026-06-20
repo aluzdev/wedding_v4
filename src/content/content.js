@@ -14,7 +14,7 @@ export const config = {
   weddingDateISO: '2026-10-17T00:00:00-06:00',
   weddingMonth: 'octubre',
   weddingDay: '17',
-  weddingYear: ' 2026  ',
+  weddingYear: '2026',
   weddingWeekday: 'sábado',
   weddingTime: '12:00 pm',
   rsvpDeadline: '10/septiembre',
@@ -39,8 +39,10 @@ export const config = {
   // WhatsApp para dudas — PONER NÚMERO REAL antes de compartir el sitio Formato: código de país + número, solo dígitos. Ej: '5215512345678'
   whatsappNumber: '', // TODO(Cris & Pris): número pendiente
 
-  // URL de "embed" del Google Form de RSVP — pegar aquí cuando exista. En el Form: Enviar → < > → copiar el src del iframe.
-  rsvpFormEmbedUrl: '', // TODO(Cris & Pris): crear el formulario (ver README)
+  // URL del Web App de Google Apps Script que valida familia+clave y guarda
+  // las confirmaciones en la hoja de cálculo. Pega aquí la URL que te da
+  // Google al publicar el script (ver scripts/RSVP-SETUP.md). Termina en /exec
+  rsvpApiUrl: 'https://script.google.com/macros/s/AKfycby9HRK4q7jJs6tWCEramlcMWJJKnJjOhhCIdBHQlac5NmswZR0v8FhE4jTVkNZgc3U1/exec', // TODO(Cris & Pris): pegar URL del Web App
 
   // Colores del código de vestimenta — cambiar hex y nombre cuando estén definidos
   dressColors: [
@@ -75,7 +77,7 @@ export const content = {
     announce: '¡Nuestra boda!',
     names: '{t.couple.novio} & {t.couple.novia}',
     invite: "y nos encantaría celebrar este día con ustedes",
-    dateLine: '{t.weddingDate} · {t.weddingTime}',
+    dateLine: '{t.weddingWeekday}, {t.weddingDay} de {t.weddingMonth} · {t.weddingTime}',
     venueLine: '{t.venueName} · Cuautitlán Izcalli',
     cta: 'Confirmar asistencia',
     deadline: 'Por favor responde antes del {t.rsvpDeadline}',
@@ -100,8 +102,30 @@ export const content = {
     title: 'Confirma tu asistencia',
     deadline: 'Responde antes del {t.rsvpDeadline}',
     note: 'Nos ayuda muchísimo para apartar tu lugar.',
-    open: 'Abrir formulario',
-    comingSoon: 'El formulario e',
+    comingSoon: 'El formulario estará disponible muy pronto. ¡Vuelve por aquí!',
+    familiaLabel: 'Nombre de la familia',
+    familiaPlaceholder: 'Ej. García',
+    claveLabel: 'Clave de invitación',
+    clavePlaceholder: 'Ej. gar-482',
+    claveHelp: 'La encuentras en tu invitación.',
+    searchBtn: 'Continuar',
+    searching: 'Buscando…',
+    notFound: 'No encontramos esa familia y clave. Revisa tu invitación o escríbenos por WhatsApp.',
+    greeting: 'Hola, familia {familia} 🤍',
+    reserved: 'Tenemos {lugares} lugares reservados para ustedes. Escribe el nombre de quienes asistirán; deja en blanco el lugar de quien no pueda acompañarnos.',
+    guest: 'Invitado',
+    nombre: 'Nombre',
+    apellido: 'Apellido',
+    nino: 'Es niño/a',
+    atLeastOne: 'Escribe al menos un nombre para confirmar.',
+    submitBtn: 'Enviar confirmación',
+    submitting: 'Enviando…',
+    errorGeneric: 'Algo salió mal. Inténtalo de nuevo en un momento.',
+    back: 'Volver',
+    alreadyTitle: 'Ya tenemos tu confirmación',
+    alreadyText: '¡Gracias! Esta invitación ya fue confirmada. Si necesitas hacer un cambio, escríbenos por WhatsApp.',
+    thanksTitle: '¡Gracias por confirmar! 🤍',
+    thanksText: 'Nos vemos muy pronto. Con cariño, {t.couple.novio} y {t.couple.novia}.',
   },
   registry: {
     eyebrow: 'Mesa de regalos',
@@ -131,8 +155,8 @@ export const content = {
     title: 'Resolvemos tus dudas',
     items: [
       {
-        q: '¿Puedo llevar acompañante o a mis hijos?',
-        a: 'Cada invitación indica el número de lugares reservados a tu nombre. Para cuidar el aforo, te pedimos respetar ese número. Si tienes alguna duda, escríbenos por WhatsApp con confianza.',
+        q: '¿Puedo llevar a mis hijos?',
+        a: 'Los niños también son bienvenidos, cada invitación indica el número de lugares reservados a tu nombre.'
       },
       {
         q: '¿Cuál es el código de vestimenta?',
@@ -190,12 +214,33 @@ export const content = {
       pending: 'Final colors will be announced soon.',
     },
     rsvp: {
-      eyebrow: 'Your reply',
       title: 'RSVP',
       deadline: 'Please reply by September 1, 2026',
       note: 'It helps us save your seat.',
-      open: 'Open the form',
       comingSoon: 'The form will be available very soon. Check back here!',
+      familiaLabel: 'Family name',
+      familiaPlaceholder: 'e.g. García',
+      claveLabel: 'Invitation code',
+      clavePlaceholder: 'e.g. gar-482',
+      claveHelp: 'You can find it on your invitation.',
+      searchBtn: 'Continue',
+      searching: 'Searching…',
+      notFound: 'We could not find that family and code. Please check your invitation or message us on WhatsApp.',
+      greeting: 'Hi, {familia} family 🤍',
+      reserved: 'We have {lugares} seats reserved for you. Type the names of those attending; leave a seat blank for anyone who cannot join us.',
+      guest: 'Guest',
+      nombre: 'First name',
+      apellido: 'Last name',
+      nino: 'Is a child',
+      atLeastOne: 'Enter at least one name to confirm.',
+      submitBtn: 'Send confirmation',
+      submitting: 'Sending…',
+      errorGeneric: 'Something went wrong. Please try again in a moment.',
+      back: 'Back',
+      alreadyTitle: 'We already have your reply',
+      alreadyText: 'Thank you! This invitation was already confirmed. If you need to make a change, please message us on WhatsApp.',
+      thanksTitle: 'Thank you for confirming! 🤍',
+      thanksText: 'See you very soon. With love, {t.couple.novio} & {t.couple.novia}.',
     },
     registry: {
       eyebrow: 'Gift registry',
