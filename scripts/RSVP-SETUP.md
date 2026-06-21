@@ -15,23 +15,26 @@ Sigue estos pasos una sola vez. No necesitas saber programar.
 
 ### Pestaña `Familias` (la llenas tú)
 
-| A (familia) | B (clave) | C (lugares) | D (confirmado) |
-|-------------|-----------|-------------|----------------|
-| García      | gar-482   | 3           |                |
-| Pérez López | per-913   | 2           |                |
-| Hernández   | her-205   | 4           |                |
+A partir de la **columna D pones un invitado por columna** (los nombres que ya
+tienes contemplados para esa familia). Puedes poner los que necesites: D, E, F, G…
+
+| A (familia) | B (clave) | C (confirmado) | D | E | F |
+|-------------|-----------|----------------|---|---|---|
+| García      | gar-482   |                | Juan García | María García | Luis García |
+| Pérez López | per-913   |                | Ana Pérez | Carlos López |  |
+| Hernández   | her-205   |                | Sofía Hernández |  |  |
 
 - **familia**: el nombre que la familia escribirá (no importan mayúsculas ni acentos).
 - **clave**: el código corto que pondrás en cada invitación. Invéntalo único por familia.
-- **lugares**: cuántas personas tienes contempladas para esa familia.
 - **confirmado**: déjalo **vacío**. El sistema lo pondrá en `SÍ` cuando confirmen.
+- **D en adelante**: el nombre de cada persona invitada. Deja en blanco las columnas que sobren.
 
 > La primera fila son los encabezados; los datos empiezan en la fila 2.
 
 ### Pestaña `Confirmaciones` (se llena sola)
 
-Solo pon los encabezados en la fila 1: **fecha | familia | nombre | apellido | niño**.
-El sistema agrega una fila por cada persona que asista.
+Solo pon los encabezados en la fila 1: **fecha | familia | invitado | asiste**.
+El sistema agrega una fila por cada invitado, indicando si asiste (`Sí`/`No`).
 
 ---
 
@@ -78,8 +81,9 @@ El sistema agrega una fila por cada persona que asista.
   (WhatsApp, tarjeta, etc.) incluye su nombre de familia y su clave.
 - **¿Y si necesito reabrir una confirmación?** En la pestaña `Familias`, borra el `SÍ`
   de la columna *confirmado* de esa familia. Podrán volver a enviar.
-- **¿Pueden meter de más?** No: el sistema rechaza más nombres que los `lugares`
-  contemplados, tanto en el sitio como en el servidor.
-- **¿Y si alguien no va?** Dejan en blanco ese lugar; solo se guardan los nombres escritos.
+- **¿Pueden invitar a alguien de más?** No: el formulario solo muestra los nombres que
+  tú pusiste en la fila de esa familia. No hay forma de agregar a nadie más.
+- **¿Y si alguien no va?** En el formulario, la familia desmarca la casilla *Asiste* de
+  esa persona. Se guarda como `No`.
 - **La lista para el acomodo de mesas** está en la pestaña `Confirmaciones`: una fila por
-  persona, con su nombre, apellido y si es niño/a.
+  invitado, con su nombre y si asiste (`Sí`/`No`).

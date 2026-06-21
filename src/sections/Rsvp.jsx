@@ -2,12 +2,10 @@ import { useState } from 'react'
 import { useLang } from '../i18n.jsx'
 import { config } from '../content/content.js'
 
-// fill {placeholders} in a string with runtime values (familia, lugares…)
+// fill {placeholders} in a string with runtime values (familia…)
 function fill(str, vars) {
   return str.replace(/\{(\w+)\}/g, (m, key) => (key in vars ? vars[key] : m))
 }
-
-const emptyGuest = () => ({ nombre: '', apellido: '', nino: false })
 
 export default function Rsvp() {
   const { t } = useLang()
@@ -16,8 +14,8 @@ export default function Rsvp() {
   const [step, setStep] = useState('lookup') // lookup | form | done | already
   const [familia, setFamilia] = useState('')
   const [clave, setClave] = useState('')
-  const [family, setFamily] = useState(null) // { familia, lugares }
-  const [guests, setGuests] = useState([])
+  const [family, setFamily] = useState(null) // { familia, integrantes }
+  const [guests, setGuests] = useState([]) // [{ nombre, asiste }]
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -49,8 +47,9 @@ export default function Rsvp() {
         setStep('already')
         return
       }
-      setFamily({ familia: data.familia, lugares: data.lugares })
-      setGuests(Array.from({ length: data.lugares }, emptyGuest))
+      setFamily({ familia: data.familia, integrantes: data.integrantes || [] })
+      // everyone checked ("asiste") by default → uncheck whoever can't make it
+      setGuests((data.integrantes || []).map((nombre) => ({ nombre, asiste: true })))
       setStep('form')
     } catch {
       setError(t.rsvp.errorGeneric)
@@ -59,19 +58,12 @@ export default function Rsvp() {
     }
   }
 
-  const updateGuest = (i, patch) =>
-    setGuests((prev) => prev.map((g, idx) => (idx === i ? { ...g, ...patch } : g)))
+  const toggleGuest = (i) =>
+    setGuests((prev) => prev.map((g, idx) => (idx === i ? { ...g, asiste: !g.asiste } : g)))
 
   const submit = async (e) => {
     e.preventDefault()
     setError('')
-    const attending = guests
-      .map((g) => ({ nombre: g.nombre.trim(), apellido: g.apellido.trim(), nino: g.nino }))
-      .filter((g) => g.nombre || g.apellido)
-    if (attending.length === 0) {
-      setError(t.rsvp.atLeastOne)
-      return
-    }
     setLoading(true)
     try {
       const res = await fetch(api, {
@@ -83,7 +75,7 @@ export default function Rsvp() {
           action: 'submit',
           familia: familia.trim(),
           clave: clave.trim(),
-          guests: attending,
+          guests,
         }),
       })
       const data = await res.json()
@@ -137,28 +129,28 @@ export default function Rsvp() {
                 {fill(t.rsvp.greeting, { familia: family.familia })}
               </p>
               <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-ink/70">
-                {fill(t.rsvp.reserved, { lugares: family.lugares })}
+                {t.rsvp.reserved}
               </p>
             </div>
 
-            <ul className="space-y-4">
+            <ul className="space-y-3">
               {guests.map((g, i) => (
-                <li key={i} className="rounded-xl bg-cream-soft px-4 py-4 ring-1 ring-black/5">
-                  <p className="mb-3 text-[11px] uppercase tracking-[0.18em] text-moss">
-                    {t.rsvp.guest} {i + 1}
-                  </p>
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <Field label={t.rsvp.nombre} value={g.nombre} onChange={(v) => updateGuest(i, { nombre: v })} />
-                    <Field label={t.rsvp.apellido} value={g.apellido} onChange={(v) => updateGuest(i, { apellido: v })} />
-                  </div>
-                  <label className="mt-3 flex items-center gap-2 text-sm text-ink/70">
-                    <input
-                      type="checkbox"
-                      checked={g.nino}
-                      onChange={(e) => updateGuest(i, { nino: e.target.checked })}
-                      className="h-4 w-4 rounded border-ink/30 text-moss focus:ring-moss"
-                    />
-                    {t.rsvp.nino}
+                <li key={i}>
+                  <label
+                    className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl px-4 py-4 ring-1 transition-colors ${
+                      g.asiste ? 'bg-moss/10 ring-moss/30' : 'bg-cream-soft ring-black/5'
+                    }`}
+                  >
+                    <span className="font-display text-lg text-ink">{g.nombre}</span>
+                    <span className="flex items-center gap-2 text-sm text-ink/70">
+                      {t.rsvp.attends}
+                      <input
+                        type="checkbox"
+                        checked={g.asiste}
+                        onChange={() => toggleGuest(i)}
+                        className="h-5 w-5 rounded border-ink/30 text-moss focus:ring-moss"
+                      />
+                    </span>
                   </label>
                 </li>
               ))}
