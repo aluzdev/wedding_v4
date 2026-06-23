@@ -1,4 +1,5 @@
 import { LangProvider } from './i18n.jsx'
+import { GuestProvider } from './guest.jsx'
 import { useReveal } from './useReveal.js'
 import Nav from './sections/Nav.jsx'
 import Hero from './sections/Hero.jsx'
@@ -34,7 +35,9 @@ function Page() {
 export default function App() {
   return (
     <LangProvider>
-      <Page />
+      <GuestProvider>
+        <Page />
+      </GuestProvider>
     </LangProvider>
   )
 }

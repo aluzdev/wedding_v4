@@ -7,12 +7,15 @@
  *
  * La hoja debe tener dos pestañas:
  *
- *   "Familias"  → A: familia | B: clave | C: confirmado | D, E, F…: un
- *     nombre de invitado por columna (los que tú ya tienes contemplados).
- *     (la llenas tú; "confirmado" déjalo vacío)
+ *   "Familias"  → A y B: LIBRES, para tu control personal (el sistema las
+ *     ignora) | C: numero (cuántas personas; pon 1 si la persona va sola) |
+ *     D: familia (apellido) | E: clave | F: confirmado |
+ *     G: mesa (déjala vacía hasta la semana de la boda) |
+ *     H, I, J…: un nombre de invitado por columna (los que tú ya tienes
+ *     contemplados). (la llenas tú; "confirmado" déjalo vacío)
  *
  *   "Confirmaciones" → se llena sola:
- *     A: fecha | B: familia | C: invitado | D: asiste
+ *     A: fecha | B: familia | C: clave | D: invitado | E: asiste
  */
 
 const HOJA_FAMILIAS = 'Familias';
@@ -22,6 +25,11 @@ function doGet(e) {
   const action = (e.parameter.action || '').toLowerCase();
   if (action === 'lookup') {
     return lookup(e.parameter.familia, e.parameter.clave);
+  }
+  // búsqueda SOLO por clave (para el sobre de bienvenida y los links
+  // personalizados ?c=clave). Requiere que cada clave sea única.
+  if (action === 'lookupclave') {
+    return lookupByClave(e.parameter.clave);
   }
   return json({ ok: false, error: 'bad_action' });
 }
@@ -48,24 +56,51 @@ function norm(s) {
     .replace(diacritics, '');
 }
 
+/** arma el objeto de una familia a partir de su fila (índice 0-based) */
+function buildFamily(data, i) {
+  // A y B (índices 0 y 1) son tu control personal: el sistema no las usa.
+  // C = numero, D = familia, E = clave, F = confirmado, G = mesa,
+  // H en adelante = nombres de invitados; ignora celdas vacías
+  const integrantes = data[i]
+    .slice(7)
+    .map(function (n) { return String(n).trim(); })
+    .filter(function (n) { return n; });
+  const numero = parseInt(String(data[i][2]).trim(), 10);
+  // "va solo": pusiste 1 en numero, o la fila tiene un único nombre
+  const solo = numero === 1 || (!numero && integrantes.length === 1);
+  return {
+    rowIndex: i + 1,
+    numero: numero || integrantes.length,
+    familia: data[i][3],
+    clave: data[i][4],
+    confirmado: String(data[i][5]).toUpperCase().indexOf('S') === 0,
+    mesa: String(data[i][6]).trim(),
+    integrantes: integrantes,
+    solo: solo,
+  };
+}
+
 /** busca la fila de la familia que coincide en nombre Y clave */
 function findFamilyRow(sheet, familia, clave) {
   const data = sheet.getDataRange().getValues();
   const f = norm(familia);
   const c = norm(clave);
   for (let i = 1; i < data.length; i++) {
-    if (norm(data[i][0]) === f && norm(data[i][1]) === c) {
-      // columnas D en adelante = nombres de invitados; ignora celdas vacías
-      const integrantes = data[i]
-        .slice(3)
-        .map(function (n) { return String(n).trim(); })
-        .filter(function (n) { return n; });
-      return {
-        rowIndex: i + 1,
-        familia: data[i][0],
-        confirmado: String(data[i][2]).toUpperCase().indexOf('S') === 0,
-        integrantes: integrantes,
-      };
+    if (norm(data[i][3]) === f && norm(data[i][4]) === c) {
+      return buildFamily(data, i);
+    }
+  }
+  return null;
+}
+
+/** busca la fila de la familia SOLO por clave (debe ser única por familia) */
+function findFamilyRowByClave(sheet, clave) {
+  const data = sheet.getDataRange().getValues();
+  const c = norm(clave);
+  if (!c) return null;
+  for (let i = 1; i < data.length; i++) {
+    if (norm(data[i][4]) === c) {
+      return buildFamily(data, i);
     }
   }
   return null;
@@ -75,7 +110,14 @@ function lookup(familia, clave) {
   const sheet = SpreadsheetApp.getActive().getSheetByName(HOJA_FAMILIAS);
   const row = findFamilyRow(sheet, familia, clave);
   if (!row) return json({ ok: false, error: 'notfound' });
-  return json({ ok: true, familia: row.familia, integrantes: row.integrantes, confirmado: row.confirmado });
+  return json({ ok: true, familia: row.familia, clave: row.clave, integrantes: row.integrantes, confirmado: row.confirmado, mesa: row.mesa, solo: row.solo });
+}
+
+function lookupByClave(clave) {
+  const sheet = SpreadsheetApp.getActive().getSheetByName(HOJA_FAMILIAS);
+  const row = findFamilyRowByClave(sheet, clave);
+  if (!row) return json({ ok: false, error: 'notfound' });
+  return json({ ok: true, familia: row.familia, clave: row.clave, integrantes: row.integrantes, confirmado: row.confirmado, mesa: row.mesa, solo: row.solo });
 }
 
 function submit(body) {
@@ -100,11 +142,11 @@ function submit(body) {
     const conf = ss.getSheetByName(HOJA_CONFIRMACIONES);
     const now = new Date();
     guests.forEach(function (g) {
-      conf.appendRow([now, row.familia, g.nombre, g.asiste ? 'Sí' : 'No']);
+      conf.appendRow([now, row.familia, row.clave, g.nombre, g.asiste ? 'Sí' : 'No']);
     });
 
-    // marca la familia como confirmada → bloquea reenvíos (columna C)
-    famSheet.getRange(row.rowIndex, 3).setValue('SÍ');
+    // marca la familia como confirmada → bloquea reenvíos (columna F)
+    famSheet.getRange(row.rowIndex, 6).setValue('SÍ');
 
     return json({ ok: true });
   } finally {
