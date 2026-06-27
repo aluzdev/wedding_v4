@@ -38,7 +38,7 @@ export default function Rsvp() {
   if (!api) {
     return (
       <Shell t={t}>
-        <div className="reveal mt-10 rounded-2xl bg-cream px-6 py-10 text-center shadow-md ring-1 ring-black/5 sm:px-10">
+        <div className="reveal mt-10 rounded-2xl bg-cream px-6 py-10 text-center shadow-md ring-1 ring-hairline/5 sm:px-10">
           <p className="font-display text-lg text-moss sm:text-xl">{t.rsvp.deadline}</p>
           <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-ink/70">{t.rsvp.comingSoon}</p>
         </div>
@@ -93,7 +93,7 @@ export default function Rsvp() {
 
   return (
     <Shell t={t}>
-      <div className="reveal mx-auto mt-10 max-w-lg rounded-2xl bg-cream px-6 py-10 shadow-md ring-1 ring-black/5 sm:px-10">
+      <div className="reveal mx-auto mt-10 max-w-lg rounded-2xl bg-cream px-6 py-10 shadow-md ring-1 ring-hairline/5 sm:px-10">
         {step === 'form' && family && family.solo && (
           <SoloConfirm
             t={t}
@@ -121,7 +121,7 @@ export default function Rsvp() {
                 <li key={i}>
                   <label
                     className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl px-4 py-4 ring-1 transition-colors ${
-                      g.asiste ? 'bg-moss/10 ring-moss/30' : 'bg-cream-soft ring-black/5'
+                      g.asiste ? 'bg-moss/10 ring-moss/30' : 'bg-cream-soft ring-hairline/5'
                     }`}
                   >
                     <span className="font-display text-lg text-ink">{g.nombre}</span>
@@ -139,7 +139,7 @@ export default function Rsvp() {
               ))}
             </ul>
 
-            {error && <p className="text-center text-sm text-red-600">{error}</p>}
+            {error && <p className="text-center text-sm text-danger">{error}</p>}
             <div className="flex items-center justify-end gap-3">
               <SubmitButton loading={loading} label={t.rsvp.submitBtn} loadingLabel={t.rsvp.submitting} />
             </div>
@@ -188,7 +188,7 @@ function SoloConfirm({ t, familia, loading, error, onYes, onNo }) {
         <p className="font-display text-2xl text-moss">{fill(t.rsvp.greeting, { familia })}</p>
         <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-ink/70">{t.rsvp.soloIntro}</p>
       </div>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-danger">{error}</p>}
       <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
         <button
           type="button"

@@ -35,6 +35,20 @@ export default function Hero() {
       id="inicio"
       className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-night text-center"
     >
+      {/* background video */}
+      <video
+        className="absolute inset-0 z-0 h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-hidden="true"
+      >
+        <source src="/8.1-invideo-seedance_2_0.mp4" type="video/mp4" />
+      </video>
+      {/* sunset scrim: lets the video glow up top, darkens toward the bottom for text */}
+      <div aria-hidden="true" className="absolute inset-0 z-0 bg-gradient-to-b from-night/20 via-night/25 to-night/75" />
+
       <div
         ref={contentRef}
         className="relative z-10 mx-auto w-full max-w-3xl px-6 pb-20 pt-28 [text-shadow:0_1px_16px_rgba(8,12,6,0.65)] sm:pt-24"

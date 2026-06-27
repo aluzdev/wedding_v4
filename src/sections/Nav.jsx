@@ -12,7 +12,7 @@ export default function Nav() {
         <div
           role="group"
           aria-label="Idioma / Language"
-          className="flex overflow-hidden rounded-full bg-white/10 text-xs font-medium tracking-wide text-linen ring-1 ring-white/15 backdrop-blur-md"
+          className="flex overflow-hidden rounded-full bg-glow/10 text-xs font-medium tracking-wide text-linen ring-1 ring-glow/15 backdrop-blur-md"
         >
           {['es', 'en'].map((code) => (
             <button
@@ -21,7 +21,7 @@ export default function Nav() {
               onClick={() => setLang(code)}
               aria-pressed={lang === code}
               className={`px-3 py-1.5 uppercase transition-colors ${
-                lang === code ? 'bg-linen/90 text-night' : 'hover:bg-white/10'
+                lang === code ? 'bg-linen/90 text-night' : 'hover:bg-glow/10'
               }`}
             >
               {code}
@@ -30,7 +30,7 @@ export default function Nav() {
         </div>
         <a
           href="#rsvp"
-          className="hidden rounded-full bg-white/10 px-4 py-1.5 text-xs font-medium tracking-wide text-linen ring-1 ring-white/15 backdrop-blur-md transition-colors hover:bg-white/20 sm:block"
+          className="hidden rounded-full bg-glow/10 px-4 py-1.5 text-xs font-medium tracking-wide text-linen ring-1 ring-glow/15 backdrop-blur-md transition-colors hover:bg-glow/20 sm:block"
         >
           {t.nav.rsvp}
         </a>

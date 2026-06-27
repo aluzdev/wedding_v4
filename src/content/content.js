@@ -25,7 +25,7 @@ export const config = {
   mapsUrl: 'https://maps.app.goo.gl/TuKR8VZhTP3TEcze7',
 
   // Mesa de regalos
-  liverpoolUrl: 'https://www.amazon.com.mx/wedding/share/bodacrisypris',
+  liverpoolUrl: 'https://mesaderegalos.liverpool.com.mx/milistaderegalos/52024083',
   amazonUrl: 'https://www.amazon.com.mx/wedding/share/bodacrisypris',
 
   // Datos bancarios
@@ -204,14 +204,15 @@ export const content = {
 
   en: {
     nav: { rsvp: 'RSVP' },
+    heroBible: 'He has made everything beautiful in its time.  Ecclesiastes 3:11',
     hero: {
       announce: "We're getting married!",
       names: 'Cris & Pris',
       invite: "and we'd love to celebrate this day with you",
-      dateLine: 'October 10, 2026 · 5:00 pm',
+      dateLine: 'Saturday, October 17, 2026 · 12:00 pm',
       venueLine: 'Casa de Lago — Jardín de Eventos · Cuautitlán Izcalli',
       cta: 'RSVP',
-      deadline: 'Please reply by September 1, 2026',
+      deadline: 'Please reply by September 10, 2026',
     },
     countdown: {
       title: 'Countdown',
@@ -238,21 +239,18 @@ export const content = {
     },
     story: { eyebrow: 'The couple', title: 'Our story' },
     ceremony: {
-      eyebrow: 'The ceremony',
       title: 'When & where',
-      dateLabel: 'Friday, October 10, 2026',
-      timeLabel: 'Ceremony · 5:00 pm',
+      timeLabel: 'Ceremony · 12:00 pm',
       directions: 'Get directions',
     },
     dress: {
       eyebrow: 'Dress code',
       title: 'Formal',
       note: "We'd love to see you in one of these four colors:",
-      pending: 'Final colors will be announced soon.',
     },
     rsvp: {
       title: 'RSVP',
-      deadline: 'Please reply by September 1, 2026',
+      deadline: 'Please reply by September 10, 2026',
       note: 'It helps us save your seat.',
       comingSoon: 'The form will be available very soon. Check back here!',
       checking: 'One moment…',
@@ -279,7 +277,6 @@ export const content = {
       eyebrow: 'Gift registry',
       title: 'Your presence is our gift',
       note: 'If you would also like to give us something:',
-      cta: 'View our Amazon registry',
       ctaLiver: 'View registry at Liverpool',
       ctaAmazon: 'View registry on Amazon',
       note2: 'Or if you prefer to help us with our honeymoon',

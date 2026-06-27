@@ -30,7 +30,7 @@ export default function Hotels() {
               </>
             )
             const cardClass =
-              'block h-full rounded-2xl bg-cream-soft px-6 py-7 ring-1 ring-black/5 shadow-sm'
+              'block h-full rounded-2xl bg-cream-soft px-6 py-7 ring-1 ring-hairline/5 shadow-sm'
             return (
               <li key={i}>
                 {hotel.url ? (

@@ -22,7 +22,7 @@ export default function Ceremony() {
       className="relative overflow-hidden bg-night px-3 pt-12 pb-24 text-linen sm:pt-16 sm:pb-32">
       <Petals tone="dark" />
 
-      <div className="reveal relative mx-auto max-w-xl rounded-2xl bg-red/10 px-6 py-12 text-center ring-1 ring-white/15 backdrop-blur-md sm:px-12">
+      <div className="reveal relative mx-auto max-w-xl rounded-2xl bg-glow/10 px-6 py-12 text-center ring-1 ring-glow/15 backdrop-blur-md sm:px-12">
         <p className="text-[11px] uppercase tracking-[0.3em] text-linen/80 sm:text-xs">
           {config.weddingMonth}
         </p>
@@ -73,7 +73,7 @@ export default function Ceremony() {
 
         <span
           aria-hidden="true"
-          className="mx-auto mt-10 block h-px w-12 bg-white/15"
+          className="mx-auto mt-10 block h-px w-12 bg-glow/15"
         />
 
         <p className="mt-8 font-display text-lg text-linen sm:text-xl">

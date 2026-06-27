@@ -20,7 +20,7 @@ export default function Dress() {
           {config.dressColors.map((color, i) => (
             <li key={i} className="flex flex-col items-center gap-3">
               <span
-                className="h-16 w-16 rounded-full shadow-md ring-1 ring-black/10 sm:h-20 sm:w-20"
+                className="h-16 w-16 rounded-full shadow-md ring-1 ring-hairline/10 sm:h-20 sm:w-20"
                 style={{ backgroundColor: color.hex }}
               />
               <span className="text-xs tracking-wide text-ink/60">{color[lang]}</span>

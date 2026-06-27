@@ -1,15 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-  --color-night: #141711;
-  --color-night-soft: #1d211b;
-  --color-cream: #fbf9f4;
-  --color-cream-soft: #f1ede3;
-  --color-ink: #27251e;
-  --color-linen: #efebe0;
-  --color-sage: #8a9b7c;
-  --color-moss: #5c6b4f;
-  --color-gold: #c5a572;
+  /* ============================================================
+     PALETA — único lugar para cambiar colores de todo el sitio.
+     Cambia un valor aquí y se actualiza en toda la página.
+     ============================================================ */
+
+  /* --- Marca / superficies --- */
+  --color-night: #141711;        /* fondo oscuro (hero, historia, footer) */
+  --color-night-soft: #1d211b;   /* superficie oscura elevada (tarjetas) */
+  --color-cream: #fbf9f4;        /* fondo claro de secciones */
+  --color-cream-soft: #f1ede3;   /* fondo claro alterno */
+  --color-ink: #27251e;          /* texto principal sobre claro */
+  --color-linen: #efebe0;        /* texto/elementos sobre oscuro */
+
+  /* --- Acentos --- */
+  --color-sage: #8a9b7c;         /* verde claro (acentos/decoración) */
+  --color-moss: #5c6b4f;         /* verde oscuro (texto/iconos sobre claro) */
+  --color-gold: #c5a572;         /* dorado (acento principal, CTAs) */
+
+  /* --- Roles semánticos (efectos / estados) --- */
+  --color-danger: #dc2626;       /* errores y acciones destructivas */
+  --color-hairline: #000000;     /* líneas/anillos sutiles sobre fondo claro (usar /5–/10) */
+  --color-glow: #ffffff;         /* brillos/anillos/scrims sobre fondo oscuro (usar /10–/30) */
   --font-display: "Fraunces", Georgia, serif;
   --font-script: "Pinyon Script", "Snell Roundhand", cursive;
 }
