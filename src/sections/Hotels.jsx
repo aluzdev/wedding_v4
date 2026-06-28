@@ -22,14 +22,14 @@ export default function Hotels() {
           {config.hotels.map((hotel, i) => {
             const body = (
               <>
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-red-200 ring-1 ring-moss/20">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-cream ring-1 ring-moss/20">
                   <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">
                     <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" />
                   </svg>
                 </span>
                 <div>
-                  <h3 className="font-display text-lg text-red-200">{hotel.name}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-red-200">{hotel[lang]}</p>
+                  <h3 className="font-display text-lg text-cream">{hotel.name}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-cream">{hotel[lang]}</p>
                   {hotel.url ? (
                     <span className="mt-3 inline-block text-xs font-medium uppercase tracking-[0.15em] text-moss">
                       {lang === 'es' ? 'Ver hotel →' : 'View hotel →'}

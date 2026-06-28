@@ -107,6 +107,7 @@ function BankModal({ details, t, onClose }) {
     [t.registry.bankClabe, details.clabe],
     [t.registry.bankAccount, details.account],
     [t.registry.bankCard, details.card],
+    [t.registry.bankSwift, details.swift],
   ].filter(([, value]) => value)
 
   return (
@@ -127,6 +128,9 @@ function BankModal({ details, t, onClose }) {
           aria-label={t.registry.bankClose}
           className="absolute right-4 top-4 text-ink/50 transition-colors hover:text-ink"
         >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6">
+            <path strokeLinecap="round" d="M6 6l12 12M18 6L6 18" />
+          </svg>
         </button>
         <h3 className="font-display text-2xl">{t.registry.bankTitle}</h3>
         <p className="mt-2 text-sm text-ink/70">{t.registry.bankIntro}</p>
