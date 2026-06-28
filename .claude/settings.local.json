@@ -2,10 +2,49 @@
   "permissions": {
     "allow": [
       "Bash(npm run *)",
-      "Bash(npm test *)"
+      "Bash(npm test *)",
+      "Bash(npm install *)",
+      "Bash(npx eslint *)",
+      "Bash(pip install *)",
+      "Bash(python3 -c \"import imageio_ffmpeg, shutil; print\\(imageio_ffmpeg.get_ffmpeg_exe\\(\\)\\)\")",
+      "Bash(python3 -m pip install -q imageio-ffmpeg)",
+      "Bash(python3 -c \"import imageio_ffmpeg; print\\(imageio_ffmpeg.get_ffmpeg_exe\\(\\)\\)\")",
+      "Bash(node -e \"console.log\\(require\\('ffmpeg-static'\\)\\)\")",
+      "Bash(node_modules/ffmpeg-static/ffmpeg -version)",
+      "Bash(npm uninstall *)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:5173/)",
+      "Bash(curl -s http://localhost:5173/src/index.css)",
+      "Bash(npx playwright *)",
+      "Bash(sort -t: -k1)",
+      "Bash(git add *)",
+      "Bash(git commit -q -m ' *)",
+      "Bash(git push *)",
+      "Bash(gh auth *)",
+      "Bash(sudo -n true)",
+      "Bash(ffprobe -v error -show_entries format=duration -of csv=p=0 \"public/8.1-invideo-seedance_2_0.mp4\")",
+      "Bash(mkdir -p __TRACKED_VAR__/frames)",
+      "Bash(ffmpeg -y -i public/8.1-invideo-seedance_2_0.mp4 -vf fps=1,scale=320:-1 __TRACKED_VAR__/frames/f%02d.png -loglevel error)",
+      "Bash(cp \"/tmp/claude-1000/-mnt-c-Users-alvar-OneDrive-Documents-projects-wedding-v4/9aa7d6cf-225e-4a39-bf3c-72e18946d1e1/scratchpad/sample.mjs\" ./_sample.mjs)",
+      "Bash(node ./_sample.mjs)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/skills/impeccable/scripts/hook.mjs\"",
+            "timeout": 5,
+            "statusMessage": "Checking UI changes"
+          }
+        ]
+      }
     ]
   },
   "worktree": {
     "bgIsolation": "none"
-  }
+  },
+  "description": "Impeccable design detector: runs after Edit/Write/MultiEdit on UI files and surfaces findings as system reminders."
 }

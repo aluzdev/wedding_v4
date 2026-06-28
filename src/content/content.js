@@ -17,7 +17,7 @@ export const config = {
   weddingYear: '2026',
   weddingWeekday: 'sábado',
   weddingTime: '12:00 pm',
-  rsvpDeadline: '10/septiembre',
+  rsvpDeadline: '26/septiembre',
 
   // Lugar
   venueName: 'Casa de Lago — Jardín de Eventos',
@@ -30,14 +30,14 @@ export const config = {
 
   // Datos bancarios
   bankDetails: {
-    bank: 'Banco por confirmar',
-    holder: 'Nombre del titular',
-    clabe: '000 000 000 000 000 000',
-    account: '0000 0000 00',
-    card: '0000 0000 0000 0000',
+    bank: 'BBVA',
+    holder: 'Cristian Molina',
+    clabe: '012 164 01526566230 6',
+    account: '152 656 6230',
+    swift: 'BCMRMXMMPYM',
   },
   // WhatsApp para dudas — PONER NÚMERO REAL antes de compartir el sitio Formato: código de país + número, solo dígitos. Ej: '5215512345678'
-  whatsappNumber: '', // TODO(Cris & Pris): número pendiente
+  whatsappNumber: '(+52)55 3948 0008', // TODO(Cris & Pris): número pendiente
 
   // Foto de fondo de la pantalla de bienvenida (el sobre). Pon aquí la ruta de
   // una imagen dentro de /public, ej. '/photos/welcome.jpg'. Si la dejas vacía,
@@ -50,12 +50,13 @@ export const config = {
   rsvpApiUrl: 'https://script.google.com/macros/s/AKfycby9HRK4q7jJs6tWCEramlcMWJJKnJjOhhCIdBHQlac5NmswZR0v8FhE4jTVkNZgc3U1/exec', // TODO(Cris & Pris): pegar URL del Web App
 
   // Colores del código de vestimenta — cambiar hex y nombre cuando estén definidos
+  // tonos sacados del video (atardecer → girasoles → anochecer); muted = vestible
   dressColors: [
-    { hex: '#c86a7a', es: 'Rosa' },
-    { hex: '#b7a9c9', es: 'Lila' },
-    { hex: '#a8bba2', es: 'Verde' },
-    { hex: '#e2b087', es: 'Ocre' },
-    { hex: '#90b1d8', es: 'Azul' },
+    { hex: '#dfa79e', es: 'Rosa palo', en: 'Dusty rose' },
+    { hex: '#a28ebf', es: 'Lila', en: 'Lilac' },
+    { hex: '#9aa356', es: 'Verde olivo', en: 'Olive' },
+    { hex: '#daa772', es: 'Camel', en: 'Camel' },
+    { hex: '#84aebf', es: 'Azul niebla', en: 'Misty blue' },
   ],
 
   // Hoteles sugeridos — llenar cuando haya tarifas; photo opcional (ruta en /public)
@@ -110,7 +111,7 @@ export const content = {
     greetingNote: 'Pasa, te estábamos esperando 🤍',
     notFound: 'No encontramos esa clave. Revísala o escríbenos por WhatsApp.',
   },
-  story: { eyebrow: 'Los novios', title: 'Nuestra historia' },
+  story: { eyebrow: 'Los novios', title: 'Nosotros 🤍' },
   ceremony: {
     title: 'Nuestro gran día',
     timeLabel: '{t.weddingTime}',
@@ -199,9 +200,6 @@ export const content = {
   },
 },
 
-
-
-
   en: {
     nav: { rsvp: 'RSVP' },
     heroBible: 'He has made everything beautiful in its time.  Ecclesiastes 3:11',
@@ -237,16 +235,16 @@ export const content = {
       greetingNote: "Come in, we've been waiting for you 🤍",
       notFound: 'We could not find that code. Please check it or message us on WhatsApp.',
     },
-    story: { eyebrow: 'The couple', title: 'Our story' },
+    story: { eyebrow: 'The couple', title: 'Us 🤍' },
     ceremony: {
-      title: 'When & where',
+      title: 'Our big day',
       timeLabel: 'Ceremony · 12:00 pm',
       directions: 'Get directions',
     },
     dress: {
       eyebrow: 'Dress code',
-      title: 'Formal',
-      note: "We'd love to see you in one of these four colors:",
+      title: 'Daytime formal',
+      note: 'Suggested palette:',
     },
     rsvp: {
       title: 'RSVP',

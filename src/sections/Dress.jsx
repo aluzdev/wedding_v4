@@ -1,33 +1,41 @@
-import { useLang } from '../i18n.jsx'
-import { config } from '../content/content.js'
+import { useLang } from "../i18n.jsx";
+import { config } from "../content/content.js";
 
 export default function Dress() {
-  const { lang, t } = useLang()
+  const { lang, t } = useLang();
 
   return (
-    <section id="dress-code" className="bg-cream px-6 pt-12 pb-24 text-ink sm:pt-16 sm:pb-32">
-      <div className="mx-auto max-w-2xl text-center">
-        <header className="reveal">
-          <h2 className="mt-3 font-display text-[clamp(1.75rem,5vw,2.75rem)]">{t.dress.title}</h2>
-          <span aria-hidden="true" className="mx-auto mt-5 block h-px w-16 bg-moss/40" />
+    <section
+      id="dress-code"
+      className="surface-vestimenta px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
+      <div className="mx-auto max-w-3xl text-center">
+        <header className="reveal space-y-3">
+          <h2 className="mx-auto max-w-xl font-display text-[clamp(2rem,6vw,3.25rem)] italic leading-[1.1] text-balance">
+            {t.dress.eyebrow}
+          </h2>
+          <h5 className="font-display text-[clamp(1.15rem,2vw,1.75rem)] text-balance">
+            {t.dress.title}
+          </h5>
+          <p className="mx-auto max-w-md text-sm leading-relaxed text-ink/75 sm:text-base">
+            {t.dress.note}
+          </p>
         </header>
 
-        <p className="reveal mx-auto mt-8 max-w-md text-sm leading-relaxed text-ink/70 sm:text-base">
-          {t.dress.note}
-        </p>
-
-        <ul className="reveal mx-auto mt-10 grid w-fit grid-cols-3 justify-items-center gap-6 sm:gap-10 lg:grid-cols-5">
+        {/* the palette IS the content: a fan of paint-chip capsules */}
+        <ul className="reveal mt-7 flex flex-wrap items-end justify-center gap-5 sm:gap-7">
           {config.dressColors.map((color, i) => (
-            <li key={i} className="flex flex-col items-center gap-3">
+            <li key={i} className="group flex flex-col items-center gap-4">
               <span
-                className="h-16 w-16 rounded-full shadow-md ring-1 ring-hairline/10 sm:h-20 sm:w-20"
+                className="h-16 w-16 rounded-full shadow-lg ring-1 ring-ink/10 transition-transform duration-300 ease-out group-hover:-translate-y-2 sm:h-40 sm:w-20"
                 style={{ backgroundColor: color.hex }}
               />
-              <span className="text-xs tracking-wide text-ink/60">{color[lang]}</span>
+              <span className="text-xs uppercase tracking-[0.18em] text-ink/65">
+                {color[lang] || color.es}
+              </span>
             </li>
           ))}
         </ul>
       </div>
     </section>
-  )
+  );
 }

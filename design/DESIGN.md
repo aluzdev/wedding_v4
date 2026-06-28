@@ -1,19 +1,26 @@
 # DESIGN — single source of truth
 
-Chosen inspiration aspect (user): **dark botanical + cream** from perplexity.ai/personal-computer (see INSPIRATION.md). Venue photos show garden lawn, white tents, mature trees, late-golden light — the dark-botanical register matches the real place at dusk.
+Chosen inspiration aspect (user): **palette derived from the hero video** (`public/8.1-invideo-seedance_2_0.mp4`) — a warm anime-style golden-hour romance arc: ocean sunset (amber sun, peach clouds, soft sea) → sunflower field (sunflower gold, leaf green, sky blue) → twilight embrace (deep dusk blue, warm town lights, stars). The page reads as that arc: warm sunlit cream sections, twilight-blue dark sections, sunflower-amber as the star accent, leaf green as secondary. All key text/bg pairs verified ≥4.5:1 (WCAG AA). Single source of truth for values is `src/index.css @theme`.
 
 ## Palette
-| Token | Hex | Use |
-|---|---|---|
-| `night` | `#141711` | dark section bg (warm green-black, never flat #000) |
-| `night-soft` | `#1d211b` | dark cards/surfaces |
-| `cream` | `#FBF9F4` | light section bg (warm paper) |
-| `cream-soft` | `#F1EDE3` | light cards/surfaces |
-| `ink` | `#27251E` | text on cream |
-| `linen` | `#EFEBE0` | text on night |
-| `sage` | `#8A9B7C` | accent on dark: eyebrows, rules, icons |
-| `moss` | `#5C6B4F` | accent on cream |
-| `gold` | `#C5A572` | sparing: countdown numerals, date highlight |
+Values are pulled **directly from the video frames** (the 7-toma extraction kept as a reference comment atop `src/index.css`), then chosen so every text/bg pair clears WCAG AA. 7ma toma = the twilight/night shots → dark surfaces; 1ra toma sand → cream; 3ra/5ta tomas → the green + gold accents.
+
+| Token | Hex | Toma | Use |
+|---|---|---|---|
+| `night` | `#0B2740` | 7ma | dark section bg (deep twilight navy, never flat #000) |
+| `night-deep` | `#0D2426` | 7ma | teal-near-black opening (Story) — the page descends through the arc |
+| `night-soft` | `#123A5C` | 7ma | dark elevated surface / button hover |
+| `cream` | `#ECDCC0` | 1ra | light section bg (warm sand, softened so dark→light transitions don't glare) |
+| `cream-soft` | `#E3CDA6` | — | light cards/surfaces (deeper warm sand) |
+| `ink` | `#1C2422` | 7ma | text on cream (≈11.8:1) |
+| `linen` | `#F0E7D5` | 1ra | text/elements on night (≈12.4:1) |
+| `sage` | `#BACD84` | 3ra | leaf-green accent on dark: eyebrows, icons (≈8.8:1) |
+| `moss` | `#4C5A2A` | 5ta | olive-green text/icons on cream (≈5.5:1) |
+| `gold` | `#E2C758` | 3ra | sunflower amber: CTAs, countdown numerals, date. Dark surfaces only (≈9.1:1 on night); never gold text on cream |
+
+Bright daytime tomas (sky `#3A9AE6`, peach `#FFC07D`, rose `#DFA79E`, lilac `#A28EBF`) are held in reserve as per-section accents — all clear ≥5:1 on `night`, not yet wired in.
+
+**Per-section surfaces:** each section's bg+text lives in `src/index.css` (`@layer components` → `.surface-historia`, `.surface-ceremonia`, …), not as `bg-*`/`text-*` utilities in the JSX. Recolor a section — or make one differ from the rest — by editing its one line in index.css; never touch the component.
 
 Dress-code swatches: 4 placeholders defined in content file (`#536878`, `#7B5B45`, `#5C6B4F`, `#8E5A63`) — couple swaps hexes + names later.
 

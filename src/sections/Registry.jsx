@@ -10,30 +10,29 @@ export default function Registry() {
   return (
     <section
       id="regalos"
-      className="relative overflow-hidden bg-night px-6 py-10 text-linen sm:py-28"
+      className="surface-regalos relative overflow-hidden px-6 py-10 sm:py-28"
     >
       <Petals tone="dark" />
 
       <div className="relative mx-auto max-w-2xl text-center">
         <header className="reveal">
-          <h2 className="mx-auto max-w-lg font-display text-[clamp(1.75rem,5vw,2.75rem)] leading-tight">
+          <h2 className="mx-auto max-w-xl font-display text-[clamp(2rem,6vw,3.25rem)] italic leading-[1.1] text-balance">
             {t.registry.title}
           </h2>
-          <span aria-hidden="true" className="mx-auto mt-5 block h-px w-16 bg-sage/40" />
         </header>
 
-        <p className="reveal mx-auto mt-6 max-w-md text-sm leading-relaxed text-linen/90 sm:text-base">
+        <p className="reveal mx-auto mt-7 max-w-md text-sm leading-relaxed text-linen/85 sm:text-base">
           {t.registry.note}
         </p>
 
-        {/* registry links: stacked on phones, side by side with breathing room on web */}
-        <div className="reveal mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+        {/* the two store registries are options → ghost pills */}
+        <div className="reveal mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
           {config.liverpoolUrl ? (
             <a
               href={config.liverpoolUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block rounded-full bg-gold px-7 py-3 text-sm font-medium tracking-wide text-night transition-opacity hover:opacity-90"
+              className="inline-block rounded-full px-7 py-3 text-sm font-medium tracking-wide text-linen ring-1 ring-linen/30 transition-colors hover:bg-linen/10"
             >
               {t.registry.ctaLiver}
             </a>
@@ -44,25 +43,27 @@ export default function Registry() {
               href={config.amazonUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block rounded-full bg-gold px-7 py-3 text-sm font-medium tracking-wide text-night transition-opacity hover:opacity-90"
+              className="inline-block rounded-full px-7 py-3 text-sm font-medium tracking-wide text-linen ring-1 ring-linen/30 transition-colors hover:bg-linen/10"
             >
               {t.registry.ctaAmazon}
             </a>
           ) : null}
         </div>
 
-        <p className=" mx-auto mt-5 max-w-md text-sm leading-relaxed text-linen/90 sm:text-base">
-          {t.registry.note2}
-        </p>
-
+        {/* the honeymoon contribution is the one warm, primary ask → gold */}
         {config.bankDetails ? (
-          <button
-            type="button"
-            onClick={() => setBankOpen(true)}
-            className="reveal mt-8 inline-block rounded-full bg-gold px-7 py-3 text-sm font-medium tracking-wide text-night transition-opacity hover:opacity-90"
-          >
-            {t.registry.ctaBanco}
-          </button>
+          <div className="reveal mt-6 border-linen/15 pt-2">
+            <p className="mx-auto max-w-md text-sm leading-relaxed text-linen/85 sm:text-base">
+              {t.registry.note2}
+            </p>
+            <button
+              type="button"
+              onClick={() => setBankOpen(true)}
+              className="mt-6 inline-block rounded-full bg-gold px-8 py-3 text-sm font-medium tracking-wide text-night transition-transform duration-200 ease-out hover:scale-[1.03]"
+            >
+              {t.registry.ctaBanco}
+            </button>
+          </div>
         ) : null}
       </div>
 
@@ -126,11 +127,7 @@ function BankModal({ details, t, onClose }) {
           aria-label={t.registry.bankClose}
           className="absolute right-4 top-4 text-ink/50 transition-colors hover:text-ink"
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6">
-            <path strokeLinecap="round" d="M6 6l12 12M18 6L6 18" />
-          </svg>
         </button>
-
         <h3 className="font-display text-2xl">{t.registry.bankTitle}</h3>
         <p className="mt-2 text-sm text-ink/70">{t.registry.bankIntro}</p>
 

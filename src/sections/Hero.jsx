@@ -66,6 +66,17 @@ export default function Hero() {
          <p className="font-display text-base [font-style:oblique_14deg] text-linen/90 mt-15">
           {t.heroBible}
         </p>
+
+        {/* toque verde: ramita sage que cierra la invitación */}
+        <div aria-hidden="true" className="mt-8 flex items-center justify-center gap-1.5 text-sage">
+          <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 rotate-[40deg]" fill="currentColor">
+            <path d="M10 0C13 6 20 8 20 13a10 10 0 0 1-20 0C0 8 7 6 10 0Z" />
+          </svg>
+          <span className="h-1 w-1 rounded-full bg-current opacity-80" />
+          <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 -rotate-[40deg]" fill="currentColor">
+            <path d="M10 0C13 6 20 8 20 13a10 10 0 0 1-20 0C0 8 7 6 10 0Z" />
+          </svg>
+        </div>
       </div>
 
       {/* scroll cue */}

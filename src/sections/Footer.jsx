@@ -8,16 +8,14 @@ export default function Footer() {
     : ''
 
   return (
-    <footer className="bg-night px-6 py-20 text-center text-linen sm:py-24">
+    <footer className="surface-footer px-6 py-20 text-center sm:py-24">
       <div className="reveal mx-auto max-w-xl">
         <p className="font-display text-3xl text-linen sm:text-4xl">{t.hero.names}</p>
         <p className="mt-3 text-sm uppercase tracking-[0.18em] text-gold/90">
           {t.hero.dateLine}
         </p>
 
-        <span aria-hidden="true" className="mx-auto mt-8 block h-px w-16 bg-sage/40" />
-
-        <p className="mt-8 text-sm text-linen/70">{t.footer.questions}</p>
+        <p className="mt-10 text-sm text-linen/70">{t.footer.questions}</p>
         {waLink ? (
           <a
             href={waLink}

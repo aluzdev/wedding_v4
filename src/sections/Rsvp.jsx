@@ -213,11 +213,12 @@ function SoloConfirm({ t, familia, loading, error, onYes, onNo }) {
 
 function Shell({ t, children }) {
   return (
-    <section id="rsvp" className="bg-cream-soft px-6 pt-12 pb-24 text-ink sm:pt-16 sm:pb-32">
+    <section id="rsvp" className="surface-rsvp px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
       <div className="mx-auto max-w-xl">
+        {/* the primary action gets the spotlight: a bright card on a dark stage */}
         <header className="reveal text-center">
-          <h2 className="mt-3 font-display text-[clamp(1.75rem,5vw,2.75rem)]">{t.rsvp.title}</h2>
-          <span aria-hidden="true" className="mx-auto mt-5 block h-px w-16 bg-moss/40" />
+          <h2 className="font-display text-[clamp(1.75rem,5vw,2.75rem)] text-balance">{t.rsvp.title}</h2>
+          <p className="mt-4 text-sm uppercase tracking-[0.18em] text-gold">{t.rsvp.deadline}</p>
         </header>
         {children}
       </div>

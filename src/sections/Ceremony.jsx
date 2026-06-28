@@ -19,7 +19,7 @@ export default function Ceremony() {
   return (
     <section
       id="ceremonia"
-      className="relative overflow-hidden bg-night px-3 pt-12 pb-24 text-linen sm:pt-16 sm:pb-32">
+      className="surface-ceremonia relative overflow-hidden px-3 pt-12 pb-24 sm:pt-16 sm:pb-32">
       <Petals tone="dark" />
 
       <div className="reveal relative mx-auto max-w-xl rounded-2xl bg-glow/10 px-6 py-12 text-center ring-1 ring-glow/15 backdrop-blur-md sm:px-12">

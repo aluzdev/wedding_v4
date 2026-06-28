@@ -1,23 +1,29 @@
 @import "tailwindcss";
 
 @theme {
-  /* ============================================================
-     PALETA — único lugar para cambiar colores de todo el sitio.
-     Cambia un valor aquí y se actualiza en toda la página.
-     ============================================================ */
+  /* paleta de colores
+  1ra toma  #84AEBF #C1A59D #F0D4AD #A6654E
+  2da toma   #3A9AE6 #6EC3F2 #365B57 #B1BF45
+  3ra toma #80C7F0 #BACD84 #E2C758 #F69BBE
+  4ta toma  #52B5F2 #A4AB4C #FCC11A #BD6C11
+  5ta toma  #A28EBF #419FD9 #9AA356 #DAA772
+  6ta toma  #414B61 #FFC07D #DFA79E #BA99AB
+  7ma toma  #103B73 #18568C #0B2740 #0D2426 
+ */
 
-  /* --- Marca / superficies --- */
-  --color-night: #141711;        /* fondo oscuro (hero, historia, footer) */
-  --color-night-soft: #1d211b;   /* superficie oscura elevada (tarjetas) */
-  --color-cream: #fbf9f4;        /* fondo claro de secciones */
-  --color-cream-soft: #f1ede3;   /* fondo claro alterno */
-  --color-ink: #27251e;          /* texto principal sobre claro */
-  --color-linen: #efebe0;        /* texto/elementos sobre oscuro */
+  /* --- Marca / superficies (sacadas del video — 7ma toma = anochecer) --- */
+  --color-night: #0b2740;        /* azul crepúsculo profundo — 7ma toma (hero, footer, secciones oscuras) */
+  --color-night-deep: #0d2426;   /* teal casi negro — 7ma toma (apertura: historia) */
+  --color-night-soft: #004E66;   /* superficie/hover oscura elevada — 7ma toma */
+  --color-cream: #F9ECE5;        /* arena cálida — derivada de 1ra toma (#F0D4AD), suavizada para no deslumbrar */
+  --color-cream-soft: #164E80;   /* arena más profunda (fondo claro alterno) */
+  --color-ink: #1c2422;          /* tinta teal-carbón — 7ma toma, texto sobre claro (~11.8:1) */
+  --color-linen: #f0e7d5;        /* nube cálida: texto/elementos sobre oscuro (~12:1) */
 
-  /* --- Acentos --- */
-  --color-sage: #8a9b7c;         /* verde claro (acentos/decoración) */
-  --color-moss: #5c6b4f;         /* verde oscuro (texto/iconos sobre claro) */
-  --color-gold: #c5a572;         /* dorado (acento principal, CTAs) */
+  /* --- Acentos (sacados del video — día y atardecer) --- */
+  --color-sage: #bacd84;         /* verde hoja claro — 3ra toma (acentos sobre oscuro) */
+  --color-moss: #4c5a2a;         /* verde olivo oscuro — 5ta toma (texto/iconos sobre claro, ~5.5:1) */
+  --color-gold: #e2c758;         /* ámbar de girasol — 3ra toma (CTAs, fecha, numerales; solo sobre oscuro) */
 
   /* --- Roles semánticos (efectos / estados) --- */
   --color-danger: #dc2626;       /* errores y acciones destructivas */
@@ -25,6 +31,39 @@
   --color-glow: #ffffff;         /* brillos/anillos/scrims sobre fondo oscuro (usar /10–/30) */
   --font-display: "Fraunces", Georgia, serif;
   --font-script: "Pinyon Script", "Snell Roundhand", cursive;
+}
+
+/* ============================================================
+   SUPERFICIE POR SECCIÓN — el color de fondo + texto de cada
+   sección vive AQUÍ, no en su archivo .jsx. Para recolorar una
+   sección (o hacerla distinta a las demás) cambia su línea aquí;
+   no tienes que tocar ningún componente. Por defecto usan la
+   paleta del video; pon cualquier color para diferenciarla.
+   ============================================================ */
+@layer components {
+  .surface-historia  { background: var(--color-night-deep); color: var(--color-cream); }
+  .surface-ceremonia { background: var(--color-night);      color: var(--color-linen); }
+  .surface-vestimenta { background: var(--color-cream);     color: var(--color-ink); }
+  .surface-regalos   { background: var(--color-night);      color: var(--color-linen); }
+  .surface-hospedaje { background: var(--color-cream);      color: var(--color-ink); }
+  .surface-rsvp      { background: var(--color-night);      color: var(--color-linen); }
+  .surface-preguntas { background: var(--color-cream);      color: var(--color-ink); }
+  .surface-footer    { background: var(--color-night);      color: var(--color-linen); }
+}
+
+/* Colores de las animaciones ambientales — aquí, no en los componentes. */
+:root {
+  --petal-warm-dark: rgba(226, 199, 88, 0.42);   /* pétalo dorado sobre oscuro */
+  --petal-leaf-dark: rgba(186, 205, 132, 0.5);   /* hoja sage sobre oscuro */
+  --petal-warm-light: rgba(124, 107, 79, 0.3);   /* pétalo cálido sobre claro */
+  --petal-leaf-light: rgba(76, 90, 42, 0.32);    /* hoja olivo sobre claro */
+  --mote: rgba(216, 164, 65, 0.5);               /* polen dorado que sube (Hospedaje) */
+}
+
+/* motas de luz: círculo suave con brillo (color en --mote) */
+.mote {
+  background: radial-gradient(circle, var(--mote) 0%, transparent 70%);
+  filter: blur(0.5px);
 }
 
 html {
@@ -62,6 +101,19 @@ html {
       transform: translate3d(var(--drift, 40px), 105vh, 0) rotate(320deg);
       opacity: 0;
     }
+  }
+  /* motas de luz/polen subiendo (Hospedaje) — sube, deriva y parpadea */
+  .mote {
+    animation-name: mote-rise;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    will-change: transform, opacity;
+  }
+  @keyframes mote-rise {
+    0% { transform: translate3d(0, 0, 0) scale(0.7); opacity: 0; }
+    12% { opacity: 1; }
+    85% { opacity: 0.9; }
+    100% { transform: translate3d(var(--drift, 20px), -90vh, 0) scale(1.2); opacity: 0; }
   }
   /* twinkling fireflies over the countdown */
   .firefly {
