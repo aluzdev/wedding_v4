@@ -107,7 +107,7 @@ function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = fal
   return (
     <div
       className={cn(
-        'group relative flex h-[600px] w-full flex-col overflow-hidden bg-night text-cream outline-none select-none overflow-x-hidden',
+        'group relative flex h-[700px] w-full flex-col overflow-hidden bg-night text-cream outline-none select-none overflow-x-hidden',
         className
       )}
       onMouseEnter={() => setIsHovering(true)}
@@ -203,7 +203,7 @@ function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = fal
                 <img
                   src={item.imageSrc}
                   alt={item.title}
-                  className="h-full w-full rounded-2xl object-cover pointer-events-none"
+                  className="h-full w-full rounded-2xl object-contain pointer-events-none"
                 />
 
                 {/* Lighting layers */}
@@ -231,12 +231,9 @@ function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = fal
                     {activeItem.meta}
                   </span>
                 )}
-                <h2 className="font-display text-3xl font-bold tracking-tight md:text-4xl text-cream">
+                <h2 className="font-display text-[28px] font-bold tracking-tight md:text-4xl text-cream">
                   {activeItem.title}
                 </h2>
-                {activeItem.description && (
-                  <p className="max-w-md text-linen/70">{activeItem.description}</p>
-                )}
               </motion.div>
             </AnimatePresence>
           </div>

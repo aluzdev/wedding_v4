@@ -31,7 +31,7 @@ export default function Hotels() {
                   <h3 className="font-display text-lg text-cream">{hotel.name}</h3>
                   <p className="mt-1 text-sm leading-relaxed text-cream">{hotel[lang]}</p>
                   {hotel.url ? (
-                    <span className="mt-3 inline-block text-xs font-medium uppercase tracking-[0.15em] text-moss">
+                    <span className="mt-3 inline-block text-xs font-medium uppercase tracking-[0.15em] text-sage">
                       {lang === 'es' ? 'Ver hotel →' : 'View hotel →'}
                     </span>
                   ) : null}

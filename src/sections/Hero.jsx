@@ -44,7 +44,7 @@ export default function Hero() {
         playsInline
         aria-hidden="true"
       >
-        <source src="/8.1-invideo-seedance_2_0.mp4" type="video/mp4" />
+        <source src="/videoHero.mp4" type="video/mp4" />
       </video>
       {/* sunset scrim: lets the video glow up top, darkens toward the bottom for text */}
       <div aria-hidden="true" className="absolute inset-0 z-0 bg-gradient-to-b from-night/20 via-night/25 to-night/75" />
@@ -63,9 +63,16 @@ export default function Hero() {
           <span>{t.couple.novia}</span>
         </h1>
 
-         <p className="font-display text-base [font-style:oblique_14deg] text-linen/90 mt-15">
-          {t.heroBible}
-        </p>
+        {/* verso + cita: 2 filas en móvil, 1 en tablet/web. split en el doble espacio que ya separa ambos */}
+        {(() => {
+          const [verse, cite] = t.heroBible.split(/\s{2,}/)
+          return (
+            <p className="font-display text-base [font-style:oblique_14deg] text-linen/90 mt-15">
+              <span className="block sm:inline">{verse}</span>{' '}
+              <span className="block sm:inline">{cite}</span>
+            </p>
+          )
+        })()}
 
         {/* toque verde: ramita sage que cierra la invitación */}
         <div aria-hidden="true" className="mt-8 flex items-center justify-center gap-1.5 text-sage">

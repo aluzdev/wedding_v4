@@ -32,8 +32,8 @@ export const config = {
   bankDetails: {
     bank: 'BBVA',
     holder: 'Cristian Molina',
-    clabe: '012 164 01526566230 6',
-    account: '152 656 6230',
+    clabe: '012164015265662306',
+    account: '1526566230',
     swift: 'BCMRMXMMPYM',
   },
   // WhatsApp para dudas — PONER NÚMERO REAL antes de compartir el sitio Formato: código de país + número, solo dígitos. Ej: '5215512345678'
@@ -61,17 +61,20 @@ export const config = {
 
   // Hoteles sugeridos — llenar cuando haya tarifas; photo opcional (ruta en /public)
   hotels: [
-    { name: 'Hotel por confirmar', es: 'Información y tarifas en camino.', en: 'Details and rates coming soon.', url: '' },
-    { name: 'Hotel por confirmar', es: 'Información y tarifas en camino.', en: 'Details and rates coming soon.', url: '' }
+    { name: 'Hotel ibis México Perinorte', es: 'Información y tarifas en camino.', en: 'Details and rates coming soon.', url: 'https://maps.app.goo.gl/7iKddTbW6pmw93mv7' },
+    { name: 'one Cuautitlán', es: 'Información y tarifas en camino.', en: 'Details and rates coming soon.', url: 'https://maps.app.goo.gl/THimjVZiPMMTTVaW9' },
+    { name: 'Fiesta Inn Cuautitlán', es: 'Información y tarifas en camino.', en: 'Details and rates coming soon.', url: 'https://maps.app.goo.gl/VSUJG2fQ1ZZpCRGU7' }
   ],
 
-  // Nuestra historia — 5 momentos; photo: ruta dentro de /public (ej. '/photos/01.jpg')
+  // Nuestra historia — momentos; photo: ruta dentro de /public (ej. '/photos/1.jpg').
+  // Deja photo: '' para mostrar el placeholder hasta que subas la foto (/photos/N.jpg).
   story: [
-    { photo: '', es: { title: 'Cómo nos conocimos', text: 'Texto por escribir — cuenta aquí el primer capítulo.' }, en: { title: 'How we met', text: 'Text to be written — the first chapter goes here.' } },
-    { photo: '', es: { title: 'La primera cita', text: 'Texto por escribir.' }, en: { title: 'The first date', text: 'Text to be written.' } },
-    { photo: '', es: { title: 'Un viaje juntos', text: 'Texto por escribir.' }, en: { title: 'A trip together', text: 'Text to be written.' } },
-    { photo: '', es: { title: 'La propuesta', text: 'Texto por escribir.' }, en: { title: 'The proposal', text: 'Text to be written.' } },
-    { photo: '', es: { title: 'Rumbo al altar', text: 'Texto por escribir.' }, en: { title: 'On our way to the altar', text: 'Text to be written.' } },
+    { photo: '/photos/1.png', es: { title: 'Nos conocimos en Kodemia estudiando programación', text: 'Texto por escribir.' }, en: { title: 'We met at Kodemia while studying programming', text: 'Text to be written.' } },
+    { photo: '/photos/2.jpg', es: { title: 'Diso nos ayudaria a que la distancia que nos separaba cambiara...', text: 'Texto por escribir.' }, en: { title: 'God would help us change the distance that separated us', text: 'Text to be written.' } },
+    { photo: '/photos/3.jpg', es: { title: 'Primera cita en persona', text: 'Texto por escribir.' }, en: { title: 'First date in person', text: 'Text to be written.' } },
+    { photo: '/photos/4.jpg', es: { title: 'Más aventuras juntos', text: 'Texto por escribir.' }, en: { title: 'More adventures together', text: 'Text to be written.' } },
+    { photo: '/photos/5.jpg', es: { title: 'Nos hicimos novios', text: 'Texto por escribir.' }, en: { title: 'We became a couple', text: 'Text to be written.' } },
+    { photo: '/photos/6.jpg', es: { title: 'Decidimos dar el paso para un futuro juntos', text: 'Texto por escribir.' }, en: { title: 'We decided to take the next step for a future together', text: 'Text to be written.' } },
   ],
 }
 
@@ -153,10 +156,9 @@ export const content = {
     note: 'Si deseas tener un detalle con nosotros:',
     ctaLiver: 'Ver opciones en Liverpool',
     ctaAmazon: 'Ver opciones en Amazon',
-    note2: 'O si prefieres apoyarnos para nuestra Luna de Miel',
+    note2: 'O si prefieres apoyarnos para nuestra Luna de Miel🤍',
     ctaBanco: 'Ver datos bancarios',
     bankTitle: 'Datos bancarios',
-    bankIntro: 'Para tu aportación a nuestra Luna de miel:',
     bankBank: 'Banco',
     bankHolder: 'Titular',
     bankClabe: 'CLABE',

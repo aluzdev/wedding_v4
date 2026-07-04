@@ -133,7 +133,6 @@ function BankModal({ details, t, onClose }) {
           </svg>
         </button>
         <h3 className="font-display text-2xl">{t.registry.bankTitle}</h3>
-        <p className="mt-2 text-sm text-ink/70">{t.registry.bankIntro}</p>
 
         <dl className="mt-6 space-y-4">
           {rows.map(([label, value]) => (
