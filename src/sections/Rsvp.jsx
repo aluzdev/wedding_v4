@@ -20,6 +20,7 @@ export default function Rsvp() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [syncedFamily, setSyncedFamily] = useState(null)
+  const [attending, setAttending] = useState(true) // ¿alguien de la familia asiste?
 
   // La familia se identifica por su link personalizado (?c=clave); aquí solo
   // recibimos esa identidad desde el contexto y vamos directo a confirmar (o a
@@ -31,6 +32,7 @@ export default function Rsvp() {
     setMesa(incomingFamily.mesa || '')
     setFamily({ familia: incomingFamily.familia, integrantes: incomingFamily.integrantes, solo: incomingFamily.solo })
     setGuests((incomingFamily.integrantes || []).map((nombre) => ({ nombre, asiste: true })))
+    setAttending(incomingFamily.asiste !== false) // backend viejo (sin campo) → true
     setStep(incomingFamily.confirmado ? 'already' : 'form')
   }
 
@@ -69,6 +71,7 @@ export default function Rsvp() {
       const data = await res.json()
       if (data.ok) {
         if (guest) guest.markConfirmed()
+        setAttending(guestsToSend.some((g) => g.asiste))
         setStep('done')
       } else if (data.error === 'already') {
         setStep('already')
@@ -109,7 +112,7 @@ export default function Rsvp() {
           <form onSubmit={submit} className="space-y-6">
             <div className="text-center">
               <p className="font-display text-2xl text-moss">
-                {fill(t.rsvp.greeting, { familia: family.familia })}
+                {fill(t.rsvp.greetingFamily, { familia: family.familia })}
               </p>
               <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-ink/70">
                 {t.rsvp.reserved}
@@ -148,6 +151,7 @@ export default function Rsvp() {
 
         {step === 'done' && <Closing title={t.rsvp.thanksTitle} text={t.rsvp.thanksText} mesa={mesa} mesaLabel={t.rsvp.mesaLabel} />}
         {step === 'already' && <Closing title={t.rsvp.alreadyTitle} text={t.rsvp.alreadyText} mesa={mesa} mesaLabel={t.rsvp.mesaLabel} />}
+        {(step === 'done' || step === 'already') && attending && mesa === '' && <p className="mx-auto max-w-sm text-sm leading-relaxed text-ink/70">{t.rsvp.returnForTable}</p>}
 
         {/* sin identificar todavía: o sigue cargando la clave del link, o llegó sin link */}
         {step === 'idle' && (guest && guest.loading

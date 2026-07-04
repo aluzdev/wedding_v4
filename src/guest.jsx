@@ -47,6 +47,8 @@ export function GuestProvider({ children }) {
         confirmado: !!data.confirmado,
         mesa: data.mesa || '',
         solo: !!data.solo,
+        asiste: data.asiste !== false, // backend viejo (sin campo) → true
+
       }
       setClave(data.clave || c)
       setFamily(fam)
