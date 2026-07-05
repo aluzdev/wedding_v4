@@ -112,8 +112,7 @@ export const config = {
       photo: "/photos/7.jpg",
       es: { title: "Este año decidimos dar el paso para un futuro juntos" },
       en: {
-        title:
-          "This year we decided to take the next step for a future together",
+        title: "We've decided to take the next step for a future together",
       },
     },
     {
