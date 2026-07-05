@@ -4,11 +4,10 @@ export default function Faq() {
   const { t } = useLang()
 
   return (
-    <section id="preguntas" className="bg-cream px-6 pt-12 pb-24 text-ink sm:pt-16 sm:pb-32">
+    <section id="preguntas" className="surface-preguntas px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
       <div className="mx-auto max-w-2xl">
         <header className="reveal text-center">
-          <h2 className="mt-3 font-display text-[clamp(1.75rem,5vw,2.75rem)]">{t.faq.title}</h2>
-          <span aria-hidden="true" className="mx-auto mt-5 block h-px w-16 bg-moss/40" />
+          <h2 className="font-display text-[clamp(1.75rem,5vw,2.75rem)] text-balance">{t.faq.title}</h2>
         </header>
 
         <dl className="reveal mt-12 divide-y divide-ink/10 border-y border-ink/10">

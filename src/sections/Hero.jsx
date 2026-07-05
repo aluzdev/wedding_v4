@@ -35,6 +35,20 @@ export default function Hero() {
       id="inicio"
       className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-night text-center"
     >
+      {/* background video */}
+      <video
+        className="absolute inset-0 z-0 h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        aria-hidden="true"
+      >
+        <source src="/videoHero.mp4" type="video/mp4" />
+      </video>
+      {/* sunset scrim: lets the video glow up top, darkens toward the bottom for text */}
+      <div aria-hidden="true" className="absolute inset-0 z-0 bg-gradient-to-b from-night/20 via-night/25 to-night/75" />
+
       <div
         ref={contentRef}
         className="relative z-10 mx-auto w-full max-w-3xl px-6 pb-20 pt-28 [text-shadow:0_1px_16px_rgba(8,12,6,0.65)] sm:pt-24"
@@ -49,9 +63,27 @@ export default function Hero() {
           <span>{t.couple.novia}</span>
         </h1>
 
-         <p className="font-display text-base [font-style:oblique_14deg] text-linen/90 mt-15">
-          {t.heroBible}
-        </p>
+        {/* verso + cita: 2 filas en móvil, 1 en tablet/web. split en el doble espacio que ya separa ambos */}
+        {(() => {
+          const [verse, cite] = t.heroBible.split(/\s{2,}/)
+          return (
+            <p className="font-display text-base [font-style:oblique_14deg] text-linen/90 mt-15">
+              <span className="block sm:inline">{verse}</span>{' '}
+              <span className="block sm:inline">{cite}</span>
+            </p>
+          )
+        })()}
+
+        {/* toque verde: ramita sage que cierra la invitación */}
+        <div aria-hidden="true" className="mt-8 flex items-center justify-center gap-1.5 text-sage">
+          <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 rotate-[40deg]" fill="currentColor">
+            <path d="M10 0C13 6 20 8 20 13a10 10 0 0 1-20 0C0 8 7 6 10 0Z" />
+          </svg>
+          <span className="h-1 w-1 rounded-full bg-current opacity-80" />
+          <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 -rotate-[40deg]" fill="currentColor">
+            <path d="M10 0C13 6 20 8 20 13a10 10 0 0 1-20 0C0 8 7 6 10 0Z" />
+          </svg>
+        </div>
       </div>
 
       {/* scroll cue */}

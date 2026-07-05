@@ -1,103 +1,276 @@
+import * as React from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react'
 import { useLang } from '../i18n.jsx'
 import { config } from '../content/content.js'
-import { useParallax } from '../useParallax.js'
-import Petals from './Petals.jsx'
-import leaves from '../assets/story-leaves.webp'
 
-function Moment({ moment, index, lang }) {
-  const m = moment[lang]
-  const even = index % 2 === 0
-  // each photo frame drifts gently on scroll; alternate direction per row
-  const frameRef = useParallax(even ? 0.06 : -0.06)
-
-  return (
-    <li
-      className={`reveal relative sm:flex sm:items-center sm:gap-12 ${
-        even ? '' : 'sm:flex-row-reverse'
-      }`}
-    >
-      {/* node on the central vine (desktop) / left rail (mobile) */}
-      <span
-        aria-hidden="true"
-        className="absolute -left-[2.55rem] top-1 h-3.5 w-3.5 rounded-full bg-moss ring-4 ring-cream sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2"
-      />
-      <div className="mb-5 sm:mb-0 sm:w-1/2">
-        <div
-          ref={frameRef}
-          className="flex aspect-[4/3] items-center justify-center overflow-hidden rounded-2xl bg-cream/85 shadow-xl ring-1 ring-white/60"
-        >
-          {moment.photo ? (
-            <img
-              src={moment.photo}
-              alt={m.title}
-              loading="lazy"
-              className="h-full w-full object-cover"
-            />
-          ) : (
-            <svg viewBox="0 0 24 24" className="h-16 w-16 text-moss/40" fill="currentColor">
-              <path d="M12 2C7 7 6 12 12 22 18 12 17 7 12 2Zm0 4c2 3 2.5 6 0 11-2.5-5-2-8 0-11Z" />
-            </svg>
-          )}
-        </div>
-      </div>
-      <div className={`sm:w-1/2 ${even ? 'sm:pl-4 sm:text-left' : 'sm:pr-4 sm:text-right'}`}>
-        <p className="font-display text-sm text-gold">{String(index + 1).padStart(2, '0')}</p>
-        <h3 className="mt-1 font-display text-xl text-ink sm:text-2xl">{m.title}</h3>
-        <p className="mt-2 text-sm leading-relaxed text-ink/70 sm:text-base">{m.text}</p>
-      </div>
-    </li>
-  )
-}
+// ponytail: fotos pendientes (config.story[].photo === '') → placeholder hasta tenerlas
+const FALLBACK_PHOTO = '/luna.jpg'
 
 export default function Story() {
   const { lang, t } = useLang()
 
+  const items = config.story.map((moment, i) => ({
+    id: i,
+    title: moment[lang].title,
+    description: moment[lang].text,
+    imageSrc: moment.photo || FALLBACK_PHOTO,
+  }))
+
   return (
-    <section
-      id="historia"
-      className="relative overflow-hidden bg-[linear-gradient(180deg,#e7ecdd_0%,#dde4cf_45%,#d3dcc4_100%)] px-6 pt-12 pb-24 text-ink sm:pt-16 sm:pb-32"
-    >
-      {/* faded foliage bands top + bottom — lush green framing the eucalyptus wash */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-72 bg-cover bg-center opacity-25"
-        style={{ backgroundImage: `url(${leaves})` }}
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-72 -scale-y-100 bg-cover bg-center opacity-25"
-        style={{ backgroundImage: `url(${leaves})` }}
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-72 bg-gradient-to-b from-[#e7ecdd]/40 to-[#e7ecdd]"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 h-72 bg-gradient-to-t from-[#d3dcc4]/40 to-[#d3dcc4]"
-      />
-      <Petals tone="light" />
-
-      <div className="relative mx-auto max-w-3xl">
-        <header className="reveal text-center">
-          <h2 className="mt-3 font-display text-[clamp(1.75rem,5vw,2.75rem)]">{t.story.title}</h2>
-          <span aria-hidden="true" className="mx-auto mt-5 block h-px w-16 bg-moss/40" />
-        </header>
-
-        <ol className="relative mt-16 space-y-16 border-l border-moss/20 pl-8 sm:mt-24 sm:space-y-28 sm:border-l-0 sm:pl-0">
-          {/* central vine connector on desktop */}
-          <span
-            aria-hidden="true"
-            className="absolute left-1/2 top-0 hidden h-full w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-moss/30 to-transparent sm:block"
-          />
-          {config.story.map((moment, i) => (
-            <Moment key={moment[lang].title} moment={moment} index={i} lang={lang} />
-          ))}
-        </ol>
-
-      
-
-      </div>
+    <section id="historia" className="surface-ceremonia">
+      <FocusRail items={items} title={t.story.title} loop autoPlay={false} />
     </section>
+  )
+}
+
+// ponytail: tiny cn — these usages are mutually-exclusive conditionals, no tailwind-merge needed
+const cn = (...a) => a.filter(Boolean).join(' ')
+
+/** Helper to wrap indices (e.g., -1 becomes length-1) */
+function wrap(min, max, v) {
+  const rangeSize = max - min
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
+}
+
+/** Base spring for spatial movement (x/z) */
+const BASE_SPRING = { type: 'spring', stiffness: 300, damping: 30, mass: 1 }
+
+/** Bouncier spring for the visual "tap" feedback on the center card */
+const TAP_SPRING = { type: 'spring', stiffness: 450, damping: 18, mass: 1 }
+
+function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = false, interval = 4000, className }) {
+  const [active, setActive] = React.useState(initialIndex)
+  const [isHovering, setIsHovering] = React.useState(false)
+  const lastWheelTime = React.useRef(0)
+
+  const count = items.length
+  const activeIndex = wrap(0, count, active)
+  const activeItem = items[activeIndex]
+
+  // --- NAVIGATION HANDLERS ---
+  const handlePrev = React.useCallback(() => {
+    if (!loop && active === 0) return
+    setActive((p) => p - 1)
+  }, [loop, active])
+
+  const handleNext = React.useCallback(() => {
+    if (!loop && active === count - 1) return
+    setActive((p) => p + 1)
+  }, [loop, active, count])
+
+  // --- MOUSE WHEEL / TRACKPAD LOGIC ---
+  const onWheel = React.useCallback(
+    (e) => {
+      const now = Date.now()
+      // Debounce: prevent rapid firing from inertia scrolling (400ms lockout)
+      if (now - lastWheelTime.current < 400) return
+
+      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY)
+      const delta = isHorizontal ? e.deltaX : e.deltaY
+
+      // Threshold to avoid accidental micro-scrolls
+      if (Math.abs(delta) > 20) {
+        if (delta > 0) handleNext()
+        else handlePrev()
+        lastWheelTime.current = now
+      }
+    },
+    [handleNext, handlePrev]
+  )
+
+  // Autoplay logic
+  React.useEffect(() => {
+    if (!autoPlay || isHovering) return
+    const timer = setInterval(() => handleNext(), interval)
+    return () => clearInterval(timer)
+  }, [autoPlay, isHovering, handleNext, interval])
+
+  // Keyboard navigation
+  const onKeyDown = (e) => {
+    if (e.key === 'ArrowLeft') handlePrev()
+    if (e.key === 'ArrowRight') handleNext()
+  }
+
+  // --- SWIPE / DRAG LOGIC ---
+  const swipeConfidenceThreshold = 10000
+  const swipePower = (offset, velocity) => Math.abs(offset) * velocity
+
+  const onDragEnd = (e, { offset, velocity }) => {
+    const swipe = swipePower(offset.x, velocity.x)
+    if (swipe < -swipeConfidenceThreshold) handleNext()
+    else if (swipe > swipeConfidenceThreshold) handlePrev()
+  }
+
+  const visibleIndices = [-2, -1, 0, 1, 2]
+
+  return (
+    <div
+      className={cn(
+        'group relative flex h-[700px] w-full flex-col overflow-hidden bg-night text-cream outline-none select-none overflow-x-hidden',
+        className
+      )}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      tabIndex={0}
+      onKeyDown={onKeyDown}
+      onWheel={onWheel}
+    >
+      {/* Background Ambience */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <AnimatePresence mode="popLayout">
+          <motion.div
+            key={`bg-${activeItem.id}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.4 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="absolute inset-0"
+          >
+            <img
+              src={activeItem.imageSrc}
+              alt=""
+              className="h-full w-full object-cover blur-3xl saturate-200"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-night via-night/50 to-transparent" />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      {/* Section title, over the shared ambient background */}
+      {title && (
+        <div className="relative z-10 px-6 pt-12 pb-4 text-center">
+          <h2 className="font-display text-[clamp(1.75rem,5vw,2.75rem)] text-balance">{title}</h2>
+        </div>
+      )}
+
+      {/* Main Stage */}
+      <div className="relative z-10 flex flex-1 flex-col justify-center px-4 md:px-8">
+        {/* DRAGGABLE RAIL CONTAINER */}
+        <motion.div
+          className="relative mx-auto flex h-[360px] w-full max-w-6xl items-center justify-center perspective-[1200px] cursor-grab active:cursor-grabbing"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.2}
+          onDragEnd={onDragEnd}
+        >
+          {visibleIndices.map((offset) => {
+            const absIndex = active + offset
+            const index = wrap(0, count, absIndex)
+            const item = items[index]
+
+            if (!loop && (absIndex < 0 || absIndex >= count)) return null
+
+            const isCenter = offset === 0
+            const dist = Math.abs(offset)
+
+            // Dynamic transforms
+            const xOffset = offset * 320
+            const zOffset = -dist * 180
+            const scale = isCenter ? 1 : 0.85
+            const rotateY = offset * -20
+
+            const opacity = isCenter ? 1 : Math.max(0.1, 1 - dist * 0.5)
+            const blur = isCenter ? 0 : dist * 6
+            const brightness = isCenter ? 1 : 0.5
+
+            return (
+              <motion.div
+                key={absIndex}
+                className={cn(
+                  'absolute aspect-[3/4] w-[260px] md:w-[300px] rounded-2xl border-t border-glow/20 bg-night-soft shadow-2xl transition-shadow duration-300',
+                  isCenter ? 'z-20 shadow-glow/10' : 'z-10'
+                )}
+                initial={false}
+                animate={{
+                  x: xOffset,
+                  z: zOffset,
+                  scale: scale,
+                  rotateY: rotateY,
+                  opacity: opacity,
+                  filter: `blur(${blur}px) brightness(${brightness})`,
+                }}
+                transition={(val) => {
+                  // Bouncier spring for scale → the "tap" effect
+                  if (val === 'scale') return TAP_SPRING
+                  return BASE_SPRING
+                }}
+                style={{ transformStyle: 'preserve-3d' }}
+                onClick={() => {
+                  if (offset !== 0) setActive((p) => p + offset)
+                }}
+              >
+                <img
+                  src={item.imageSrc}
+                  alt={item.title}
+                  className="h-full w-full rounded-2xl object-contain pointer-events-none"
+                />
+
+                {/* Lighting layers */}
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-glow/10 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 rounded-2xl bg-hairline/10 pointer-events-none mix-blend-multiply" />
+              </motion.div>
+            )
+          })}
+        </motion.div>
+
+        {/* Info & Controls */}
+        <div className="mx-auto mt-12 flex w-full max-w-4xl flex-col items-center justify-between gap-6 md:flex-row pointer-events-auto">
+          <div className="flex flex-1 flex-col items-center text-center md:items-start md:text-left h-32 justify-center -translate-y-0.5">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeItem.id}
+                initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
+                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
+                transition={{ duration: 0.3 }}
+                className="space-y-2"
+              >
+                {activeItem.meta && (
+                  <span className="text-xs font-medium uppercase tracking-wider text-gold">
+                    {activeItem.meta}
+                  </span>
+                )}
+                <h2 className="font-display text-[28px] font-bold tracking-tight md:text-4xl text-cream">
+                  {activeItem.title}
+                </h2>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1 rounded-full bg-night-soft/80 p-1 ring-1 ring-glow/10 backdrop-blur-md">
+              <button
+                onClick={handlePrev}
+                className="rounded-full p-3 text-linen/70 transition hover:bg-glow/10 hover:text-cream active:scale-95"
+                aria-label="Previous"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <span className="min-w-[40px] text-center text-xs font-mono text-linen/50">
+                {activeIndex + 1} / {count}
+              </span>
+              <button
+                onClick={handleNext}
+                className="rounded-full p-3 text-linen/70 transition hover:bg-glow/10 hover:text-cream active:scale-95"
+                aria-label="Next"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
+
+            {activeItem.href && (
+              <a
+                href={activeItem.href}
+                className="group flex items-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-semibold text-night transition-transform hover:scale-105 active:scale-95"
+              >
+                Explore
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

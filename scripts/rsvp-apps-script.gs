@@ -106,18 +106,39 @@ function findFamilyRowByClave(sheet, clave) {
   return null;
 }
 
+/** ¿algún integrante de esta clave marcó "Sí" en Confirmaciones? */
+function familyAttends(ss, clave) {
+  const conf = ss.getSheetByName(HOJA_CONFIRMACIONES);
+  const data = conf.getDataRange().getValues();
+  const c = norm(clave);
+  for (let i = 1; i < data.length; i++) {
+    // C = clave (índice 2), E = asiste 'Sí'/'No' (índice 4)
+    if (norm(data[i][2]) === c && norm(data[i][4]).indexOf('s') === 0) return true;
+  }
+  return false;
+}
+
+function familyReply(ss, row) {
+  return {
+    ok: true, familia: row.familia, clave: row.clave, integrantes: row.integrantes,
+    confirmado: row.confirmado, mesa: row.mesa, solo: row.solo,
+    // sin confirmar aún → true (aún no responden); confirmado → según su respuesta
+    asiste: row.confirmado ? familyAttends(ss, row.clave) : true,
+  };
+}
+
 function lookup(familia, clave) {
-  const sheet = SpreadsheetApp.getActive().getSheetByName(HOJA_FAMILIAS);
-  const row = findFamilyRow(sheet, familia, clave);
+  const ss = SpreadsheetApp.getActive();
+  const row = findFamilyRow(ss.getSheetByName(HOJA_FAMILIAS), familia, clave);
   if (!row) return json({ ok: false, error: 'notfound' });
-  return json({ ok: true, familia: row.familia, clave: row.clave, integrantes: row.integrantes, confirmado: row.confirmado, mesa: row.mesa, solo: row.solo });
+  return json(familyReply(ss, row));
 }
 
 function lookupByClave(clave) {
-  const sheet = SpreadsheetApp.getActive().getSheetByName(HOJA_FAMILIAS);
-  const row = findFamilyRowByClave(sheet, clave);
+  const ss = SpreadsheetApp.getActive();
+  const row = findFamilyRowByClave(ss.getSheetByName(HOJA_FAMILIAS), clave);
   if (!row) return json({ ok: false, error: 'notfound' });
-  return json({ ok: true, familia: row.familia, clave: row.clave, integrantes: row.integrantes, confirmado: row.confirmado, mesa: row.mesa, solo: row.solo });
+  return json(familyReply(ss, row));
 }
 
 function submit(body) {

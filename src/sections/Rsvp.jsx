@@ -20,6 +20,7 @@ export default function Rsvp() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [syncedFamily, setSyncedFamily] = useState(null)
+  const [attending, setAttending] = useState(true) // ¿alguien de la familia asiste?
 
   // La familia se identifica por su link personalizado (?c=clave); aquí solo
   // recibimos esa identidad desde el contexto y vamos directo a confirmar (o a
@@ -31,6 +32,7 @@ export default function Rsvp() {
     setMesa(incomingFamily.mesa || '')
     setFamily({ familia: incomingFamily.familia, integrantes: incomingFamily.integrantes, solo: incomingFamily.solo })
     setGuests((incomingFamily.integrantes || []).map((nombre) => ({ nombre, asiste: true })))
+    setAttending(incomingFamily.asiste !== false) // backend viejo (sin campo) → true
     setStep(incomingFamily.confirmado ? 'already' : 'form')
   }
 
@@ -38,7 +40,7 @@ export default function Rsvp() {
   if (!api) {
     return (
       <Shell t={t}>
-        <div className="reveal mt-10 rounded-2xl bg-cream px-6 py-10 text-center shadow-md ring-1 ring-black/5 sm:px-10">
+        <div className="reveal mt-10 rounded-2xl bg-cream px-6 py-10 text-center shadow-md ring-1 ring-hairline/5 sm:px-10">
           <p className="font-display text-lg text-moss sm:text-xl">{t.rsvp.deadline}</p>
           <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-ink/70">{t.rsvp.comingSoon}</p>
         </div>
@@ -69,6 +71,7 @@ export default function Rsvp() {
       const data = await res.json()
       if (data.ok) {
         if (guest) guest.markConfirmed()
+        setAttending(guestsToSend.some((g) => g.asiste))
         setStep('done')
       } else if (data.error === 'already') {
         setStep('already')
@@ -93,7 +96,7 @@ export default function Rsvp() {
 
   return (
     <Shell t={t}>
-      <div className="reveal mx-auto mt-10 max-w-lg rounded-2xl bg-cream px-6 py-10 shadow-md ring-1 ring-black/5 sm:px-10">
+      <div className="reveal mx-auto mt-10 max-w-lg rounded-2xl bg-cream px-6 py-10 shadow-md ring-1 ring-hairline/5 sm:px-10">
         {step === 'form' && family && family.solo && (
           <SoloConfirm
             t={t}
@@ -109,7 +112,7 @@ export default function Rsvp() {
           <form onSubmit={submit} className="space-y-6">
             <div className="text-center">
               <p className="font-display text-2xl text-moss">
-                {fill(t.rsvp.greeting, { familia: family.familia })}
+                {fill(t.rsvp.greetingFamily, { familia: family.familia })}
               </p>
               <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-ink/70">
                 {t.rsvp.reserved}
@@ -121,7 +124,7 @@ export default function Rsvp() {
                 <li key={i}>
                   <label
                     className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl px-4 py-4 ring-1 transition-colors ${
-                      g.asiste ? 'bg-moss/10 ring-moss/30' : 'bg-cream-soft ring-black/5'
+                      g.asiste ? 'bg-moss/10 ring-moss/30' : 'bg-cream-soft ring-hairline/5'
                     }`}
                   >
                     <span className="font-display text-lg text-ink">{g.nombre}</span>
@@ -139,7 +142,7 @@ export default function Rsvp() {
               ))}
             </ul>
 
-            {error && <p className="text-center text-sm text-red-600">{error}</p>}
+            {error && <p className="text-center text-sm text-danger">{error}</p>}
             <div className="flex items-center justify-end gap-3">
               <SubmitButton loading={loading} label={t.rsvp.submitBtn} loadingLabel={t.rsvp.submitting} />
             </div>
@@ -148,6 +151,7 @@ export default function Rsvp() {
 
         {step === 'done' && <Closing title={t.rsvp.thanksTitle} text={t.rsvp.thanksText} mesa={mesa} mesaLabel={t.rsvp.mesaLabel} />}
         {step === 'already' && <Closing title={t.rsvp.alreadyTitle} text={t.rsvp.alreadyText} mesa={mesa} mesaLabel={t.rsvp.mesaLabel} />}
+        {(step === 'done' || step === 'already') && attending && mesa === '' && <p className="mx-auto max-w-sm text-sm leading-relaxed text-ink/70">{t.rsvp.returnForTable}</p>}
 
         {/* sin identificar todavía: o sigue cargando la clave del link, o llegó sin link */}
         {step === 'idle' && (guest && guest.loading
@@ -188,7 +192,7 @@ function SoloConfirm({ t, familia, loading, error, onYes, onNo }) {
         <p className="font-display text-2xl text-moss">{fill(t.rsvp.greeting, { familia })}</p>
         <p className="mx-auto mt-3 max-w-sm text-sm leading-relaxed text-ink/70">{t.rsvp.soloIntro}</p>
       </div>
-      {error && <p className="text-sm text-red-600">{error}</p>}
+      {error && <p className="text-sm text-danger">{error}</p>}
       <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
         <button
           type="button"
@@ -213,11 +217,12 @@ function SoloConfirm({ t, familia, loading, error, onYes, onNo }) {
 
 function Shell({ t, children }) {
   return (
-    <section id="rsvp" className="bg-cream-soft px-6 pt-12 pb-24 text-ink sm:pt-16 sm:pb-32">
+    <section id="rsvp" className="surface-rsvp px-6 pt-16 pb-24 sm:pt-24 sm:pb-32">
       <div className="mx-auto max-w-xl">
+        {/* the primary action gets the spotlight: a bright card on a dark stage */}
         <header className="reveal text-center">
-          <h2 className="mt-3 font-display text-[clamp(1.75rem,5vw,2.75rem)]">{t.rsvp.title}</h2>
-          <span aria-hidden="true" className="mx-auto mt-5 block h-px w-16 bg-moss/40" />
+          <h2 className="font-display text-[clamp(1.75rem,5vw,2.75rem)] text-balance">{t.rsvp.title}</h2>
+          <p className="mt-4 text-sm uppercase tracking-[0.18em] text-gold">{t.rsvp.deadline}</p>
         </header>
         {children}
       </div>
