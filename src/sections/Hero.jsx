@@ -5,6 +5,22 @@ export default function Hero() {
   const { t } = useLang()
   const contentRef = useRef(null)
   const cueRef = useRef(null)
+  const videoRef = useRef(null)
+
+  // The poster (~49KB) renders instantly so the hero looks complete on first
+  // paint. The video (~2.7MB) is fetched lazily and only when the connection
+  // can afford it — Save-Data or 2G phones keep just the poster.
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    const conn = navigator.connection || navigator.webkitConnection
+    if (conn?.saveData || /(^|-)2g$/.test(conn?.effectiveType || '')) return
+    v.src = '/videoHero.mp4'
+    v.load()
+    const play = () => v.play().catch(() => {})
+    if (v.readyState >= 2) play()
+    else v.addEventListener('canplay', play, { once: true })
+  }, [])
 
   // parallax: content lifts and fades as the page scrolls
   useEffect(() => {
@@ -35,17 +51,18 @@ export default function Hero() {
       id="inicio"
       className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-night text-center"
     >
-      {/* background video */}
+      {/* background video — poster paints instantly, video streams in lazily */}
       <video
+        ref={videoRef}
         className="absolute inset-0 z-0 h-full w-full object-cover"
+        poster="/videoHero-poster.webp"
+        preload="none"
         autoPlay
         muted
         loop
         playsInline
         aria-hidden="true"
-      >
-        <source src="/videoHero.mp4" type="video/mp4" />
-      </video>
+      />
       {/* sunset scrim: lets the video glow up top, darkens toward the bottom for text */}
       <div aria-hidden="true" className="absolute inset-0 z-0 bg-gradient-to-b from-night/20 via-night/25 to-night/75" />
 
