@@ -1,114 +1,122 @@
-import * as React from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react'
-import { useLang } from '../i18n.jsx'
-import { config } from '../content/content.js'
+import * as React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
+import { useLang } from "../i18n.jsx";
+import { config } from "../content/content.js";
 
 // ponytail: fotos pendientes (config.story[].photo === '') → placeholder hasta tenerlas
-const FALLBACK_PHOTO = '/luna.jpg'
+const FALLBACK_PHOTO = "/luna.jpg";
 
 export default function Story() {
-  const { lang, t } = useLang()
+  const { lang, t } = useLang();
 
   const items = config.story.map((moment, i) => ({
     id: i,
     title: moment[lang].title,
     description: moment[lang].text,
     imageSrc: moment.photo || FALLBACK_PHOTO,
-  }))
+  }));
 
   return (
     <section id="historia" className="surface-ceremonia">
       <FocusRail items={items} title={t.story.title} loop autoPlay={false} />
     </section>
-  )
+  );
 }
 
 // ponytail: tiny cn — these usages are mutually-exclusive conditionals, no tailwind-merge needed
-const cn = (...a) => a.filter(Boolean).join(' ')
+const cn = (...a) => a.filter(Boolean).join(" ");
 
 /** Helper to wrap indices (e.g., -1 becomes length-1) */
 function wrap(min, max, v) {
-  const rangeSize = max - min
-  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min
+  const rangeSize = max - min;
+  return ((((v - min) % rangeSize) + rangeSize) % rangeSize) + min;
 }
 
 /** Base spring for spatial movement (x/z) */
-const BASE_SPRING = { type: 'spring', stiffness: 300, damping: 30, mass: 1 }
+const BASE_SPRING = { type: "spring", stiffness: 300, damping: 30, mass: 1 };
 
 /** Bouncier spring for the visual "tap" feedback on the center card */
-const TAP_SPRING = { type: 'spring', stiffness: 450, damping: 18, mass: 1 }
+const TAP_SPRING = { type: "spring", stiffness: 450, damping: 18, mass: 1 };
 
-function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = false, interval = 4000, className }) {
-  const [active, setActive] = React.useState(initialIndex)
-  const [isHovering, setIsHovering] = React.useState(false)
-  const lastWheelTime = React.useRef(0)
+function FocusRail({
+  items,
+  title,
+  initialIndex = 0,
+  loop = true,
+  autoPlay = false,
+  interval = 4000,
+  className,
+}) {
+  const [active, setActive] = React.useState(initialIndex);
+  const [isHovering, setIsHovering] = React.useState(false);
+  const lastWheelTime = React.useRef(0);
 
-  const count = items.length
-  const activeIndex = wrap(0, count, active)
-  const activeItem = items[activeIndex]
+  const count = items.length;
+  const activeIndex = wrap(0, count, active);
+  const activeItem = items[activeIndex];
 
   // --- NAVIGATION HANDLERS ---
   const handlePrev = React.useCallback(() => {
-    if (!loop && active === 0) return
-    setActive((p) => p - 1)
-  }, [loop, active])
+    if (!loop && active === 0) return;
+    setActive((p) => p - 1);
+  }, [loop, active]);
 
   const handleNext = React.useCallback(() => {
-    if (!loop && active === count - 1) return
-    setActive((p) => p + 1)
-  }, [loop, active, count])
+    if (!loop && active === count - 1) return;
+    setActive((p) => p + 1);
+  }, [loop, active, count]);
 
   // --- MOUSE WHEEL / TRACKPAD LOGIC ---
   const onWheel = React.useCallback(
     (e) => {
-      const now = Date.now()
+      const now = Date.now();
       // Debounce: prevent rapid firing from inertia scrolling (400ms lockout)
-      if (now - lastWheelTime.current < 400) return
+      if (now - lastWheelTime.current < 400) return;
 
-      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY)
-      const delta = isHorizontal ? e.deltaX : e.deltaY
+      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
+      const delta = isHorizontal ? e.deltaX : e.deltaY;
 
       // Threshold to avoid accidental micro-scrolls
       if (Math.abs(delta) > 20) {
-        if (delta > 0) handleNext()
-        else handlePrev()
-        lastWheelTime.current = now
+        if (delta > 0) handleNext();
+        else handlePrev();
+        lastWheelTime.current = now;
       }
     },
-    [handleNext, handlePrev]
-  )
+    [handleNext, handlePrev],
+  );
 
   // Autoplay logic
   React.useEffect(() => {
-    if (!autoPlay || isHovering) return
-    const timer = setInterval(() => handleNext(), interval)
-    return () => clearInterval(timer)
-  }, [autoPlay, isHovering, handleNext, interval])
+    if (!autoPlay || isHovering) return;
+    const timer = setInterval(() => handleNext(), interval);
+    return () => clearInterval(timer);
+  }, [autoPlay, isHovering, handleNext, interval]);
 
   // Keyboard navigation
   const onKeyDown = (e) => {
-    if (e.key === 'ArrowLeft') handlePrev()
-    if (e.key === 'ArrowRight') handleNext()
-  }
+    if (e.key === "ArrowLeft") handlePrev();
+    if (e.key === "ArrowRight") handleNext();
+  };
 
   // --- SWIPE / DRAG LOGIC ---
-  const swipeConfidenceThreshold = 10000
-  const swipePower = (offset, velocity) => Math.abs(offset) * velocity
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset, velocity) => Math.abs(offset) * velocity;
 
   const onDragEnd = (e, { offset, velocity }) => {
-    const swipe = swipePower(offset.x, velocity.x)
-    if (swipe < -swipeConfidenceThreshold) handleNext()
-    else if (swipe > swipeConfidenceThreshold) handlePrev()
-  }
+    const swipe = swipePower(offset.x, velocity.x);
+    if (swipe < -swipeConfidenceThreshold) handleNext();
+    else if (swipe > swipeConfidenceThreshold) handlePrev();
+  };
 
-  const visibleIndices = [-2, -1, 0, 1, 2]
+  const visibleIndices = [-2, -1, 0, 1, 2];
 
   return (
     <div
       className={cn(
-        'group relative flex h-[700px] w-full flex-col overflow-hidden bg-night text-cream outline-none select-none overflow-x-hidden',
-        className
+        "group relative flex h-[700px] w-full flex-col overflow-hidden bg-night text-cream outline-none select-none overflow-x-hidden",
+        className,
       )}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
@@ -124,7 +132,7 @@ function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = fal
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.4 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="absolute inset-0"
           >
             <img
@@ -140,7 +148,9 @@ function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = fal
       {/* Section title, over the shared ambient background */}
       {title && (
         <div className="relative z-10 px-6 pt-12 pb-4 text-center">
-          <h2 className="font-display text-[clamp(1.75rem,5vw,2.75rem)] text-balance">{title}</h2>
+          <h2 className="font-display text-[clamp(1.75rem,3vw,2.75rem)] text-balance">
+            {title}
+          </h2>
         </div>
       )}
 
@@ -155,31 +165,31 @@ function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = fal
           onDragEnd={onDragEnd}
         >
           {visibleIndices.map((offset) => {
-            const absIndex = active + offset
-            const index = wrap(0, count, absIndex)
-            const item = items[index]
+            const absIndex = active + offset;
+            const index = wrap(0, count, absIndex);
+            const item = items[index];
 
-            if (!loop && (absIndex < 0 || absIndex >= count)) return null
+            if (!loop && (absIndex < 0 || absIndex >= count)) return null;
 
-            const isCenter = offset === 0
-            const dist = Math.abs(offset)
+            const isCenter = offset === 0;
+            const dist = Math.abs(offset);
 
             // Dynamic transforms
-            const xOffset = offset * 320
-            const zOffset = -dist * 180
-            const scale = isCenter ? 1 : 0.85
-            const rotateY = offset * -20
+            const xOffset = offset * 320;
+            const zOffset = -dist * 180;
+            const scale = isCenter ? 1 : 0.85;
+            const rotateY = offset * -20;
 
-            const opacity = isCenter ? 1 : Math.max(0.1, 1 - dist * 0.5)
-            const blur = isCenter ? 0 : dist * 6
-            const brightness = isCenter ? 1 : 0.5
+            const opacity = isCenter ? 1 : Math.max(0.1, 1 - dist * 0.5);
+            const blur = isCenter ? 0 : dist * 6;
+            const brightness = isCenter ? 1 : 0.5;
 
             return (
               <motion.div
                 key={absIndex}
                 className={cn(
-                  'absolute aspect-[3/4] w-[260px] md:w-[300px] rounded-2xl border-t border-glow/20 bg-night-soft shadow-2xl transition-shadow duration-300',
-                  isCenter ? 'z-20 shadow-glow/10' : 'z-10'
+                  "absolute aspect-[3/4] w-[260px] md:w-[300px] rounded-2xl border-t border-glow/20 bg-night-soft shadow-2xl transition-shadow duration-300",
+                  isCenter ? "z-20 shadow-glow/10" : "z-10",
                 )}
                 initial={false}
                 animate={{
@@ -192,12 +202,12 @@ function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = fal
                 }}
                 transition={(val) => {
                   // Bouncier spring for scale → the "tap" effect
-                  if (val === 'scale') return TAP_SPRING
-                  return BASE_SPRING
+                  if (val === "scale") return TAP_SPRING;
+                  return BASE_SPRING;
                 }}
-                style={{ transformStyle: 'preserve-3d' }}
+                style={{ transformStyle: "preserve-3d" }}
                 onClick={() => {
-                  if (offset !== 0) setActive((p) => p + offset)
+                  if (offset !== 0) setActive((p) => p + offset);
                 }}
               >
                 <img
@@ -210,7 +220,7 @@ function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = fal
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-glow/10 to-transparent pointer-events-none" />
                 <div className="absolute inset-0 rounded-2xl bg-hairline/10 pointer-events-none mix-blend-multiply" />
               </motion.div>
-            )
+            );
           })}
         </motion.div>
 
@@ -220,9 +230,9 @@ function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = fal
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeItem.id}
-                initial={{ opacity: 0, y: 10, filter: 'blur(4px)' }}
-                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
+                initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
                 transition={{ duration: 0.3 }}
                 className="space-y-2"
               >
@@ -231,7 +241,7 @@ function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = fal
                     {activeItem.meta}
                   </span>
                 )}
-                <h2 className="font-display text-[28px] font-bold tracking-tight md:text-4xl text-cream">
+                <h2 className="font-display text-[28px] tracking-tight md:text-4xl text-cream">
                   {activeItem.title}
                 </h2>
               </motion.div>
@@ -272,5 +282,5 @@ function FocusRail({ items, title, initialIndex = 0, loop = true, autoPlay = fal
         </div>
       </div>
     </div>
-  )
+  );
 }
