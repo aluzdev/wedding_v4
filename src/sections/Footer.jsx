@@ -6,7 +6,7 @@ export default function Footer() {
   const { t } = useLang()
 
   return (
-    <footer className="surface-footer relative isolate overflow-hidden px-6 pt-[clamp(5rem,12vw,8rem)] pb-[clamp(8rem,20vw,13rem)] text-center">
+    <footer className="surface-footer relative isolate overflow-hidden px-6 pt-[clamp(5rem,12vw,8rem)] pb-[clamp(15rem,34vw,18rem)] text-center">
       <div className="reveal relative z-10 mx-auto max-w-xl">
         {/* ramita — bookend del cierre botánico del hero, en verde sobre papel */}
         <Sprig />
@@ -173,7 +173,7 @@ function Meadow() {
       <svg
         viewBox="0 0 1200 250"
         preserveAspectRatio="xMidYMax slice"
-        className="block h-[clamp(155px,20vw,250px)] w-full opacity-[0.5]"
+        className="block h-[clamp(230px,30vw,260px)] w-full opacity-[0.5]"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.5"
