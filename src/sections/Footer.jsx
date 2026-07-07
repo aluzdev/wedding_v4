@@ -1,37 +1,51 @@
 import { useLang } from '../i18n.jsx'
-import { config, content } from '../content/content.js'
+import Petals from './Petals.jsx'
 
+// El footer cierra la invitación como una carta: la línea cálida, la firma a
+// mano (Pinyon Script) y los datos del día. Sin CTAs — es despedida, no trámite.
 export default function Footer() {
-  const { lang, t } = useLang()
-  const waLink = config.whatsappNumber
-    ? `https://wa.me/${config.whatsappNumber}?text=${encodeURIComponent(content[lang].footer.whatsappPrefill)}`
-    : ''
+  const { t } = useLang()
 
   return (
-    <footer className="surface-footer px-6 py-20 text-center sm:py-24">
-      <div className="reveal mx-auto max-w-xl">
-        <p className="font-display text-3xl text-linen sm:text-4xl">{t.hero.names}</p>
-        <p className="mt-3 text-sm uppercase tracking-[0.18em] text-gold/90">
-          {t.hero.dateLine}
+    <footer className="surface-footer relative overflow-hidden px-6 py-[clamp(5rem,12vw,8rem)] text-center">
+      <Petals tone="light" />
+
+      <div className="reveal relative mx-auto max-w-xl">
+        {/* ramita — bookend del cierre botánico del hero, en verde sobre papel */}
+        <Sprig />
+
+        <p className="mx-auto mt-8 max-w-md font-display text-[clamp(1.35rem,4vw,1.9rem)] [font-style:oblique_12deg] leading-snug text-ink text-balance">
+          {t.footer.closing}
         </p>
 
-        <p className="mt-10 text-sm text-linen/70">{t.footer.questions}</p>
-        {waLink ? (
-          <a
-            href={waLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex items-center gap-2 rounded-full bg-glow/10 px-6 py-2.5 text-sm font-medium tracking-wide text-linen ring-1 ring-glow/15 backdrop-blur-md transition-colors hover:bg-glow/20"
-          >
-            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
-              <path d="M12.04 2c-5.46 0-9.9 4.44-9.9 9.9 0 1.74.46 3.44 1.32 4.94L2 22l5.3-1.38a9.86 9.86 0 0 0 4.74 1.2h.01c5.46 0 9.9-4.44 9.9-9.9 0-2.64-1.03-5.13-2.9-7-1.87-1.87-4.35-2.92-6.99-2.92Zm5.8 14.16c-.24.68-1.42 1.32-1.96 1.36-.5.04-.98.22-3.32-.7-2.8-1.1-4.58-3.96-4.72-4.14-.14-.18-1.14-1.52-1.14-2.9 0-1.38.72-2.06 1-2.34a1.04 1.04 0 0 1 .76-.36c.18 0 .36 0 .52.01.18.01.4-.06.62.48.24.56.78 1.94.84 2.08.06.14.1.3.02.48-.08.18-.12.3-.24.46-.12.16-.26.36-.36.48-.12.14-.24.3-.1.54.14.24.62 1.02 1.32 1.66.92.82 1.68 1.08 1.92 1.2.24.12.38.1.52-.06.14-.16.6-.7.76-.94.16-.24.32-.2.54-.12.22.08 1.42.66 1.66.78.24.12.4.18.46.28.06.1.06.58-.18 1.26Z" />
-            </svg>
-            {t.footer.whatsapp}
-          </a>
-        ) : null}
+        <p className="mt-10 text-sm italic text-ink/55">{t.footer.signoff}</p>
+        {/* la firma: escrita a mano, en la tinta azul de la boda */}
+        <p className="mt-1 font-script text-[clamp(3rem,11vw,5rem)] leading-none text-night">
+          {t.footer.signature}
+        </p>
 
-        <p className="mt-10 text-sm italic text-linen/60">{t.footer.closing}</p>
+        <span aria-hidden="true" className="mx-auto mt-10 block h-px w-16 bg-ink/15" />
+
+        <p className="mt-8 text-xs uppercase tracking-[0.2em] text-moss sm:text-sm">
+          {t.hero.dateLine}
+        </p>
+        <p className="mt-2 text-sm text-ink/60">{t.hero.venueLine}</p>
       </div>
     </footer>
+  )
+}
+
+// misma teardrop-hoja del hero, en pareja simétrica con un punto al centro
+function Sprig() {
+  return (
+    <div aria-hidden="true" className="flex items-center justify-center gap-1.5 text-moss">
+      <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 rotate-[40deg]" fill="currentColor">
+        <path d="M10 0C13 6 20 8 20 13a10 10 0 0 1-20 0C0 8 7 6 10 0Z" />
+      </svg>
+      <span className="h-1 w-1 rounded-full bg-current opacity-80" />
+      <svg viewBox="0 0 20 20" className="h-3.5 w-3.5 -rotate-[40deg]" fill="currentColor">
+        <path d="M10 0C13 6 20 8 20 13a10 10 0 0 1-20 0C0 8 7 6 10 0Z" />
+      </svg>
+    </div>
   )
 }
