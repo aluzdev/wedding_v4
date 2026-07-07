@@ -172,7 +172,8 @@ function Meadow() {
     >
       <svg
         viewBox="0 0 1200 250"
-        className="w-full opacity-[0.5]"
+        preserveAspectRatio="xMidYMax slice"
+        className="block h-[clamp(155px,20vw,250px)] w-full opacity-[0.5]"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.5"
