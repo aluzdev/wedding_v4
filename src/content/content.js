@@ -29,6 +29,10 @@ export const config = {
     "https://mesaderegalos.liverpool.com.mx/milistaderegalos/52024083",
   amazonUrl: "https://www.amazon.com.mx/wedding/share/bodacrisypris",
 
+  // Foto para el módulo de "Los más pequeños" (acuarela del castillo/inflable).
+  // Guarda la imagen en /public y pon aquí su ruta (ej. "/ninos.jpg"). Vacío = sin foto.
+  kidsImage: "", // TODO(Cris & Pris): agregar acuarela del castillo
+
   // Datos bancarios
   bankDetails: {
     bank: "BBVA",
@@ -174,6 +178,39 @@ export const content = {
       title: "Formal de día",
       note: "Paleta sugerida:",
     },
+    modulos: {
+      title: "Antes del gran día",
+      note: "Toca cada módulo para ver los detalles.",
+      hint: "Toca para abrir",
+      close: "Cerrar",
+      items: {
+        dress: {
+          label: "Código de vestimenta",
+          teaser: "Formal de día · paleta sugerida",
+        },
+        faq: { label: "Preguntas frecuentes", teaser: "Resolvemos tus dudas" },
+        kids: { label: "Los más pequeños", teaser: "Diversión para los niños" },
+        itinerary: { label: "Itinerario", teaser: "El orden del día" },
+      },
+    },
+    kids: {
+      title: "Los más pequeños",
+      body: "Queremos que toda la familia disfrute este día. Durante la recepción habrá un {highlight} para que los niños jueguen y se diviertan.",
+      highlight: "inflable",
+    },
+    itinerary: {
+      title: "Itinerario del día",
+      note: "Horarios tentativos — los confirmaremos cerca de la fecha.",
+      items: [
+        { time: "12:00", label: "Recepción de invitados" },
+        { time: "12:30", label: "Ceremonia religiosa" },
+        { time: "14:00", label: "Cóctel de bienvenida y fotos" },
+        { time: "15:30", label: "Comida" },
+        { time: "16:30", label: "Primer baile" },
+        { time: "19:00", label: "Pastel" },
+        { time: "20:00", label: "Fin y desalojo del salón" },
+      ],
+    },
     rsvp: {
       title: "Confirma tu asistencia",
       deadline: "Responde antes del {t.rsvpDeadline}",
@@ -316,6 +353,39 @@ export const content = {
       eyebrow: "Dress code",
       title: "Daytime formal",
       note: "Suggested palette:",
+    },
+    modulos: {
+      title: "Before the big day",
+      note: "Tap each module to see the details.",
+      hint: "Tap to open",
+      close: "Close",
+      items: {
+        dress: {
+          label: "Dress code",
+          teaser: "Daytime formal · suggested palette",
+        },
+        faq: { label: "FAQ", teaser: "Your questions, answered" },
+        kids: { label: "For the little ones", teaser: "Fun for the kids" },
+        itinerary: { label: "Itinerary", teaser: "The order of the day" },
+      },
+    },
+    kids: {
+      title: "For the little ones",
+      body: "We want the whole family to enjoy this day. During the reception there will be a {highlight} so the kids can play and have fun.",
+      highlight: "bounce house",
+    },
+    itinerary: {
+      title: "Schedule for the day",
+      note: "Times are tentative — we'll confirm them closer to the date.",
+      items: [
+        { time: "12:00", label: "Guests arrive" },
+        { time: "12:30", label: "Religious ceremony" },
+        { time: "14:00", label: "Welcome cocktail and photos" },
+        { time: "15:30", label: "Lunch" },
+        { time: "16:30", label: "First dance" },
+        { time: "19:00", label: "Cake cutting" },
+        { time: "20:00", label: "End of the event please vacate the venue" },
+      ],
     },
     rsvp: {
       title: "RSVP",
