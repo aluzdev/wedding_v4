@@ -259,9 +259,8 @@ export const content = {
       ],
     },
     footer: {
-      questions: "¿Tienes dudas? Escríbenos",
-      whatsapp: "WhatsApp",
-      whatsappPrefill: "Hola Cris y Pris, tengo una pregunta sobre la boda 🤍",
+      signoff: "Con amor,",
+      signature: "Cris & Pris",
       closing: "Te esperamos con todo el corazón.",
     },
   },
@@ -404,9 +403,8 @@ export const content = {
       ],
     },
     footer: {
-      questions: "Questions? Write to us",
-      whatsapp: "WhatsApp",
-      whatsappPrefill: "Hi Cris & Pris, I have a question about the wedding 🤍",
+      signoff: "With love,",
+      signature: "Cris & Pris",
       closing: "We can't wait to celebrate with you.",
     },
   },

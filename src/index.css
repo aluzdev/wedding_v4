@@ -48,7 +48,7 @@
   .surface-hospedaje { background: var(--color-cream);      color: var(--color-ink); }
   .surface-rsvp      { background: var(--color-night);      color: var(--color-linen); }
   .surface-preguntas { background: var(--color-cream);      color: var(--color-ink); }
-  .surface-footer    { background: var(--color-night);      color: var(--color-linen); }
+  .surface-footer    { background: var(--color-cream);      color: var(--color-ink); }
 }
 
 /* Colores de las animaciones ambientales — aquí, no en los componentes. */
