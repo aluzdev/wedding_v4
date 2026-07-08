@@ -16,7 +16,7 @@ export const config = {
   weddingYear: "2026",
   weddingWeekday: "sábado",
   weddingTime: "12:00 pm",
-  rsvpDeadline: "26/septiembre",
+  rsvpDeadline: "18/septiembre",
 
   // Lugar
   venueName: "Casa de Lago — Jardín de Eventos",
@@ -179,8 +179,8 @@ export const content = {
       note: "Paleta sugerida:",
     },
     modulos: {
-      title: "Antes del gran día",
-      note: "Toca cada módulo para ver los detalles.",
+      title: "Detalles del gran día",
+      note: "Toca cada imagen para ver los detalles.",
       hint: "Toca para abrir",
       close: "Cerrar",
       items: {
@@ -248,7 +248,7 @@ export const content = {
       note: "Si deseas tener un detalle con nosotros:",
       ctaLiver: "Ver opciones en Liverpool",
       ctaAmazon: "Ver opciones en Amazon",
-      note2: "O si prefieres apoyarnos para nuestra Luna de Miel🤍",
+      note2: "O si prefieres apoyarnos para nuestra Luna de Miel",
       ctaBanco: "Ver datos bancarios",
       bankTitle: "Datos bancarios",
       bankBank: "Banco",
@@ -295,6 +295,11 @@ export const content = {
         },
       ],
     },
+    photos: {
+      eyebrow: "Galería compartida",
+      title: "Captura Momentos",
+      note: "Escanea el código QR y comparte tus fotos favoritas de la boda.",
+    },
     footer: {
       signoff: "Con amor,",
       signature: "Cris & Pris",
@@ -313,7 +318,7 @@ export const content = {
       dateLine: "Saturday, October 17, 2026 · 12:00 pm",
       venueLine: "Casa de Lago — Jardín de Eventos · Cuautitlán Izcalli",
       cta: "RSVP",
-      deadline: "Please reply by September 10, 2026",
+      deadline: "Please reply by September 18, 2026",
     },
     countdown: {
       title: "Countdown",
@@ -388,7 +393,7 @@ export const content = {
     },
     rsvp: {
       title: "RSVP",
-      deadline: "Please reply by September 10, 2026",
+      deadline: "Please reply by September 18, 2026",
       note: "It helps us save your seat.",
       comingSoon: "The form will be available very soon. Check back here!",
       checking: "One moment…",
@@ -471,6 +476,11 @@ export const content = {
           a: "No, the event will be alcohol-free. We will enjoy a wide variety of refreshing non-alcoholic beverage options.",
         },
       ],
+    },
+    photos: {
+      eyebrow: "Shared gallery",
+      title: "Capture the Moments",
+      note: "Scan the QR code and share your favorite photos from the wedding.",
     },
     footer: {
       signoff: "With love,",

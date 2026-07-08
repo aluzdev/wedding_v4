@@ -8,6 +8,7 @@ import Ceremony from './sections/Ceremony.jsx'
 import Modals from './sections/Modals.jsx'
 import Registry from './sections/Registry.jsx'
 import Rsvp from './sections/Rsvp.jsx'
+import Photos from './sections/Photos.jsx'
 import Footer from './sections/Footer.jsx'
 
 function Page() {
@@ -22,6 +23,7 @@ function Page() {
         <Modals />
         <Registry />
         <Rsvp />
+        <Photos />
       </main>
       <Footer />
     </>

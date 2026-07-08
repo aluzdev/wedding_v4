@@ -24,14 +24,21 @@ export default function Modals() {
   return (
     <section
       id="modulos"
-      className="surface-modulos px-6 pt-16 pb-24 sm:pt-24 sm:pb-32"
+      className="surface-night relative overflow-hidden px-6 pt-16 pb-24 sm:pt-24 sm:pb-32"
     >
-      <div className="mx-auto max-w-3xl">
+      <img
+        src="/flower-modals.jpg"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 right-0 z-0 w-40 select-none sm:w-56"
+      />
+
+      <div className="relative z-10 mx-auto max-w-3xl">
         <header className="reveal text-center">
           <h2 className="font-display text-[clamp(1.75rem,5vw,2.75rem)] text-balance">
             {t.modulos.title}
           </h2>
-          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-ink/70 sm:text-base">
+          <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-cream sm:text-base">
             {t.modulos.note}
           </p>
         </header>
@@ -128,9 +135,9 @@ function ModuleModal({ id, onClose }) {
 
 function ModuleBody({ id, t }) {
   if (id === "dress") return <DressBody t={t} />;
-  if (id === "faq") return <FaqBody t={t} />;
   if (id === "kids") return <KidsBody t={t} />;
   if (id === "itinerary") return <ItineraryBody t={t} />;
+  if (id === "faq") return <FaqBody t={t} />;
   return null;
 }
 

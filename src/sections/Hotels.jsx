@@ -8,7 +8,7 @@ export default function Hotels() {
   return (
     <section
       id="hospedaje"
-      className="surface-hospedaje relative overflow-hidden px-6 pt-16 pb-24 sm:pt-24 sm:pb-32"
+      className="surface-cream relative overflow-hidden px-6 pt-16 pb-24 sm:pt-24 sm:pb-32"
     >
       <Motes />
       <div className="relative mx-auto max-w-3xl">

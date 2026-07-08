@@ -18,7 +18,7 @@ export default function Story() {
   }));
 
   return (
-    <section id="historia" className="surface-ceremonia">
+    <section id="historia" className="surface-night">
       <FocusRail items={items} title={t.story.title} loop autoPlay={false} />
     </section>
   );
