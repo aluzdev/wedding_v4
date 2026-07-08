@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useLang } from "../i18n.jsx";
-import { config } from "../content/content.js";
 
 // Sección "módulos": mosaico de tarjetas que abren un modal con la info de cada
 // tema (vestimenta, preguntas, niños, itinerario). El contenido vive en
@@ -9,43 +8,12 @@ import { config } from "../content/content.js";
 
 const ORDER = ["dress", "faq", "kids", "itinerary"];
 
-// glifo + tinte por módulo — íconos de línea simples (no ilustraciones)
+// ícono ilustrado por módulo (line-art sobre lino, en public/icons)
 const ICONS = {
-  dress: {
-    tint: "bg-gold/15",
-    path: (
-      <>
-        <path d="M12 3.5a1.6 1.6 0 1 0 1.2 2.65c.4.46.55 1 .3 1.5-.2.4-.7.7-1.5 1.2L4 14v1.5h16V14l-4-2.5" />
-      </>
-    ),
-  },
-  faq: {
-    tint: "bg-sage/25",
-    path: (
-      <>
-        <path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L4 20l1-3.6a8.4 8.4 0 1 1 16-4.9Z" />
-        <path d="M9.5 9.2a2.5 2.5 0 0 1 4.9.7c0 1.7-2.5 2-2.5 2.6M12 15.5h.01" />
-      </>
-    ),
-  },
-  kids: {
-    tint: "bg-[#dfa79e]/25",
-    path: (
-      <>
-        <path d="M12 3c2.8 0 5 2.2 5 5s-2.2 6-5 6-5-3.2-5-6 2.2-5 5-5Z" />
-        <path d="M12 14v3m-1.5 4 1.5-4 1.5 4" />
-      </>
-    ),
-  },
-  itinerary: {
-    tint: "bg-[#84aebf]/25",
-    path: (
-      <>
-        <circle cx="12" cy="12" r="8.5" />
-        <path d="M12 7.5V12l3 2" />
-      </>
-    ),
-  },
+  dress: "/icons/CD.jpg",
+  faq: "/icons/Q&A.jpg",
+  kids: "/icons/CHILD.jpg",
+  itinerary: "/icons/ITINERARIO.jpg",
 };
 
 export default function Modals() {
@@ -68,50 +36,20 @@ export default function Modals() {
           </p>
         </header>
 
-        <div className="reveal mt-12 grid gap-4 sm:grid-cols-2">
+        <div className="reveal mt-12 grid grid-cols-2 justify-items-center gap-4">
           {ORDER.map((id) => (
             <button
               key={id}
               type="button"
               onClick={() => active.open(id)}
-              className="group flex items-center gap-4 rounded-2xl bg-linen/60 p-5 text-left ring-1 ring-ink/10 transition duration-200 ease-out hover:-translate-y-0.5 hover:bg-linen hover:shadow-lg focus-visible:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50"
+              aria-label={items[id].label}
+              className="group h-42 w-32 overflow-hidden rounded-2xl ring-1 ring-ink/10 transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg focus-visible:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50"
             >
-              <span
-                className={`grid h-12 w-12 shrink-0 place-items-center rounded-full ${ICONS[id].tint}`}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-6 w-6 text-ink/80"
-                  aria-hidden="true"
-                >
-                  {ICONS[id].path}
-                </svg>
-              </span>
-              <span className="min-w-0 flex-1">
-                <span className="block font-display text-lg leading-tight text-ink">
-                  {items[id].label}
-                </span>
-                <span className="mt-0.5 block truncate text-sm text-ink/60">
-                  {items[id].teaser}
-                </span>
-              </span>
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-5 w-5 shrink-0 text-ink/40 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-moss"
-                aria-hidden="true"
-              >
-                <path d="M9 6l6 6-6 6" />
-              </svg>
+              <img
+                src={ICONS[id]}
+                alt=""
+                className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+              />
             </button>
           ))}
         </div>
@@ -250,13 +188,11 @@ function KidsBody({ t }) {
         <span className="font-display text-moss">{t.kids.highlight} 🎈</span>
         {after}
       </p>
-      {config.kidsImage ? (
-        <img
-          src={config.kidsImage}
-          alt={t.kids.title}
-          className="mt-6 w-full rounded-xl shadow-md"
-        />
-      ) : null}
+      <img
+        src="/castle.jpg"
+        alt={t.kids.title}
+        className="w-full"
+      />
     </div>
   );
 }
