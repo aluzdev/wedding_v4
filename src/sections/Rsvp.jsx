@@ -277,7 +277,7 @@ function Shell({ t, children }) {
   return (
     <section
       id="rsvp"
-      className="surface-rsvp px-6 pt-16 pb-24 sm:pt-24 sm:pb-32"
+      className="surface-night px-6 pt-16 pb-24 sm:pt-24 sm:pb-32"
     >
       <div className="mx-auto max-w-xl">
         {/* the primary action gets the spotlight: a bright card on a dark stage */}

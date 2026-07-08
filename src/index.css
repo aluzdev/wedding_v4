@@ -19,6 +19,7 @@
   --color-cream-soft: #164E80;   /* azul (tarjetas de Hospedaje invertidas) — 7ma toma */
   --color-ink: #1c2422;          /* tinta teal-carbón — 7ma toma, texto sobre claro (~11.8:1) */
   --color-linen: #f0e7d5;        /* nube cálida: texto/elementos sobre oscuro (~12:1) */
+  --color-gold-soft: #f3e6bc;    /* dorado suave — fondo cálido (secciones claras) */
 
   /* --- Acentos (sacados del video — día y atardecer) --- */
   --color-sage: #bacd84;         /* verde hoja claro — 3ra toma (acentos sobre oscuro) */
@@ -41,21 +42,10 @@
    paleta del video; pon cualquier color para diferenciarla.
    ============================================================ */
 @layer components {
-  .surface-historia  { background: var(--color-night-deep); color: var(--color-cream); }
-  .surface-ceremonia { background: var(--color-night);      color: var(--color-linen); }
-  .surface-vestimenta { background: var(--color-cream);     color: var(--color-ink); }
-  .surface-modulos   { background: var(--color-cream);      color: var(--color-ink); }
-  .surface-regalos   { background: var(--color-night);      color: var(--color-linen); }
-  .surface-hospedaje { background: var(--color-cream);      color: var(--color-ink); }
-  .surface-rsvp      { background: var(--color-night);      color: var(--color-linen); }
-  .surface-preguntas { background: var(--color-cream);      color: var(--color-ink); }
-  .surface-footer {
-    /* scrim gradient sobre foto luna.jpg — mantiene legible el texto linen/gold */
-    background:
-      linear-gradient(to bottom, rgba(11, 39, 64, 0.55), rgba(11, 39, 64, 0.88)),
-      url('/luna.jpg') center / cover no-repeat;
-    color: var(--color-linen);
-  }
+  .surface-night { background: var(--color-night); color: var(--color-linen); }
+  .surface-cream { background: var(--color-cream); color: var(--color-ink); }
+  .surface-gold  { background: var(--color-gold-soft); color: var(--color-ink); }
+  .surface-moss  { background: var(--color-moss); color: var(--color-linen); }
 }
 
 /* Colores de las animaciones ambientales — aquí, no en los componentes. */
