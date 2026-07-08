@@ -25,7 +25,8 @@
       "Bash(mkdir -p __TRACKED_VAR__/frames)",
       "Bash(ffmpeg -y -i public/8.1-invideo-seedance_2_0.mp4 -vf fps=1,scale=320:-1 __TRACKED_VAR__/frames/f%02d.png -loglevel error)",
       "Bash(cp \"/tmp/claude-1000/-mnt-c-Users-alvar-OneDrive-Documents-projects-wedding-v4/9aa7d6cf-225e-4a39-bf3c-72e18946d1e1/scratchpad/sample.mjs\" ./_sample.mjs)",
-      "Bash(node ./_sample.mjs)"
+      "Bash(node ./_sample.mjs)",
+      "Bash(git config *)"
     ]
   },
   "hooks": {
