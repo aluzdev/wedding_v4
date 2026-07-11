@@ -271,7 +271,7 @@ export const content = {
       items: [
         {
           q: "¿Hasta cuándo puedo confirmar mi asistencia?",
-          a: "Le solicitamos confirmar antes del {t.rsvpDeadline} Saber con tiempo cuántos seremos nos ayuda muchísimo a organizar los lugares.",
+          a: "Le solicitamos confirmar antes del {t.rsvpDeadline}. Saber con tiempo cuántos seremos nos ayuda muchísimo a organizar los lugares.",
         },
         {
           q: "¿Puedo asistir con niños?",
@@ -388,7 +388,7 @@ export const content = {
         { time: "15:30", label: "Lunch" },
         { time: "16:30", label: "First dance" },
         { time: "19:00", label: "Cake cutting" },
-        { time: "20:00", label: "End of the event please vacate the venue" },
+        { time: "20:00", label: "Event ends — please vacate the venue" },
       ],
     },
     rsvp: {
@@ -452,8 +452,8 @@ export const content = {
       title: "Your questions, answered",
       items: [
         {
-          q: "Until when can I confirm my attendance?",
-          a: "Please RSVP before {t.rsvpDeadline}. Knowing the headcount in advance helps us greatly in organizing the seating layout.",
+          q: "By when do I need to confirm my attendance?",
+          a: "Please RSVP before September 18, 2026. Knowing the final headcount ahead of time helps us a great deal with the seating arrangements.",
         },
         {
           q: "Can I bring children?",
@@ -469,7 +469,7 @@ export const content = {
         },
         {
           q: "What should I consider regarding the weather?",
-          a: "For your comfort at the garden, we suggest bringing an umbrella to stay dry in case of rain and a light jacket for cooler temperatures.",
+          a: "For your comfort in the garden, we suggest using sunscreen during the day and bringing a light jacket for the evening.",
         },
         {
           q: "Will alcoholic beverages be served?",
