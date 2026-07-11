@@ -43,9 +43,10 @@ export default function Modals() {
           </p>
         </header>
 
-        {/* 2x2 en móvil, una sola fila de 4 desde tablet: las tarjetas llenan
-            su columna (aspect real del icono) en vez de un tamaño fijo, así no
-            quedan chiquitas ni separadas por huecos enormes. */}
+        {/* 2x2 en móvil, una sola fila de 4 desde tablet. Los iconos tienen
+            distinta proporción (0.75–0.86), así que object-contain los muestra
+            completos (títulos incluidos) sin recortar. El fondo #fbf6f2 iguala
+            el crema de las ilustraciones para que el letterbox no se note. */}
         <div className="reveal mx-auto mt-10 grid max-w-sm grid-cols-2 gap-4 sm:mt-14 sm:max-w-none sm:grid-cols-4 sm:gap-6">
           {ORDER.map((id) => (
             <button
@@ -53,12 +54,13 @@ export default function Modals() {
               type="button"
               onClick={() => active.open(id)}
               aria-label={items[id].label}
-              className="group aspect-[441/512] w-full overflow-hidden rounded-2xl ring-1 ring-ink/10 transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg focus-visible:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50"
+              className="group aspect-[4/5] w-full overflow-hidden rounded-2xl bg-[#fbf6f2] shadow-sm ring-1 ring-ink/10 transition duration-200 ease-out hover:-translate-y-1 hover:shadow-xl focus-visible:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50"
             >
               <img
                 src={ICONS[id]}
                 alt=""
-                className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+                loading="lazy"
+                className="h-full w-full object-contain transition-transform duration-200 group-hover:scale-[1.03]"
               />
             </button>
           ))}
