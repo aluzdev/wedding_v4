@@ -24,31 +24,21 @@ export default function Nav() {
         C&nbsp;&amp;&nbsp;P
       </a>
       <div className="flex items-center gap-2.5 sm:gap-3">
-        {/* Selector de idioma: ícono de globo + segmented para que se lea claro */}
+        {/* Selector de idioma: segmented limpio — track con padding y el idioma
+            activo como pill redondeado adentro. */}
         <div
           role="group"
           aria-label="Idioma / Language"
-          className="flex items-center overflow-hidden rounded-full bg-glow/15 text-xs font-semibold tracking-wide text-linen ring-1 ring-glow/25 backdrop-blur-md"
+          className="flex items-center gap-1 rounded-full bg-glow/15 p-1 text-xs font-semibold uppercase tracking-wide ring-1 ring-glow/25 backdrop-blur-md"
         >
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            className="ml-2.5 h-4 w-4 opacity-80"
-          >
-            <circle cx="12" cy="12" r="9" />
-            <path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18" />
-          </svg>
           {['es', 'en'].map((code) => (
             <button
               key={code}
               type="button"
               onClick={() => setLang(code)}
               aria-pressed={lang === code}
-              className={`px-3 py-2 uppercase transition-colors ${
-                lang === code ? 'bg-linen text-night' : 'hover:bg-glow/15'
+              className={`rounded-full px-3 py-1 transition-colors ${
+                lang === code ? 'bg-linen text-night' : 'text-linen/80 hover:text-linen'
               }`}
             >
               {code}
