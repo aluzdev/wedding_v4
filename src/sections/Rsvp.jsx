@@ -213,7 +213,7 @@ export default function Rsvp() {
 }
 
 // Llegó sin link personalizado → no hay forma de identificarlo. Lo invitamos a
-// abrir su link (y, si lo perdió, a escribirnos por WhatsApp).
+// abrir su link personalizado.
 function NoLink({ t }) {
   return (
     <div className="py-6 text-center">
@@ -223,16 +223,6 @@ function NoLink({ t }) {
       <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-ink/70">
         {t.rsvp.noLinkText}
       </p>
-      {config.whatsappNumber && (
-        <a
-          href={`https://wa.me/${config.whatsappNumber}`}
-          target="_blank"
-          rel="noreferrer"
-          className="mt-6 inline-block rounded-full bg-night px-7 py-2.5 text-sm font-medium tracking-wide text-cream transition-colors hover:bg-night-soft"
-        >
-          {t.rsvp.noLinkWhatsapp}
-        </a>
-      )}
     </div>
   );
 }
