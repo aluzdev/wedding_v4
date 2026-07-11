@@ -5,8 +5,12 @@ export default function Nav() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-4 sm:px-8">
-      <a href="#inicio" className="font-display text-lg tracking-wide text-linen drop-shadow-md">
-        C&nbsp;&amp;&nbsp;P
+      <a href="#inicio" aria-label="Cris & Pris — inicio" className="inline-flex shrink-0">
+        <img
+          src="/wedding_logo_trasnparent.png"
+          alt="Cris & Pris"
+          className="h-12 w-auto drop-shadow-md sm:h-14"
+        />
       </a>
       <div className="flex items-center gap-2.5 sm:gap-3">
         {/* Selector de idioma: segmented limpio — track con padding y el idioma
