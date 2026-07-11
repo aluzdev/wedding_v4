@@ -39,7 +39,7 @@ export default function Registry() {
               href={config.liverpoolUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition-colors hover:bg-sage/50"
+              className="inline-block rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition duration-200 ease-out hover:scale-[1.04] hover:bg-sage/50"
             >
               {t.registry.ctaLiver}
             </a>
@@ -50,7 +50,7 @@ export default function Registry() {
               href={config.amazonUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition-colors hover:bg-sage/50"
+              className="inline-block rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition duration-200 ease-out hover:scale-[1.04] hover:bg-sage/50"
             >
               {t.registry.ctaAmazon}
             </a>

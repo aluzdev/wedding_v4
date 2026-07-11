@@ -98,7 +98,7 @@ export default function Ceremony() {
           href={config.mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-linen/90 px-6 py-2.5 text-sm font-medium tracking-wide text-night transition-colors hover:bg-linen">
+          className="mt-8 inline-flex items-center gap-2 rounded-full bg-linen/90 px-6 py-2.5 text-sm font-medium tracking-wide text-night transition duration-200 ease-out hover:scale-[1.04] hover:bg-linen">
           <svg
             viewBox="0 0 24 24"
             className="h-4 w-4"
