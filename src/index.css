@@ -48,6 +48,14 @@
   .surface-moss  { background: var(--color-moss); color: var(--color-linen); }
 }
 
+/* Tailwind v4 ya no pone cursor:pointer en <button> por defecto; lo restauramos
+   para que TODO lo clickeable se sienta clickeable (regla sin @layer para ganarle
+   al preflight). */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
 /* Colores de las animaciones ambientales — aquí, no en los componentes. */
 :root {
   --petal-warm-dark: rgba(226, 199, 88, 0.42);   /* pétalo dorado sobre oscuro */
