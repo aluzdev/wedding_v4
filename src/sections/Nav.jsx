@@ -17,7 +17,9 @@ export default function Nav() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-4 transition-colors duration-300 sm:px-8 ${
-        scrolled ? 'bg-night/85 shadow-sm backdrop-blur-md' : 'bg-transparent'
+        scrolled
+          ? 'bg-night/85 shadow-sm backdrop-blur-md'
+          : 'bg-gradient-to-b from-night/70 via-night/25 to-transparent'
       }`}
     >
       <a href="#inicio" className="font-display text-lg tracking-wide text-linen drop-shadow-sm">
