@@ -130,7 +130,7 @@ export const config = {
 export const content = {
   es: {
     nav: { rsvp: "Confirmar asistencia" },
-    heroBible: "Dios lo hizo perfecto en su tiempo.  Eclesiastés 3:11",
+    heroBible: "Todo lo hizo hermoso en su tiempo  Eclesiastés 3:11",
     hero: {
       announce: "¡Nuestra boda!",
       names: "{t.couple.novio} & {t.couple.novia}",
@@ -310,7 +310,7 @@ export const content = {
   en: {
     nav: { rsvp: "RSVP" },
     heroBible:
-      "He has made everything beautiful in its time.  Ecclesiastes 3:11",
+      "He hath made every thing beautiful in his time.  Ecclesiastes 3:11",
     hero: {
       announce: "We're getting married!",
       names: "Cris & Pris",
