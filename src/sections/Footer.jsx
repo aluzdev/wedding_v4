@@ -22,13 +22,15 @@ export default function Footer() {
         </p>
       </div>
 
-      {/* pradera de flores en línea, pegada al borde inferior */}
-      <img
-        src="/photo_bg.jpg"
-        alt=""
+      {/* Pradera de flores pegada al borde inferior. Fondo repetido a lo ancho
+          con tamaño fijo (alto de la banda), no object-cover: así las flores
+          conservan el MISMO tamaño en cualquier ancho. Antes se estiraban con
+          object-cover y en desktop salían gigantes y cortadas. El PNG tiene
+          fondo transparente, así que el navy se ve entre repeticiones.
+          ponytail: opacity/alto son las perillas de calibración. */}
+      <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 w-full select-none object-cover object-bottom opacity-90 sm:h-40 md:h-44"
-        // ponytail: opacity is the calibration knob si la imagen resalta demasiado
+        className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-28 select-none bg-[url('/photo_bg.jpg')] bg-[length:auto_100%] bg-repeat-x bg-bottom opacity-90 sm:h-44"
       />
     </footer>
   )
