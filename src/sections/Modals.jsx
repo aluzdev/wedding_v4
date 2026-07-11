@@ -33,7 +33,7 @@ export default function Modals() {
         className="pointer-events-none absolute bottom-0 right-0 z-0 w-40 select-none sm:w-56"
       />
 
-      <div className="relative z-10 mx-auto max-w-3xl">
+      <div className="relative z-10 mx-auto max-w-5xl">
         <header className="reveal text-center">
           <h2 className="font-display text-[clamp(1.75rem,5vw,2.75rem)] text-balance">
             {t.modulos.title}
@@ -43,14 +43,17 @@ export default function Modals() {
           </p>
         </header>
 
-        <div className="reveal mt-12 grid grid-cols-2 justify-items-center gap-4">
+        {/* 2x2 en móvil, una sola fila de 4 desde tablet: las tarjetas llenan
+            su columna (aspect real del icono) en vez de un tamaño fijo, así no
+            quedan chiquitas ni separadas por huecos enormes. */}
+        <div className="reveal mx-auto mt-10 grid max-w-sm grid-cols-2 gap-4 sm:mt-14 sm:max-w-none sm:grid-cols-4 sm:gap-6">
           {ORDER.map((id) => (
             <button
               key={id}
               type="button"
               onClick={() => active.open(id)}
               aria-label={items[id].label}
-              className="group h-42 w-32 overflow-hidden rounded-2xl ring-1 ring-ink/10 transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg focus-visible:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50"
+              className="group aspect-[441/512] w-full overflow-hidden rounded-2xl ring-1 ring-ink/10 transition duration-200 ease-out hover:-translate-y-0.5 hover:shadow-lg focus-visible:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50"
             >
               <img
                 src={ICONS[id]}
