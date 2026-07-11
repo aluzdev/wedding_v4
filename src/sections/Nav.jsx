@@ -36,14 +36,7 @@ export default function Nav() {
           href="#rsvp"
           className="inline-flex items-center justify-center whitespace-nowrap rounded-full bg-gold px-4 py-2 text-xs font-semibold uppercase tracking-wide text-night shadow-md transition-transform duration-200 ease-out hover:scale-[1.04] focus-visible:scale-[1.04] focus-visible:outline-none sm:px-5 sm:text-sm"
         >
-          {/* ancho estable entre idiomas: el sizer invisible reserva el ancho de la
-              etiqueta más larga (Confirmar) para que la UI no brinque al cambiar idioma */}
-          <span className="grid justify-items-center">
-            <span aria-hidden="true" className="invisible col-start-1 row-start-1">
-              Confirmar
-            </span>
-            <span className="col-start-1 row-start-1">{t.nav.rsvp}</span>
-          </span>
+          {t.nav.rsvp}
         </a>
       </div>
     </header>
