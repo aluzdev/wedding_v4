@@ -48,6 +48,29 @@
   .surface-moss  { background: var(--color-moss); color: var(--color-linen); }
 }
 
+/* Tailwind v4 ya no pone cursor:pointer en <button> por defecto; lo restauramos
+   para que TODO lo clickeable se sienta clickeable (regla sin @layer para ganarle
+   al preflight). */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+
+/* Hover consistente: cada botón crece un poco al pasar el mouse. Transición
+   uniforme (transform + color + sombra) para que TODOS se sientan igual. */
+button:not(:disabled),
+[role="button"] {
+  transition-property: transform, color, background-color, box-shadow, opacity, filter;
+  transition-duration: 0.18s;
+  transition-timing-function: ease-out;
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  button:not(:disabled):hover,
+  [role="button"]:hover {
+    transform: scale(1.04);
+  }
+}
+
 /* Colores de las animaciones ambientales — aquí, no en los componentes. */
 :root {
   --petal-warm-dark: rgba(226, 199, 88, 0.42);   /* pétalo dorado sobre oscuro */

@@ -54,13 +54,13 @@ export default function Modals() {
               type="button"
               onClick={() => active.open(id)}
               aria-label={items[id].label}
-              className="group aspect-[4/5] w-full overflow-hidden rounded-2xl bg-[#fbf6f2] shadow-sm ring-1 ring-ink/10 transition duration-200 ease-out hover:-translate-y-1 hover:shadow-xl focus-visible:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50"
+              className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-[#fbf6f2] shadow-sm ring-1 ring-ink/10 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50"
             >
               <img
                 src={ICONS[id]}
                 alt=""
                 loading="lazy"
-                className="h-full w-full object-contain transition-transform duration-200 group-hover:scale-[1.03]"
+                className="h-full w-full object-contain"
               />
             </button>
           ))}

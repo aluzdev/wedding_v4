@@ -129,7 +129,7 @@ export const config = {
 
 export const content = {
   es: {
-    nav: { rsvp: "Confirmar" },
+    nav: { rsvp: "Confirmar asistencia" },
     heroBible: "Dios lo hizo perfecto en su tiempo.  Eclesiastés 3:11",
     hero: {
       announce: "¡Nuestra boda!",

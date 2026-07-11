@@ -12,7 +12,7 @@ export default function Registry() {
       id="regalos"
       className="surface-cream relative overflow-hidden px-6 py-10 sm:py-28"
     >
-      <Petals tone="dark" />
+      <Petals tone="light" />
 
       <img
         src="/flor-registry-preview.png"
@@ -39,7 +39,7 @@ export default function Registry() {
               href={config.liverpoolUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition-colors hover:bg-sage/50"
+              className="inline-block rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition duration-200 ease-out hover:scale-[1.04] hover:bg-sage/50"
             >
               {t.registry.ctaLiver}
             </a>
@@ -50,7 +50,7 @@ export default function Registry() {
               href={config.amazonUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition-colors hover:bg-sage/50"
+              className="inline-block rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition duration-200 ease-out hover:scale-[1.04] hover:bg-sage/50"
             >
               {t.registry.ctaAmazon}
             </a>
@@ -59,8 +59,8 @@ export default function Registry() {
 
         {/* the honeymoon contribution is the one warm, primary ask → gold */}
         {config.bankDetails ? (
-          <div className="reveal mt-6 border-ink/15 pt-2">
-            <p className="mx-8 max-w-md text-sm leading-relaxed text-ink/70 sm:text-base">
+          <div className="reveal mt-6 pt-2">
+            <p className="mx-auto max-w-md text-sm leading-relaxed text-ink/70 sm:text-base">
               {t.registry.note2}
             </p>
             <button
