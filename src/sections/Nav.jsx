@@ -1,10 +1,25 @@
+import { useEffect, useState } from 'react'
 import { useLang } from '../i18n.jsx'
 
 export default function Nav() {
   const { lang, setLang, t } = useLang()
+  // La barra es transparente sobre el hero; al hacer scroll gana un fondo
+  // navy con blur para que el texto claro siga legible sobre las secciones
+  // color crema (Fotos, Regalos), donde antes quedaba invisible.
+  const [scrolled, setScrolled] = useState(false)
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-4 sm:px-8">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-4 transition-colors duration-300 sm:px-8 ${
+        scrolled ? 'bg-night/85 shadow-sm backdrop-blur-md' : 'bg-transparent'
+      }`}
+    >
       <a href="#inicio" className="font-display text-lg tracking-wide text-linen drop-shadow-sm">
         C&nbsp;&amp;&nbsp;P
       </a>

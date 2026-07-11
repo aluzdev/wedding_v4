@@ -8,7 +8,7 @@ export default function Photos() {
   return (
     <section
       id="fotos"
-      className="surface-cream relative overflow-hidden px-6 py-20 sm:py-12"
+      className="surface-cream relative overflow-hidden px-6 py-16 sm:py-24"
     >
       <img
         src="/flower-photo-preview.png"
@@ -28,8 +28,7 @@ export default function Photos() {
 
         <img
           src="/QR.jpg"
-          alt=""
-          aria-hidden="true"
+          alt={t.photos.title}
           className="mt-9 h-44 w-44 rounded-2xl bg-white p-2 shadow-lg ring-1 ring-ink/10 sm:h-52 sm:w-52"
         />
 

@@ -1,0 +1,39 @@
+name: Deploy Preview
+
+# Preview deployments for the polish branch. Deploys to Cloudflare Pages with a
+# NON-production branch name, so it gets a *.pages.dev preview URL and never
+# touches production (master / crisypris.com).
+on:
+  push:
+    branches:
+      - polish-all-sections
+
+concurrency:
+  group: preview-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Deploy preview to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=boda-cris-pris --branch=${{ github.ref_name }}
