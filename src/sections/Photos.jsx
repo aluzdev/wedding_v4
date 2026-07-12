@@ -27,7 +27,7 @@ export default function Photos() {
         </h2>
 
         <img
-          src="/QR.jpg"
+          src="/QR.png"
           alt={t.photos.title}
           className="mt-9 h-44 w-44 rounded-2xl bg-white p-2 shadow-lg ring-1 ring-ink/10 sm:h-52 sm:w-52"
         />
