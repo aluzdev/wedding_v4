@@ -224,7 +224,6 @@ function ItineraryBody({ t }) {
               {i < arr.length - 1 ? <span className="w-px flex-1 bg-ink/15" /> : null}
             </div>
             <div className="pb-6">
-              <p className="font-mono text-sm text-moss">{it.time}</p>
               <p className="font-display text-lg leading-tight text-ink">{it.label}</p>
             </div>
           </li>
