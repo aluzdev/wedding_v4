@@ -6,9 +6,11 @@ import { useLang } from "../i18n.jsx";
 // tema (vestimenta, preguntas, niños, itinerario). El contenido vive en
 // content.js; aquí solo se decide cómo se presenta.
 
-const ORDER = ["dress", "faq", "kids", "itinerary"];
+const ORDER = ["dress", "kids", "itinerary","faq"];
 
-// ícono ilustrado por módulo (line-art sobre lino, en public/icons)
+// ícono ilustrado por módulo (line-art sobre lino, en public/icons).
+// Algunos llevan el título rotulado dentro de la imagen, así que tienen
+// versión propia en inglés.
 const ICONS = {
   dress: "/icons/CD.jpg",
   faq: "/icons/Q&A.jpg",
@@ -16,8 +18,15 @@ const ICONS = {
   itinerary: "/icons/ITINERARIO.jpg",
 };
 
+const ICONS_EN = {
+  ...ICONS,
+  kids: "/icons/CHILD-ENG.jpg",
+  itinerary: "/icons/ITINERARIO-ENG.jpg",
+};
+
 export default function Modals() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
+  const icons = lang === "en" ? ICONS_EN : ICONS;
   const active = useActiveModule();
   const items = t.modulos.items;
 
@@ -57,7 +66,7 @@ export default function Modals() {
               className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-[#fbf6f2] shadow-sm ring-1 ring-ink/10 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50"
             >
               <img
-                src={ICONS[id]}
+                src={icons[id]}
                 alt=""
                 loading="lazy"
                 className="h-full w-full object-contain"
