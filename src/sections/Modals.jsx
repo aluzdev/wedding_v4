@@ -161,34 +161,6 @@ function DressBody({ t }) {
   );
 }
 
-function FaqBody({ t }) {
-  return (
-    <div>
-      <h3 className="font-display text-2xl">{t.faq.title}</h3>
-      <dl className="mt-5 divide-y divide-ink/10 border-t border-ink/10">
-        {t.faq.items.map((item, i) => (
-          <details key={i} className="group py-1">
-            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-3 font-display text-base text-ink marker:hidden">
-              <span>{item.q}</span>
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                className="h-5 w-5 shrink-0 text-moss transition-transform duration-300 group-open:rotate-180"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-              </svg>
-            </summary>
-            <p className="pb-4 text-sm leading-relaxed text-ink/70">{item.a}</p>
-          </details>
-        ))}
-      </dl>
-    </div>
-  );
-}
-
 function KidsBody({ t }) {
   // el mensaje trae {highlight}: lo partimos para resaltar esa palabra
   const [before, after] = t.kids.body.split("{highlight}");
@@ -232,3 +204,33 @@ function ItineraryBody({ t }) {
     </div>
   );
 }
+
+function FaqBody({ t }) {
+  return (
+    <div>
+      <h3 className="font-display text-2xl">{t.faq.title}</h3>
+      <dl className="mt-5 divide-y divide-ink/10 border-t border-ink/10">
+        {t.faq.items.map((item, i) => (
+          <details key={i} className="group py-1">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-3 font-display text-base text-ink marker:hidden">
+              <span>{item.q}</span>
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                className="h-5 w-5 shrink-0 text-moss transition-transform duration-300 group-open:rotate-180"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </summary>
+            <p className="pb-4 text-sm leading-relaxed text-ink/70">{item.a}</p>
+          </details>
+        ))}
+      </dl>
+    </div>
+  );
+}
+
+

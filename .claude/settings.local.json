@@ -27,7 +27,8 @@
       "Bash(cp \"/tmp/claude-1000/-mnt-c-Users-alvar-OneDrive-Documents-projects-wedding-v4/9aa7d6cf-225e-4a39-bf3c-72e18946d1e1/scratchpad/sample.mjs\" ./_sample.mjs)",
       "Bash(node ./_sample.mjs)",
       "Bash(git config *)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(git pull *)"
     ]
   },
   "hooks": {
