@@ -58,6 +58,7 @@ export default function Registry() {
         </div>
 
         {/* the honeymoon contribution is the one warm, primary ask → gold */}
+        {/* hidden for now — re-enable by uncommenting
         {config.bankDetails ? (
           <div className="reveal mt-6 pt-2">
             <p className="mx-auto max-w-md text-sm leading-relaxed text-ink/70 sm:text-base">
@@ -72,6 +73,7 @@ export default function Registry() {
             </button>
           </div>
         ) : null}
+        */}
       </div>
 
       {bankOpen ? (
