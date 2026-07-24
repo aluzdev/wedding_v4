@@ -57,6 +57,12 @@ export default function Registry() {
           ) : null}
         </div>
 
+        {config.liverpoolUrl ? (
+          <p className="reveal mt-4 text-xs tracking-wide text-ink/60 sm:text-sm">
+            {t.registry.liverEvent}
+          </p>
+        ) : null}
+
         {/* the honeymoon contribution is the one warm, primary ask → gold */}
         {/* hidden for now — re-enable by uncommenting
         {config.bankDetails ? (
