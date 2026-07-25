@@ -7,7 +7,7 @@ import { config } from "../content/content.js";
 // tema (vestimenta, preguntas, niños, itinerario). El contenido vive en
 // content.js; aquí solo se decide cómo se presenta.
 
-const ORDER = ["dress", "kids", "itinerary","faq"];
+const ORDER = ["dress", "kids", "itinerary", "faq", "hotels"];
 
 // ícono ilustrado por módulo (line-art sobre lino, en public/icons).
 // Algunos llevan el título rotulado dentro de la imagen, así que tienen
@@ -17,6 +17,7 @@ const ICONS = {
   faq: "/icons/Q&A.jpg",
   kids: "/icons/CHILD.jpg",
   itinerary: "/icons/ITINERARIO.jpg",
+  hotels: "/icons/HOTEL.jpg",
 };
 
 const ICONS_EN = {
@@ -53,18 +54,21 @@ export default function Modals() {
           </p>
         </header>
 
-        {/* 2x2 en móvil, una sola fila de 4 desde tablet. Los iconos tienen
-            distinta proporción (0.75–0.86), así que object-contain los muestra
-            completos (títulos incluidos) sin recortar. El fondo #fbf6f2 iguala
-            el crema de las ilustraciones para que el letterbox no se note. */}
-        <div className="reveal mx-auto mt-10 grid max-w-sm grid-cols-2 gap-4 sm:mt-14 sm:max-w-none sm:grid-cols-4 sm:gap-6">
+        {/* 2x2 + quinta centrada en móvil, una sola fila de 5 desde tablet.
+            Los iconos tienen distinta proporción (0.75–0.86), así que
+            object-contain los muestra completos (títulos incluidos) sin
+            recortar. El fondo #fbf6f2 iguala el crema de las ilustraciones
+            para que el letterbox no se note. La última tarjeta ocupa las dos
+            columnas en móvil pero conserva el ancho de sus hermanas
+            (50% − medio gap) para que la retícula no deje huérfanas. */}
+        <div className="reveal mx-auto mt-10 grid max-w-sm grid-cols-2 gap-4 sm:mt-14 sm:max-w-none sm:grid-cols-5 sm:gap-5">
           {ORDER.map((id) => (
             <button
               key={id}
               type="button"
               onClick={() => active.open(id)}
               aria-label={items[id].label}
-              className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-[#fbf6f2] shadow-sm ring-1 ring-ink/10 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50"
+              className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-[#fbf6f2] shadow-sm ring-1 ring-ink/10 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50 last:col-span-2 last:w-[calc(50%-0.5rem)] last:justify-self-center sm:last:col-span-1 sm:last:w-full"
             >
               <img
                 src={icons[id]}
@@ -74,46 +78,6 @@ export default function Modals() {
               />
             </button>
           ))}
-
-          {/* Hospedaje: quinto módulo. No tiene ilustración propia, así que en
-              vez de dejar una tarjeta huérfana en la retícula, cierra el mosaico
-              como banner ancho (2 col en móvil, 4 en desktop) con line-art SVG
-              en el mismo lenguaje que las ilustraciones. */}
-          <button
-            type="button"
-            onClick={() => active.open("hotels")}
-            aria-label={items.hotels.label}
-            className="col-span-2 flex w-full items-center justify-center gap-5 overflow-hidden rounded-2xl bg-[#fbf6f2] px-6 py-5 text-left shadow-sm ring-1 ring-ink/10 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50 sm:col-span-4 sm:gap-6 sm:py-6"
-          >
-            <svg
-              viewBox="0 0 64 44"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-              className="h-11 w-16 shrink-0 text-moss"
-            >
-              {/* luna creciente y estrella */}
-              <path d="M54 5a7.5 7.5 0 1 0 6.5 11A8.5 8.5 0 0 1 54 5Z" />
-              <path d="M44 6v4M42 8h4" strokeWidth="1.2" />
-              {/* cama: cabecera, almohada, colchón y patas */}
-              <path d="M10 13v19" />
-              <path d="M14 23a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3H14Z" />
-              <path d="M10 26h44v6" />
-              <path d="M10 32h44" />
-              <path d="M13 32v5M51 32v5" />
-            </svg>
-            <span>
-              <span className="block font-display text-xl text-ink sm:text-2xl">
-                {items.hotels.label}
-              </span>
-              <span className="mt-0.5 block text-xs text-ink/70 sm:text-sm">
-                {items.hotels.teaser}
-              </span>
-            </span>
-          </button>
         </div>
       </div>
 
