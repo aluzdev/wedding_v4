@@ -217,11 +217,8 @@ export default function Rsvp() {
 function NoLink({ t }) {
   return (
     <div className="py-6 text-center">
-      <p className="font-display text-2xl text-moss sm:text-3xl">
+      <p className="mx-auto max-w-sm font-display text-2xl text-moss text-balance sm:text-3xl">
         {t.rsvp.noLinkTitle}
-      </p>
-      <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-ink/70">
-        {t.rsvp.noLinkText}
       </p>
     </div>
   );

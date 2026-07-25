@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useLang } from "../i18n.jsx";
+import { config } from "../content/content.js";
 
 // Sección "módulos": mosaico de tarjetas que abren un modal con la info de cada
 // tema (vestimenta, preguntas, niños, itinerario). El contenido vive en
 // content.js; aquí solo se decide cómo se presenta.
 
-const ORDER = ["dress", "kids", "itinerary","faq"];
+const ORDER = ["dress", "kids", "itinerary", "faq", "hotels"];
 
 // ícono ilustrado por módulo (line-art sobre lino, en public/icons).
 // Algunos llevan el título rotulado dentro de la imagen, así que tienen
@@ -16,6 +17,7 @@ const ICONS = {
   faq: "/icons/Q&A.jpg",
   kids: "/icons/CHILD.jpg",
   itinerary: "/icons/ITINERARIO.jpg",
+  hotels: "/icons/HOTEL.jpg",
 };
 
 const ICONS_EN = {
@@ -52,18 +54,21 @@ export default function Modals() {
           </p>
         </header>
 
-        {/* 2x2 en móvil, una sola fila de 4 desde tablet. Los iconos tienen
-            distinta proporción (0.75–0.86), así que object-contain los muestra
-            completos (títulos incluidos) sin recortar. El fondo #fbf6f2 iguala
-            el crema de las ilustraciones para que el letterbox no se note. */}
-        <div className="reveal mx-auto mt-10 grid max-w-sm grid-cols-2 gap-4 sm:mt-14 sm:max-w-none sm:grid-cols-4 sm:gap-6">
+        {/* 2x2 + quinta centrada en móvil, una sola fila de 5 desde tablet.
+            Los iconos tienen distinta proporción (0.75–0.86), así que
+            object-contain los muestra completos (títulos incluidos) sin
+            recortar. El fondo #fbf6f2 iguala el crema de las ilustraciones
+            para que el letterbox no se note. La última tarjeta ocupa las dos
+            columnas en móvil pero conserva el ancho de sus hermanas
+            (50% − medio gap) para que la retícula no deje huérfanas. */}
+        <div className="reveal mx-auto mt-10 grid max-w-sm grid-cols-2 gap-4 sm:mt-14 sm:max-w-none sm:grid-cols-5 sm:gap-5">
           {ORDER.map((id) => (
             <button
               key={id}
               type="button"
               onClick={() => active.open(id)}
               aria-label={items[id].label}
-              className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-[#fbf6f2] shadow-sm ring-1 ring-ink/10 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50"
+              className="aspect-[4/5] w-full overflow-hidden rounded-2xl bg-[#fbf6f2] shadow-sm ring-1 ring-ink/10 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50 last:col-span-2 last:w-[calc(50%-0.5rem)] last:justify-self-center sm:last:col-span-1 sm:last:w-full"
             >
               <img
                 src={icons[id]}
@@ -152,7 +157,41 @@ function ModuleBody({ id, t }) {
   if (id === "kids") return <KidsBody t={t} />;
   if (id === "itinerary") return <ItineraryBody t={t} />;
   if (id === "faq") return <FaqBody t={t} />;
+  if (id === "hotels") return <HotelsBody t={t} />;
   return null;
+}
+
+function HotelsBody({ t }) {
+  // mismas filas divididas + píldora que el modal de datos bancarios
+  return (
+    <div>
+      <h3 className="font-display text-2xl">{t.hotels.title}</h3>
+      <p className="mt-2 text-sm italic text-ink/55">{t.hotels.note}</p>
+
+      <ul className="mt-5 divide-y divide-ink/10 border-t border-ink/10">
+        {config.hotels.map((hotel) => (
+          <li key={hotel.name}>
+            <a
+              href={hotel.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-between gap-4 py-4"
+            >
+              <span className="font-display text-base leading-snug text-ink">
+                {hotel.name}
+              </span>
+              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-moss/40 px-3 py-1 text-[11px] tracking-wide text-moss transition-colors group-hover:bg-moss/10">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5" aria-hidden="true">
+                  <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z" />
+                </svg>
+                {t.hotels.cta}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 function DressBody({ t }) {
