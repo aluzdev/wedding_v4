@@ -191,6 +191,7 @@ export const content = {
         faq: { label: "Preguntas frecuentes", teaser: "Resolvemos tus dudas" },
         kids: { label: "Los más pequeños", teaser: "Diversión para los niños" },
         itinerary: { label: "Itinerario", teaser: "El orden del día" },
+        hotels: { label: "Hospedaje", teaser: "Hoteles cerca del jardín" },
       },
     },
     kids: {
@@ -215,9 +216,8 @@ export const content = {
       comingSoon:
         "El formulario estará disponible muy pronto. ¡Vuelve por aquí!",
       checking: "Un momento…",
-      noLinkTitle: "Abre tu invitación personalizada",
-      noLinkText:
-        "Para confirmar tu asistencia, entra desde el link que te enviamos por WhatsApp. Si no lo encuentras, escríbenos y con gusto te lo reenviamos.",
+      noLinkTitle:
+        "Para confirmar tu asistencia escríbenos por WhatsApp y con gusto te atendemos",
       noLinkWhatsapp: "Escríbenos por WhatsApp",
       greeting: "Hola, {familia}",
       greetingFamily: "Hola, familia {familia}",
@@ -262,6 +262,7 @@ export const content = {
       eyebrow: "Hospedaje",
       title: "Para quienes vienen de fuera",
       note: "Sugerencias de hoteles cerca del jardín.",
+      cta: "Ver mapa",
     },
     faq: {
       eyebrow: "Preguntas frecuentes",
@@ -369,6 +370,7 @@ export const content = {
         faq: { label: "FAQ", teaser: "Your questions, answered" },
         kids: { label: "For the little ones", teaser: "Fun for the kids" },
         itinerary: { label: "Itinerary", teaser: "The order of the day" },
+        hotels: { label: "Lodging", teaser: "Hotels near the venue" },
       },
     },
     kids: {
@@ -392,9 +394,8 @@ export const content = {
       note: "It helps us save your seat.",
       comingSoon: "The form will be available very soon. Check back here!",
       checking: "One moment…",
-      noLinkTitle: "Open your personal invitation",
-      noLinkText:
-        "To RSVP, please open the site from the link we sent you on WhatsApp. If you can’t find it, message us and we’ll gladly resend it.",
+      noLinkTitle:
+        "To RSVP, message us on WhatsApp and we'll gladly help you",
       noLinkWhatsapp: "Message us on WhatsApp",
       greeting: "Hello, {familia}",
       greetingFamily: "Hello, {familia} family",
@@ -442,6 +443,7 @@ export const content = {
       eyebrow: "Lodging",
       title: "Coming from out of town?",
       note: "Hotel suggestions near the venue — special rates coming soon.",
+      cta: "View map",
     },
     faq: {
       eyebrow: "FAQ",

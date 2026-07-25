@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useLang } from "../i18n.jsx";
+import { config } from "../content/content.js";
 
 // Sección "módulos": mosaico de tarjetas que abren un modal con la info de cada
 // tema (vestimenta, preguntas, niños, itinerario). El contenido vive en
@@ -73,6 +74,46 @@ export default function Modals() {
               />
             </button>
           ))}
+
+          {/* Hospedaje: quinto módulo. No tiene ilustración propia, así que en
+              vez de dejar una tarjeta huérfana en la retícula, cierra el mosaico
+              como banner ancho (2 col en móvil, 4 en desktop) con line-art SVG
+              en el mismo lenguaje que las ilustraciones. */}
+          <button
+            type="button"
+            onClick={() => active.open("hotels")}
+            aria-label={items.hotels.label}
+            className="col-span-2 flex w-full items-center justify-center gap-5 overflow-hidden rounded-2xl bg-[#fbf6f2] px-6 py-5 text-left shadow-sm ring-1 ring-ink/10 hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50 sm:col-span-4 sm:gap-6 sm:py-6"
+          >
+            <svg
+              viewBox="0 0 64 44"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+              className="h-11 w-16 shrink-0 text-moss"
+            >
+              {/* luna creciente y estrella */}
+              <path d="M54 5a7.5 7.5 0 1 0 6.5 11A8.5 8.5 0 0 1 54 5Z" />
+              <path d="M44 6v4M42 8h4" strokeWidth="1.2" />
+              {/* cama: cabecera, almohada, colchón y patas */}
+              <path d="M10 13v19" />
+              <path d="M14 23a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3v3H14Z" />
+              <path d="M10 26h44v6" />
+              <path d="M10 32h44" />
+              <path d="M13 32v5M51 32v5" />
+            </svg>
+            <span>
+              <span className="block font-display text-xl text-ink sm:text-2xl">
+                {items.hotels.label}
+              </span>
+              <span className="mt-0.5 block text-xs text-ink/70 sm:text-sm">
+                {items.hotels.teaser}
+              </span>
+            </span>
+          </button>
         </div>
       </div>
 
@@ -152,7 +193,41 @@ function ModuleBody({ id, t }) {
   if (id === "kids") return <KidsBody t={t} />;
   if (id === "itinerary") return <ItineraryBody t={t} />;
   if (id === "faq") return <FaqBody t={t} />;
+  if (id === "hotels") return <HotelsBody t={t} />;
   return null;
+}
+
+function HotelsBody({ t }) {
+  // mismas filas divididas + píldora que el modal de datos bancarios
+  return (
+    <div>
+      <h3 className="font-display text-2xl">{t.hotels.title}</h3>
+      <p className="mt-2 text-sm italic text-ink/55">{t.hotels.note}</p>
+
+      <ul className="mt-5 divide-y divide-ink/10 border-t border-ink/10">
+        {config.hotels.map((hotel) => (
+          <li key={hotel.name}>
+            <a
+              href={hotel.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center justify-between gap-4 py-4"
+            >
+              <span className="font-display text-base leading-snug text-ink">
+                {hotel.name}
+              </span>
+              <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-moss/40 px-3 py-1 text-[11px] tracking-wide text-moss transition-colors group-hover:bg-moss/10">
+                <svg viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5" aria-hidden="true">
+                  <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Z" />
+                </svg>
+                {t.hotels.cta}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
 }
 
 function DressBody({ t }) {
