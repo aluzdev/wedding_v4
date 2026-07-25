@@ -34,17 +34,6 @@ export default function Registry() {
 
         {/* the two store registries are options → ghost pills */}
         <div className="reveal mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-          {config.liverpoolUrl ? (
-            <a
-              href={config.liverpoolUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition duration-200 ease-out hover:scale-[1.04] hover:bg-sage/50"
-            >
-              {t.registry.ctaLiver}
-            </a>
-          ) : null}
-
           {config.amazonUrl ? (
             <a
               href={config.amazonUrl}
@@ -53,6 +42,17 @@ export default function Registry() {
               className="inline-block rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition duration-200 ease-out hover:scale-[1.04] hover:bg-sage/50"
             >
               {t.registry.ctaAmazon}
+            </a>
+          ) : null}
+
+          {config.liverpoolUrl ? (
+            <a
+              href={config.liverpoolUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition duration-200 ease-out hover:scale-[1.04] hover:bg-sage/50"
+            >
+              {t.registry.ctaLiver}
             </a>
           ) : null}
         </div>
