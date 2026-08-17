@@ -16,7 +16,7 @@ export const config = {
   weddingYear: "2026",
   weddingWeekday: "sábado",
   weddingTime: "",
-  rsvpDeadline: "18/septiembre",
+  rsvpDeadline: "10/septiembre",
 
   // Lugar
   venueName: "Casa de Lago — Jardín de Eventos",
@@ -317,7 +317,7 @@ export const content = {
       dateLine: "Saturday, October 17, 2026 · ",
       venueLine: "Casa de Lago — Jardín de Eventos · Cuautitlán Izcalli",
       cta: "RSVP",
-      deadline: "Please reply by September 18, 2026",
+      deadline: "Please reply by September 10, 2026",
     },
     countdown: {
       title: "Countdown",
@@ -390,7 +390,7 @@ export const content = {
     },
     rsvp: {
       title: "RSVP",
-      deadline: "Please reply by September 18, 2026",
+      deadline: "Please reply by September 10, 2026",
       note: "It helps us save your seat.",
       comingSoon: "The form will be available very soon. Check back here!",
       checking: "One moment…",
@@ -451,7 +451,7 @@ export const content = {
       items: [
         {
           q: "By when do I need to confirm my attendance?",
-          a: "Please RSVP before September 18, 2026. Knowing the final headcount ahead of time helps us a great deal with the seating arrangements.",
+          a: "Please RSVP before September 10, 2026. Knowing the final headcount ahead of time helps us a great deal with the seating arrangements.",
         },
         {
           q: "Can I bring children?",
