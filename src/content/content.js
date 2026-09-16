@@ -211,7 +211,7 @@ export const content = {
     },
     rsvp: {
       title: "Confirma tu asistencia",
-      deadline: "Responde antes del {t.rsvpDeadline}",
+      deadline: "Aún estás a tiempo de confirmar",
       note: "Nos ayuda muchísimo para apartar tu lugar.",
       comingSoon:
         "El formulario estará disponible muy pronto. ¡Vuelve por aquí!",
@@ -269,8 +269,8 @@ export const content = {
       title: "Resolvemos tus dudas",
       items: [
         {
-          q: "¿Hasta cuándo puedo confirmar mi asistencia?",
-          a: "Le solicitamos confirmar antes del {t.rsvpDeadline}. Saber con tiempo cuántos seremos nos ayuda muchísimo a organizar los lugares.",
+          q: "¿Todavía puedo confirmar mi asistencia?",
+          a: "¡Sí! Aún puedes confirmar. Saber cuántos seremos nos ayuda muchísimo a organizar los lugares, así que entre antes, mejor.",
         },
         {
           q: "¿Puedo asistir con niños?",
@@ -390,7 +390,7 @@ export const content = {
     },
     rsvp: {
       title: "RSVP",
-      deadline: "Please reply by September 10, 2026",
+      deadline: "There's still time to confirm",
       note: "It helps us save your seat.",
       comingSoon: "The form will be available very soon. Check back here!",
       checking: "One moment…",
@@ -450,8 +450,8 @@ export const content = {
       title: "Your questions, answered",
       items: [
         {
-          q: "By when do I need to confirm my attendance?",
-          a: "Please RSVP before September 10, 2026. Knowing the final headcount ahead of time helps us a great deal with the seating arrangements.",
+          q: "Can I still confirm my attendance?",
+          a: "Yes! You can still RSVP. Knowing the final headcount helps us a great deal with the seating, so the sooner the better.",
         },
         {
           q: "Can I bring children?",
