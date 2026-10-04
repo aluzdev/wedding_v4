@@ -176,7 +176,7 @@ export const content = {
     },
     location: {
       title: "Cómo llegar",
-      cta: "Abrir en Google Maps",
+      cta: "Ver ruta en Google Maps",
       mapTitle: "Mapa de Casa de Lago — Jardín de Eventos",
     },
     dress: {
@@ -361,7 +361,7 @@ export const content = {
     },
     location: {
       title: "How to get there",
-      cta: "Open in Google Maps",
+      cta: "Get directions",
       mapTitle: "Map of Casa de Lago — Jardín de Eventos",
     },
     dress: {
