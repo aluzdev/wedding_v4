@@ -56,7 +56,11 @@ export default function Ceremony() {
           </span>
         </div>
 
-        <p className="text-sm uppercase tracking-[0.15em] text-linen/70">
+        {/* hora de inicio, protagonista justo debajo de la fecha */}
+        <p className="mt-6 text-[11px] uppercase tracking-[0.25em] text-sage sm:text-xs">
+          {t.ceremony.startsLabel}
+        </p>
+        <p className="mt-1 font-display text-4xl leading-none text-gold sm:text-5xl">
           {t.ceremony.timeLabel}
         </p>
 
@@ -84,30 +88,6 @@ export default function Ceremony() {
             </div>
           </>
         )}
-
-        <span
-          aria-hidden="true"
-          className="mx-auto mt-10 block h-px w-12 bg-glow/15"
-        />
-
-        <p className="mt-8 font-display text-lg text-linen sm:text-xl">
-          {config.venueName}
-        </p>
-
-        <a
-          href={config.mapsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-linen/90 px-6 py-2.5 text-sm font-medium tracking-wide text-night transition duration-200 ease-out hover:scale-[1.04] hover:bg-linen">
-          <svg
-            viewBox="0 0 24 24"
-            className="h-4 w-4"
-            fill="currentColor"
-            aria-hidden="true">
-            <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" />
-          </svg>
-          {t.ceremony.directions}
-        </a>
       </div>
     </section>
   );

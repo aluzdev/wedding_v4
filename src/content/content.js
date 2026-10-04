@@ -170,8 +170,14 @@ export const content = {
     story: { eyebrow: "Los novios", title: "Nosotros 🤍" },
     ceremony: {
       title: "Nuestro gran día",
+      startsLabel: "Te esperamos a las",
       timeLabel: "{t.weddingTime}",
       directions: "Cómo llegar",
+    },
+    location: {
+      title: "Cómo llegar",
+      cta: "Abrir en Google Maps",
+      mapTitle: "Mapa de Casa de Lago — Jardín de Eventos",
     },
     dress: {
       eyebrow: "Código de vestimenta",
@@ -349,8 +355,14 @@ export const content = {
     story: { eyebrow: "The couple", title: "Us 🤍" },
     ceremony: {
       title: "Our big day",
+      startsLabel: "Join us at",
       timeLabel: "12:30 pm",
       directions: "Get directions",
+    },
+    location: {
+      title: "How to get there",
+      cta: "Open in Google Maps",
+      mapTitle: "Map of Casa de Lago — Jardín de Eventos",
     },
     dress: {
       eyebrow: "Dress code",
