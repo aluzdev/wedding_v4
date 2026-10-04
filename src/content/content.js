@@ -33,14 +33,11 @@ export const config = {
   // Guarda la imagen en /public y pon aquí su ruta (ej. "/ninos.jpg"). Vacío = sin foto.
   kidsImage: "", // TODO(Cris & Pris): agregar acuarela del castillo
 
-  // Datos bancarios
-  bankDetails: {
-    bank: "BBVA",
-    holder: "Cristian Molina",
-    clabe: "012164015265662306",
-    account: "1526566230",
-    swift: "BCMRMXMMPYM",
-  },
+  // Datos bancarios: retirados del sitio público (la sección estaba oculta pero
+  // los datos seguían viajando en el bundle JS). Para reactivarlos, restaurar
+  // `bankDetails` y las cadenas `registry.bank*` / `note2` / `ctaBanco` desde el
+  // historial de git (commit anterior a este cambio), junto con el BankModal de
+  // src/sections/Registry.jsx.
   // WhatsApp para dudas — PONER NÚMERO REAL antes de compartir el sitio Formato: código de país + número, solo dígitos. Ej: '5215512345678'
   whatsappNumber: "(+52)55 3948 0008", // TODO(Cris & Pris): número pendiente
   welcomeImage: "../public/luna.jpg", // TODO(Cris & Pris): foto pendiente
@@ -167,7 +164,13 @@ export const content = {
       greetingNote: "Pasa, te estábamos esperando 🤍",
       notFound: "No encontramos esa clave. Revísala o escríbenos por WhatsApp.",
     },
-    story: { eyebrow: "Los novios", title: "Nosotros 🤍" },
+    story: {
+      eyebrow: "Los novios",
+      title: "Nosotros 🤍",
+      prev: "Foto anterior",
+      next: "Foto siguiente",
+      railLabel: "Nuestra historia en fotos — usa las flechas para navegar",
+    },
     ceremony: {
       title: "Nuestro gran día",
       startsLabel: "Te esperamos a las",
@@ -252,17 +255,6 @@ export const content = {
       ctaLiver: "Ver opciones en Liverpool",
       liverEvent: "No. de evento Liverpool: 5202 4083",
       ctaAmazon: "Ver opciones en Amazon",
-      note2: "O si prefieres apoyarnos para nuestra Luna de Miel",
-      ctaBanco: "Ver datos bancarios",
-      bankTitle: "Datos bancarios",
-      bankBank: "Banco",
-      bankHolder: "Titular",
-      bankClabe: "CLABE",
-      bankAccount: "Cuenta",
-      bankCard: "Tarjeta",
-      bankSwift: "SWIFT",
-      bankClose: "Cerrar",
-      bankCopied: "¡Copiado!",
     },
     hotels: {
       eyebrow: "Hospedaje",
@@ -352,7 +344,13 @@ export const content = {
       notFound:
         "We could not find that code. Please check it or message us on WhatsApp.",
     },
-    story: { eyebrow: "The couple", title: "Us 🤍" },
+    story: {
+      eyebrow: "The couple",
+      title: "Us 🤍",
+      prev: "Previous photo",
+      next: "Next photo",
+      railLabel: "Our story in photos — use the arrow keys to navigate",
+    },
     ceremony: {
       title: "Our big day",
       startsLabel: "Join us at",
@@ -438,18 +436,6 @@ export const content = {
       ctaLiver: "View registry at Liverpool",
       liverEvent: "Liverpool event number: 5202 4083",
       ctaAmazon: "View registry on Amazon",
-      note2: "Or if you prefer to help us with our honeymoon",
-      ctaBanco: "View bank details",
-      bankTitle: "Bank details",
-      bankIntro: "For your contribution to our honeymoon:",
-      bankBank: "Bank",
-      bankHolder: "Account holder",
-      bankClabe: "CLABE",
-      bankAccount: "Account",
-      bankCard: "Card",
-      bankSwift: "SWIFT",
-      bankClose: "Close",
-      bankCopied: "Copied!",
     },
     hotels: {
       eyebrow: "Lodging",
