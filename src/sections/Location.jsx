@@ -21,6 +21,8 @@ export default function Location() {
         src="/flower-photo-preview.png"
         alt=""
         aria-hidden="true"
+        loading="lazy"
+        decoding="async"
         className="pointer-events-none absolute right-0 top-0 z-0 w-32 -scale-x-100 select-none sm:w-48"
       />
 

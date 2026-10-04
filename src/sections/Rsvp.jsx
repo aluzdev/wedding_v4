@@ -141,10 +141,14 @@ export default function Rsvp() {
                     className={`flex cursor-pointer items-center justify-between gap-4 rounded-xl px-4 py-4 ring-1 transition-colors ${
                       g.asiste
                         ? "bg-moss/10 ring-moss/30"
-                        : "bg-cream-soft ring-hairline/5"
+                        : "bg-transparent ring-ink/15"
                     }`}
                   >
-                    <span className="font-display text-lg text-ink">
+                    <span
+                      className={`font-display text-lg transition-colors ${
+                        g.asiste ? "text-ink" : "text-ink/80"
+                      }`}
+                    >
                       {g.nombre}
                     </span>
                     <span className="flex items-center gap-2 text-sm text-ink/70">
@@ -153,7 +157,7 @@ export default function Rsvp() {
                         type="checkbox"
                         checked={g.asiste}
                         onChange={() => toggleGuest(i)}
-                        className="h-5 w-5 rounded border-ink/30 text-moss focus:ring-moss"
+                        className="h-5 w-5 cursor-pointer accent-moss focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-moss"
                       />
                     </span>
                   </label>
@@ -243,7 +247,7 @@ function SoloConfirm({ t, familia, loading, error, onYes, onNo }) {
           type="button"
           onClick={onYes}
           disabled={loading}
-          className="rounded-full bg-night px-7 py-3 text-sm font-medium tracking-wide text-cream transition-colors hover:bg-night-soft disabled:opacity-60"
+          className="rounded-full bg-night px-7 py-3 text-sm font-medium tracking-wide text-cream transition-colors hover:bg-night-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-moss disabled:opacity-60"
         >
           {loading ? t.rsvp.submitting : t.rsvp.soloYes}
         </button>
@@ -251,7 +255,7 @@ function SoloConfirm({ t, familia, loading, error, onYes, onNo }) {
           type="button"
           onClick={onNo}
           disabled={loading}
-          className="rounded-full bg-cream-soft px-7 py-3 text-sm font-medium tracking-wide text-fuchsia-100 ring-1 ring-ink/15 transition-colors hover:bg-cream disabled:opacity-60"
+          className="rounded-full bg-transparent px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/30 transition-colors hover:bg-moss/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-moss disabled:opacity-60"
         >
           {t.rsvp.soloNo}
         </button>
@@ -287,7 +291,7 @@ function SubmitButton({ loading, label, loadingLabel }) {
     <button
       type="submit"
       disabled={loading}
-      className="inline-block rounded-full bg-night px-7 py-2.5 text-sm font-medium tracking-wide text-cream transition-colors hover:bg-night-soft disabled:opacity-60"
+      className="inline-block rounded-full bg-night px-7 py-2.5 text-sm font-medium tracking-wide text-cream transition-colors hover:bg-night-soft focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-moss disabled:opacity-60"
     >
       {loading ? loadingLabel : label}
     </button>

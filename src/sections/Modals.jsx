@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { useLang } from "../i18n.jsx";
 import { config } from "../content/content.js";
@@ -41,6 +41,8 @@ export default function Modals() {
         src="/flower-modals.jpg"
         alt=""
         aria-hidden="true"
+        loading="lazy"
+        decoding="async"
         className="pointer-events-none absolute bottom-0 right-0 z-0 w-40 select-none sm:w-56"
       />
 
@@ -92,9 +94,58 @@ function useActiveModule() {
   return { id, open: setId, close: () => setId(null) };
 }
 
+// Elementos que pueden recibir foco con Tab dentro del panel.
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])';
+
+// Manejo de foco del diálogo (WCAG 2.4.3 / 2.1.2): al abrir recuerda quién
+// tenía el foco y lo mueve al panel; mientras está abierto, Tab / Shift+Tab
+// circulan dentro del panel; al cerrar devuelve el foco al disparador.
+function useDialogFocus(isOpen, panelRef) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const trigger = document.activeElement;
+    panelRef.current?.focus({ preventScroll: true });
+
+    const onKey = (e) => {
+      const panel = panelRef.current;
+      if (e.key !== "Tab" || !panel) return;
+      const nodes = [...panel.querySelectorAll(FOCUSABLE)].filter(
+        (el) => el.getClientRects().length > 0
+      );
+      if (nodes.length === 0) {
+        e.preventDefault();
+        panel.focus({ preventScroll: true });
+        return;
+      }
+      const first = nodes[0];
+      const last = nodes[nodes.length - 1];
+      const current = document.activeElement;
+      const outside = !panel.contains(current) || current === panel;
+      if (e.shiftKey && (current === first || outside)) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && (current === last || !panel.contains(current))) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      if (trigger instanceof HTMLElement && trigger.isConnected) {
+        trigger.focus({ preventScroll: true });
+      }
+    };
+  }, [isOpen, panelRef]);
+}
+
 function ModuleModal({ id, onClose }) {
   const { t } = useLang();
   const reduce = useReducedMotion();
+  const panelRef = useRef(null);
+  useDialogFocus(Boolean(id), panelRef);
 
   // cerrar con Escape + bloquear scroll del body mientras está abierto
   useEffect(() => {
@@ -127,20 +178,24 @@ function ModuleModal({ id, onClose }) {
           className="fixed inset-0 z-50 flex items-end justify-center bg-night/80 px-4 py-6 backdrop-blur-sm sm:items-center sm:px-6"
         >
           <motion.div
+            ref={panelRef}
+            tabIndex={-1}
             onClick={(e) => e.stopPropagation()}
             initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: 24, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 320, damping: 30 }}
-            className="relative max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-cream p-7 text-left text-ink shadow-2xl sm:p-9"
+            className="relative max-h-[85vh] w-full max-w-lg overflow-y-auto rounded-2xl bg-cream p-7 text-left text-ink shadow-2xl focus:outline-none sm:p-9"
           >
+            {/* área táctil de 44×44; el ícono de 24px queda centrado, así que
+                el desplazamiento es 16px − 10px = 6px para no moverlo */}
             <button
               type="button"
               onClick={onClose}
               aria-label={t.modulos.close}
-              className="absolute right-4 top-4 text-ink/50 transition-colors hover:text-ink"
+              className="absolute right-1.5 top-1.5 grid h-11 w-11 place-items-center rounded-full text-ink/50 transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss/50"
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" className="h-6 w-6">
                 <path strokeLinecap="round" d="M6 6l12 12M18 6L6 18" />
               </svg>
             </button>
@@ -162,11 +217,11 @@ function ModuleBody({ id, t }) {
 }
 
 function HotelsBody({ t }) {
-  // mismas filas divididas + píldora que el modal de datos bancarios
+  // filas divididas + píldora moss por hotel
   return (
     <div>
       <h3 className="font-display text-2xl">{t.hotels.title}</h3>
-      <p className="mt-2 text-sm italic text-ink/55">{t.hotels.note}</p>
+      <p className="mt-2 text-sm italic text-ink/70">{t.hotels.note}</p>
 
       <ul className="mt-5 divide-y divide-ink/10 border-t border-ink/10">
         {config.hotels.map((hotel) => (
@@ -203,6 +258,8 @@ function DressBody({ t }) {
       <img
         src="/code dress.jpg"
         alt={t.dress.title}
+        loading="lazy"
+        decoding="async"
         className="mt-5 w-full rounded-xl shadow-md"
       />
     </div>
@@ -223,6 +280,8 @@ function KidsBody({ t }) {
       <img
         src="/castle.jpg"
         alt={t.kids.title}
+        loading="lazy"
+        decoding="async"
         className="w-full"
       />
     </div>
@@ -233,7 +292,7 @@ function ItineraryBody({ t }) {
   return (
     <div>
       <h3 className="font-display text-2xl">{t.itinerary.title}</h3>
-      <p className="mt-2 text-sm italic text-ink/55">{t.itinerary.note}</p>
+      <p className="mt-2 text-sm italic text-ink/70">{t.itinerary.note}</p>
 
       <ol className="mt-6 space-y-0">
         {t.itinerary.items.map((it, i, arr) => (

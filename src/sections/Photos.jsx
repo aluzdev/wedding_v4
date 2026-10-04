@@ -14,6 +14,8 @@ export default function Photos() {
         src="/flower-photo-preview.png"
         alt=""
         aria-hidden="true"
+        loading="lazy"
+        decoding="async"
         className="pointer-events-none absolute left-0 top-0 z-0 w-40 select-none sm:w-56"
       />
 
@@ -26,9 +28,15 @@ export default function Photos() {
           {t.photos.title}
         </h2>
 
+        {/* 500×500 webp sin pérdida (2× exacto del original 1000px, aplanado
+            sobre blanco) — ≥2× del tamaño máximo mostrado (208px). */}
         <img
-          src="/QR.png"
+          src="/qr.webp"
           alt={t.photos.title}
+          width="500"
+          height="500"
+          loading="lazy"
+          decoding="async"
           className="mt-9 h-44 w-44 rounded-2xl bg-white p-2 shadow-lg ring-1 ring-ink/10 sm:h-52 sm:w-52"
         />
 

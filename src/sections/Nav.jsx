@@ -5,10 +5,19 @@ export default function Nav() {
 
   return (
     <header className="absolute inset-x-0 top-0 z-50 flex items-center justify-between px-5 py-4 sm:px-8">
-      <a href="#inicio" aria-label="Cris & Pris — inicio" className="inline-flex shrink-0">
+      <a
+        href="#inicio"
+        aria-label="Cris & Pris — inicio"
+        className="inline-flex shrink-0 rounded-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-linen"
+      >
+        {/* 168px = 3× del tamaño máximo renderizado (56px); webp con alfa */}
         <img
-          src="/wedding_logo_trasnparent.png"
+          src="/wedding-logo.webp"
           alt="Cris & Pris"
+          width="168"
+          height="168"
+          decoding="async"
+          fetchPriority="high"
           className="h-12 w-auto drop-shadow-md sm:h-14"
         />
       </a>
@@ -26,7 +35,9 @@ export default function Nav() {
               type="button"
               onClick={() => setLang(code)}
               aria-pressed={lang === code}
-              className={`rounded-full px-3 py-1 ${
+              // before: = área táctil invisible de 44px de alto (WCAG 2.5.8) sin
+              // engordar el pill visible
+              className={`relative rounded-full px-3 py-1 before:absolute before:-inset-x-0.5 before:-inset-y-2.5 before:content-[''] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-linen ${
                 lang === code ? 'bg-linen text-night' : 'text-linen/80 hover:text-linen'
               }`}
             >
@@ -38,7 +49,7 @@ export default function Nav() {
         {/* RSVP: CTA dorado, prominente y visible también en móvil */}
         <a
           href="#rsvp"
-          className="inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-gold px-4 py-1.5 text-xs font-medium tracking-normal text-night shadow-sm transition-transform duration-200 ease-out hover:scale-[1.04] focus-visible:scale-[1.04] focus-visible:outline-none sm:px-5"
+          className="relative inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-gold px-4 py-1.5 text-xs font-medium tracking-normal text-night shadow-sm transition-transform duration-200 ease-out before:absolute before:inset-x-0 before:-inset-y-2 before:content-[''] hover:scale-[1.04] focus-visible:scale-[1.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-linen focus-visible:ring-offset-2 focus-visible:ring-offset-night sm:px-5"
         >
           {/* corazón limpio (estilo material) — pequeño y sólido */}
           <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className="h-3.5 w-3.5">
