@@ -15,7 +15,7 @@ export const config = {
   weddingDay: "17",
   weddingYear: "2026",
   weddingWeekday: "sábado",
-  weddingTime: "",
+  weddingTime: "12:30 p.m.",
   rsvpDeadline: "10/septiembre",
 
   // Lugar
@@ -203,8 +203,8 @@ export const content = {
       title: "Itinerario del día",
       note: "Horarios tentativos — los confirmaremos cerca de la fecha.",
       items: [
-        { time: "12:00", label: "Recepción de invitados" },
-        { time: "12:30", label: "Ceremonia religiosa" },
+        { time: "12:30", label: "Recepción de invitados" },
+        { time: "13:00", label: "Ceremonia religiosa" },
         { time: "15:30", label: "Comida" },
         { time: "20:00", label: "Fin y desalojo del salón" },
       ],
@@ -314,7 +314,7 @@ export const content = {
       announce: "We're getting married!",
       names: "Cris & Pris",
       invite: "and we'd love to celebrate this day with you",
-      dateLine: "Saturday, October 17, 2026 · ",
+      dateLine: "Saturday, October 17, 2026 · 12:30 pm",
       venueLine: "Casa de Lago — Jardín de Eventos · Cuautitlán Izcalli",
       cta: "RSVP",
       deadline: "Please reply by September 10, 2026",
@@ -349,7 +349,7 @@ export const content = {
     story: { eyebrow: "The couple", title: "Us 🤍" },
     ceremony: {
       title: "Our big day",
-      timeLabel: "Ceremony",
+      timeLabel: "12:30 pm",
       directions: "Get directions",
     },
     dress: {
@@ -382,8 +382,8 @@ export const content = {
       title: "Schedule for the day",
       note: "Times are tentative — we'll confirm them closer to the date.",
       items: [
-        { time: "12:00", label: "Guests arrive" },
-        { time: "12:30", label: "Religious ceremony" },
+        { time: "12:30", label: "Guests arrive" },
+        { time: "13:00", label: "Religious ceremony" },
         { time: "15:30", label: "Lunch" },
         { time: "20:00", label: "Event ends — please vacate the venue" },
       ],
