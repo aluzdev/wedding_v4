@@ -1,18 +1,21 @@
+import { useState } from 'react'
 import { useLang } from '../i18n.jsx'
 import { config } from '../content/content.js'
 
 // "Cómo llegar": misma gramática que las otras secciones crema (Regalos,
 // Fotos): título Fraunces itálico, enredadera en la esquina y píldora salvia.
-// El mapa va teñido en la paleta del sitio (papel/sepia) y recupera su color al
-// pasar el mouse, para poder leerlo.
+// El mapa se ve normal; cualquier clic abre un selector Google Maps / Waze.
 // ponytail: embed por query (?q=…&output=embed) — no requiere API key.
 const PLACE = `${config.venueName}, ${config.venueAddress}`
 const MAP_SRC = `https://www.google.com/maps?q=${encodeURIComponent(PLACE)}&output=embed`
 // El botón traza la ruta (acción distinta al "abrir" de la tarjeta de Google).
 const DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(PLACE)}`
+const WAZE_URL = `https://waze.com/ul?q=${encodeURIComponent(PLACE)}&navigate=yes`
 
 export default function Location() {
-  const { t } = useLang()
+  const { t, lang } = useLang()
+  const [open, setOpen] = useState(false)
+  const en = lang === 'en'
 
   return (
     <section id="como-llegar" className="surface-cream relative overflow-hidden px-6 py-16 sm:py-24">
@@ -46,21 +49,70 @@ export default function Location() {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             allowFullScreen
-            className="relative block aspect-[4/3] w-full border-0 grayscale sepia-[0.35] contrast-[0.95] transition-[filter] duration-500 ease-out hover:grayscale-0 hover:sepia-0 hover:contrast-100 sm:aspect-[16/9]"
+            className="relative block aspect-[4/3] w-full border-0 sm:aspect-[16/9]"
+          />
+          {/* capa transparente: cualquier clic en el mapa abre el selector */}
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            aria-label={t.location.cta}
+            className="absolute inset-0 z-10 cursor-pointer bg-transparent"
           />
         </div>
 
-        <a
-          href={DIRECTIONS_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
           className="reveal mt-8 inline-flex items-center gap-2 rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition duration-200 ease-out hover:scale-[1.04] hover:bg-sage/50"
         >
           <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
             <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" />
           </svg>
           {t.location.cta}
-        </a>
+        </button>
+
+        {open ? (
+          <div
+            className="fixed inset-0 z-50 flex items-end justify-center bg-night/70 px-4 py-6 backdrop-blur-sm sm:items-center"
+            onClick={() => setOpen(false)}
+            role="dialog"
+            aria-modal="true"
+          >
+            <div
+              className="w-full max-w-sm rounded-2xl bg-cream p-6 text-center shadow-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <p className="font-display text-xl text-ink">{en ? 'Open with' : 'Abrir con'}</p>
+              <div className="mt-5 flex flex-col gap-3">
+                <a
+                  href={DIRECTIONS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="rounded-full bg-sage/30 px-6 py-3 text-sm font-medium text-moss ring-1 ring-moss/20 transition hover:bg-sage/50"
+                >
+                  Google Maps
+                </a>
+                <a
+                  href={WAZE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                  className="rounded-full bg-sage/30 px-6 py-3 text-sm font-medium text-moss ring-1 ring-moss/20 transition hover:bg-sage/50"
+                >
+                  Waze
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="mt-1 text-sm text-ink/60 underline-offset-4 hover:underline"
+                >
+                  {en ? 'Cancel' : 'Cancelar'}
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : null}
       </div>
     </section>
   )
