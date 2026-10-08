@@ -28,7 +28,8 @@
       "Bash(node ./_sample.mjs)",
       "Bash(git config *)",
       "Bash(git commit -m ' *)",
-      "Bash(git pull *)"
+      "Bash(git pull *)",
+      "Bash(gh run *)"
     ]
   },
   "hooks": {

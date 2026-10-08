@@ -10,12 +10,12 @@ export const config = {
     novia: "Priscila",
   },
   // Fecha y hora de la ceremonia (zona CDMX)
-  weddingDateISO: "2026-10-17T00:00:00-06:00",
+  weddingDateISO: "2026-10-17T14:30:00-06:00",
   weddingMonth: "octubre",
   weddingDay: "17",
   weddingYear: "2026",
   weddingWeekday: "sábado",
-  weddingTime: "",
+  weddingTime: "2:30 p.m.",
   rsvpDeadline: "18/septiembre",
 
   // Lugar
@@ -200,12 +200,12 @@ export const content = {
     },
     itinerary: {
       title: "Itinerario del día",
-      note: "Horarios tentativos — los confirmaremos cerca de la fecha.",
+      note: "",
       items: [
-        { time: "12:00", label: "Recepción de invitados" },
-        { time: "12:30", label: "Ceremonia religiosa" },
-        { time: "15:30", label: "Comida" },
-        { time: "20:00", label: "Fin y desalojo del salón" },
+        { label: "Recepción de invitados" },
+        { label: "Ceremonia religiosa" },
+        { label: "Comida" },
+        { label: "Fin y desalojo del salón" },
       ],
     },
     rsvp: {
@@ -347,7 +347,7 @@ export const content = {
     story: { eyebrow: "The couple", title: "Us 🤍" },
     ceremony: {
       title: "Our big day",
-      timeLabel: "Ceremony",
+      timeLabel: "Ceremony · 2:30 p.m.",
       directions: "Get directions",
     },
     dress: {
@@ -377,12 +377,12 @@ export const content = {
     },
     itinerary: {
       title: "Schedule for the day",
-      note: "Times are tentative — we'll confirm them closer to the date.",
+      note: "",
       items: [
-        { time: "12:00", label: "Guests arrive" },
-        { time: "12:30", label: "Religious ceremony" },
-        { time: "15:30", label: "Lunch" },
-        { time: "20:00", label: "Event ends — please vacate the venue" },
+        { label: "Guests arrive" },
+        { label: "Religious ceremony" },
+        { label: "Lunch" },
+        { label: "Event ends — please vacate the venue" },
       ],
     },
     rsvp: {

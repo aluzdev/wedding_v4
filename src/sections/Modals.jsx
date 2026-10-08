@@ -194,7 +194,7 @@ function ItineraryBody({ t }) {
   return (
     <div>
       <h3 className="font-display text-2xl">{t.itinerary.title}</h3>
-      <p className="mt-2 text-sm italic text-ink/55">{t.itinerary.note}</p>
+      {t.itinerary.note ? <p className="mt-2 text-sm italic text-ink/55">{t.itinerary.note}</p> : null}
 
       <ol className="mt-6 space-y-0">
         {t.itinerary.items.map((it, i, arr) => (
