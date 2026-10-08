@@ -1,6 +1,6 @@
 import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, ArrowUpRight } from "lucide-react";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useLang } from "../i18n.jsx";
 import { config } from "../content/content.js";
 
@@ -19,7 +19,15 @@ export default function Story() {
 
   return (
     <section id="historia" className="surface-night">
-      <FocusRail items={items} title={t.story.title} loop autoPlay={false} />
+      <FocusRail
+        items={items}
+        title={t.story.title}
+        prevLabel={t.story.prev}
+        nextLabel={t.story.next}
+        railLabel={t.story.railLabel}
+        loop
+        autoPlay={false}
+      />
     </section>
   );
 }
@@ -39,9 +47,18 @@ const BASE_SPRING = { type: "spring", stiffness: 300, damping: 30, mass: 1 };
 /** Bouncier spring for the visual "tap" feedback on the center card */
 const TAP_SPRING = { type: "spring", stiffness: 450, damping: 18, mass: 1 };
 
+/** Per-value card transitions: bouncier scale ("tap"), base spring for the rest */
+const CARD_TRANSITION = { default: BASE_SPRING, scale: TAP_SPRING };
+
+/** Reduced motion: the rail snaps to its new pose, no travel/rotation */
+const INSTANT = { duration: 0 };
+
 function FocusRail({
   items,
   title,
+  prevLabel,
+  nextLabel,
+  railLabel,
   initialIndex = 0,
   loop = true,
   autoPlay = false,
@@ -51,6 +68,7 @@ function FocusRail({
   const [active, setActive] = React.useState(initialIndex);
   const [isHovering, setIsHovering] = React.useState(false);
   const lastWheelTime = React.useRef(0);
+  const reduceMotion = useReducedMotion();
 
   const count = items.length;
   const activeIndex = wrap(0, count, active);
@@ -67,19 +85,21 @@ function FocusRail({
     setActive((p) => p + 1);
   }, [loop, active, count]);
 
-  // --- MOUSE WHEEL / TRACKPAD LOGIC ---
+  // --- TRACKPAD (HORIZONTAL) LOGIC ---
+  // Only horizontal-dominant gestures flip slides. Vertical wheel/trackpad
+  // deltas are ignored entirely so scrolling the page past the section never
+  // changes the photo.
   const onWheel = React.useCallback(
     (e) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+
       const now = Date.now();
       // Debounce: prevent rapid firing from inertia scrolling (400ms lockout)
       if (now - lastWheelTime.current < 400) return;
 
-      const isHorizontal = Math.abs(e.deltaX) > Math.abs(e.deltaY);
-      const delta = isHorizontal ? e.deltaX : e.deltaY;
-
       // Threshold to avoid accidental micro-scrolls
-      if (Math.abs(delta) > 20) {
-        if (delta > 0) handleNext();
+      if (Math.abs(e.deltaX) > 20) {
+        if (e.deltaX > 0) handleNext();
         else handlePrev();
         lastWheelTime.current = now;
       }
@@ -115,16 +135,23 @@ function FocusRail({
   return (
     <div
       className={cn(
-        "group relative flex h-[750px] w-full flex-col overflow-hidden bg-night text-cream outline-none select-none overflow-x-hidden",
+        "group relative flex h-[750px] w-full flex-col overflow-hidden bg-night text-cream outline-none select-none overflow-x-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-linen/70",
         className,
       )}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={railLabel}
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
       tabIndex={0}
       onKeyDown={onKeyDown}
       onWheel={onWheel}
     >
-      {/* Background Ambience */}
+      {/* Background Ambience
+          Perf: the blur runs on a quarter-size layer scaled 4x (16px blur x4 ≈
+          the old blur-3xl 64px) → ~1/16 of the pixels to filter per slide. A
+          blurred photo has no detail to lose, so the down-scale is invisible.
+          Only opacity animates (compositor-only). */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <AnimatePresence mode="popLayout">
           <motion.div
@@ -132,14 +159,17 @@ function FocusRail({
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.4 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="absolute inset-0"
+            transition={{ duration: reduceMotion ? 0.3 : 0.8, ease: "easeOut" }}
+            className="absolute inset-0 overflow-hidden"
           >
-            <img
-              src={activeItem.imageSrc}
-              alt=""
-              className="h-full w-full object-cover blur-3xl saturate-200"
-            />
+            <div className="absolute left-0 top-0 h-1/4 w-1/4 origin-top-left scale-[4]">
+              <img
+                src={activeItem.imageSrc}
+                alt=""
+                decoding="async"
+                className="h-full w-full object-cover blur-lg saturate-200"
+              />
+            </div>
             <div className="absolute inset-0 bg-gradient-to-t from-night via-night/50 to-transparent" />
           </motion.div>
         </AnimatePresence>
@@ -181,8 +211,10 @@ function FocusRail({
             const rotateY = offset * -20;
 
             const opacity = isCenter ? 1 : Math.max(0.1, 1 - dist * 0.5);
-            const blur = isCenter ? 0 : dist * 6;
-            const brightness = isCenter ? 1 : 0.5;
+            // Dimming = brightness(0.5), done as a black overlay's opacity so
+            // it animates on the compositor instead of re-running a CSS filter
+            // (and the old per-card depth blur) on every frame.
+            const dim = isCenter ? 0 : 0.5;
 
             return (
               <motion.div
@@ -198,13 +230,8 @@ function FocusRail({
                   scale: scale,
                   rotateY: rotateY,
                   opacity: opacity,
-                  filter: `blur(${blur}px) brightness(${brightness})`,
                 }}
-                transition={(val) => {
-                  // Bouncier spring for scale → the "tap" effect
-                  if (val === "scale") return TAP_SPRING;
-                  return BASE_SPRING;
-                }}
+                transition={reduceMotion ? INSTANT : CARD_TRANSITION}
                 style={{ transformStyle: "preserve-3d" }}
                 onClick={() => {
                   if (offset !== 0) setActive((p) => p + offset);
@@ -213,12 +240,23 @@ function FocusRail({
                 <img
                   src={item.imageSrc}
                   alt={item.title}
+                  decoding="async"
+                  loading={isCenter ? "eager" : "lazy"}
                   className="h-full w-full rounded-2xl object-contain pointer-events-none"
                 />
 
                 {/* Lighting layers */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-b from-glow/10 to-transparent pointer-events-none" />
                 <div className="absolute inset-0 rounded-2xl bg-hairline/10 pointer-events-none mix-blend-multiply" />
+
+                {/* Off-center dimming */}
+                <motion.div
+                  aria-hidden="true"
+                  className="absolute inset-0 rounded-2xl bg-hairline pointer-events-none"
+                  initial={false}
+                  animate={{ opacity: dim }}
+                  transition={reduceMotion ? INSTANT : { duration: 0.3, ease: "easeOut" }}
+                />
               </motion.div>
             );
           })}
@@ -226,58 +264,56 @@ function FocusRail({
 
         {/* Info & Controls */}
         <div className="mx-auto mt-12 flex w-full max-w-4xl flex-col items-center justify-between gap-6 md:flex-row pointer-events-auto">
-          <div className="flex flex-1 flex-col items-center text-center md:items-start md:text-left h-32 justify-center -translate-y-0.5">
+          <div
+            className="flex flex-1 flex-col items-center text-center md:items-start md:text-left h-32 justify-center -translate-y-0.5"
+            aria-live="polite"
+          >
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeItem.id}
-                initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
-                transition={{ duration: 0.3 }}
-                className="space-y-2"
+                initial={
+                  reduceMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, y: 10, filter: "blur(4px)" }
+                }
+                animate={
+                  reduceMotion
+                    ? { opacity: 1 }
+                    : { opacity: 1, y: 0, filter: "blur(0px)" }
+                }
+                exit={
+                  reduceMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, y: -10, filter: "blur(4px)" }
+                }
+                transition={{ duration: reduceMotion ? 0.15 : 0.3 }}
               >
-                {activeItem.meta && (
-                  <span className="text-xs font-medium uppercase tracking-wider text-gold">
-                    {activeItem.meta}
-                  </span>
-                )}
-                <h2 className="font-display text-[28px] tracking-tight md:text-4xl text-cream">
+                <p className="font-display text-[28px] tracking-tight md:text-4xl text-cream">
                   {activeItem.title}
-                </h2>
+                </p>
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-1 rounded-full bg-night-soft/80 p-1 ring-1 ring-glow/10 backdrop-blur-md">
-              <button
-                onClick={handlePrev}
-                className="rounded-full p-3 text-linen/70 transition hover:bg-glow/10 hover:text-cream active:scale-95"
-                aria-label="Previous"
-              >
-                <ChevronLeft className="h-5 w-5" />
-              </button>
-              <span className="min-w-[40px] text-center text-xs font-mono text-linen/50">
-                {activeIndex + 1} / {count}
-              </span>
-              <button
-                onClick={handleNext}
-                className="rounded-full p-3 text-linen/70 transition hover:bg-glow/10 hover:text-cream active:scale-95"
-                aria-label="Next"
-              >
-                <ChevronRight className="h-5 w-5" />
-              </button>
-            </div>
-
-            {activeItem.href && (
-              <a
-                href={activeItem.href}
-                className="group flex items-center gap-2 rounded-full bg-gold px-5 py-3 text-sm font-semibold text-night transition-transform hover:scale-105 active:scale-95"
-              >
-                Explore
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
-              </a>
-            )}
+          <div className="flex items-center gap-1 rounded-full bg-night-soft/80 p-1 ring-1 ring-glow/10 backdrop-blur-md">
+            <button
+              onClick={handlePrev}
+              className="rounded-full p-3 text-linen/70 transition hover:bg-glow/10 hover:text-cream active:scale-95"
+              aria-label={prevLabel}
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            {/* linen/80 on night-soft = 6.72:1 (was linen/50 = 3.59:1) */}
+            <span className="min-w-[40px] text-center text-xs font-mono text-linen/80">
+              {activeIndex + 1} / {count}
+            </span>
+            <button
+              onClick={handleNext}
+              className="rounded-full p-3 text-linen/70 transition hover:bg-glow/10 hover:text-cream active:scale-95"
+              aria-label={nextLabel}
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
           </div>
         </div>
       </div>

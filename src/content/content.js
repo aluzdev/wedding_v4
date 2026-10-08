@@ -33,14 +33,11 @@ export const config = {
   // Guarda la imagen en /public y pon aquí su ruta (ej. "/ninos.jpg"). Vacío = sin foto.
   kidsImage: "", // TODO(Cris & Pris): agregar acuarela del castillo
 
-  // Datos bancarios
-  bankDetails: {
-    bank: "BBVA",
-    holder: "Cristian Molina",
-    clabe: "012164015265662306",
-    account: "1526566230",
-    swift: "BCMRMXMMPYM",
-  },
+  // Datos bancarios: retirados del sitio público (la sección estaba oculta pero
+  // los datos seguían viajando en el bundle JS). Para reactivarlos, restaurar
+  // `bankDetails` y las cadenas `registry.bank*` / `note2` / `ctaBanco` desde el
+  // historial de git (commit anterior a este cambio), junto con el BankModal de
+  // src/sections/Registry.jsx.
   // WhatsApp para dudas — PONER NÚMERO REAL antes de compartir el sitio Formato: código de país + número, solo dígitos. Ej: '5215512345678'
   whatsappNumber: "(+52)55 3948 0008", // TODO(Cris & Pris): número pendiente
   welcomeImage: "../public/luna.jpg", // TODO(Cris & Pris): foto pendiente
@@ -167,11 +164,23 @@ export const content = {
       greetingNote: "Pasa, te estábamos esperando 🤍",
       notFound: "No encontramos esa clave. Revísala o escríbenos por WhatsApp.",
     },
-    story: { eyebrow: "Los novios", title: "Nosotros 🤍" },
+    story: {
+      eyebrow: "Los novios",
+      title: "Nosotros 🤍",
+      prev: "Foto anterior",
+      next: "Foto siguiente",
+      railLabel: "Nuestra historia en fotos — usa las flechas para navegar",
+    },
     ceremony: {
       title: "Nuestro gran día",
+      startsLabel: "Te esperamos a las",
       timeLabel: "{t.weddingTime}",
       directions: "Cómo llegar",
+    },
+    location: {
+      title: "Cómo llegar",
+      cta: "Ver ruta en Google Maps",
+      mapTitle: "Mapa de Casa de Lago — Jardín de Eventos",
     },
     dress: {
       eyebrow: "Código de vestimenta",
@@ -191,6 +200,7 @@ export const content = {
         faq: { label: "Preguntas frecuentes", teaser: "Resolvemos tus dudas" },
         kids: { label: "Los más pequeños", teaser: "Diversión para los niños" },
         itinerary: { label: "Itinerario", teaser: "El orden del día" },
+        hotels: { label: "Hospedaje", teaser: "Hoteles cerca del jardín" },
       },
     },
     kids: {
@@ -210,14 +220,13 @@ export const content = {
     },
     rsvp: {
       title: "Confirma tu asistencia",
-      deadline: "Responde antes del {t.rsvpDeadline}",
+      deadline: "Aún estás a tiempo de confirmar",
       note: "Nos ayuda muchísimo para apartar tu lugar.",
       comingSoon:
         "El formulario estará disponible muy pronto. ¡Vuelve por aquí!",
       checking: "Un momento…",
-      noLinkTitle: "Abre tu invitación personalizada",
-      noLinkText:
-        "Para confirmar tu asistencia, entra desde el link que te enviamos por WhatsApp. Si no lo encuentras, escríbenos y con gusto te lo reenviamos.",
+      noLinkTitle:
+        "Para confirmar tu asistencia escríbenos por WhatsApp y con gusto te atendemos",
       noLinkWhatsapp: "Escríbenos por WhatsApp",
       greeting: "Hola, {familia}",
       greetingFamily: "Hola, familia {familia}",
@@ -244,31 +253,22 @@ export const content = {
       title: "Tu presencia es nuestro regalo",
       note: "Si deseas tener un detalle con nosotros:",
       ctaLiver: "Ver opciones en Liverpool",
+      liverEvent: "No. de evento Liverpool: 5202 4083",
       ctaAmazon: "Ver opciones en Amazon",
-      note2: "O si prefieres apoyarnos para nuestra Luna de Miel",
-      ctaBanco: "Ver datos bancarios",
-      bankTitle: "Datos bancarios",
-      bankBank: "Banco",
-      bankHolder: "Titular",
-      bankClabe: "CLABE",
-      bankAccount: "Cuenta",
-      bankCard: "Tarjeta",
-      bankSwift: "SWIFT",
-      bankClose: "Cerrar",
-      bankCopied: "¡Copiado!",
     },
     hotels: {
       eyebrow: "Hospedaje",
       title: "Para quienes vienen de fuera",
       note: "Sugerencias de hoteles cerca del jardín.",
+      cta: "Ver mapa",
     },
     faq: {
       eyebrow: "Preguntas frecuentes",
       title: "Resolvemos tus dudas",
       items: [
         {
-          q: "¿Hasta cuándo puedo confirmar mi asistencia?",
-          a: "Le solicitamos confirmar antes del {t.rsvpDeadline}. Saber con tiempo cuántos seremos nos ayuda muchísimo a organizar los lugares.",
+          q: "¿Todavía puedo confirmar mi asistencia?",
+          a: "¡Sí! Aún puedes confirmar. Saber cuántos seremos nos ayuda muchísimo a organizar los lugares, así que entre antes, mejor.",
         },
         {
           q: "¿Puedo asistir con niños?",
@@ -312,10 +312,10 @@ export const content = {
       announce: "We're getting married!",
       names: "Cris & Pris",
       invite: "and we'd love to celebrate this day with you",
-      dateLine: "Saturday, October 17, 2026 · ",
+      dateLine: "Saturday, October 17, 2026 · 12:30 pm",
       venueLine: "Casa de Lago — Jardín de Eventos · Cuautitlán Izcalli",
       cta: "RSVP",
-      deadline: "Please reply by September 18, 2026",
+      deadline: "Please reply by September 10, 2026",
     },
     countdown: {
       title: "Countdown",
@@ -344,11 +344,22 @@ export const content = {
       notFound:
         "We could not find that code. Please check it or message us on WhatsApp.",
     },
-    story: { eyebrow: "The couple", title: "Us 🤍" },
+    story: {
+      eyebrow: "The couple",
+      title: "Us 🤍",
+      prev: "Previous photo",
+      next: "Next photo",
+      railLabel: "Our story in photos — use the arrow keys to navigate",
+    },
     ceremony: {
       title: "Our big day",
       timeLabel: "Ceremony · 2:30 p.m.",
       directions: "Get directions",
+    },
+    location: {
+      title: "How to get there",
+      cta: "Get directions",
+      mapTitle: "Map of Casa de Lago — Jardín de Eventos",
     },
     dress: {
       eyebrow: "Dress code",
@@ -368,6 +379,7 @@ export const content = {
         faq: { label: "FAQ", teaser: "Your questions, answered" },
         kids: { label: "For the little ones", teaser: "Fun for the kids" },
         itinerary: { label: "Itinerary", teaser: "The order of the day" },
+        hotels: { label: "Lodging", teaser: "Hotels near the venue" },
       },
     },
     kids: {
@@ -387,13 +399,12 @@ export const content = {
     },
     rsvp: {
       title: "RSVP",
-      deadline: "Please reply by September 18, 2026",
+      deadline: "There's still time to confirm",
       note: "It helps us save your seat.",
       comingSoon: "The form will be available very soon. Check back here!",
       checking: "One moment…",
-      noLinkTitle: "Open your personal invitation",
-      noLinkText:
-        "To RSVP, please open the site from the link we sent you on WhatsApp. If you can’t find it, message us and we’ll gladly resend it.",
+      noLinkTitle:
+        "To RSVP, message us on WhatsApp and we'll gladly help you",
       noLinkWhatsapp: "Message us on WhatsApp",
       greeting: "Hello, {familia}",
       greetingFamily: "Hello, {familia} family",
@@ -422,32 +433,22 @@ export const content = {
       title: "Your presence is our gift",
       note: "If you would also like to give us something:",
       ctaLiver: "View registry at Liverpool",
+      liverEvent: "Liverpool event number: 5202 4083",
       ctaAmazon: "View registry on Amazon",
-      note2: "Or if you prefer to help us with our honeymoon",
-      ctaBanco: "View bank details",
-      bankTitle: "Bank details",
-      bankIntro: "For your contribution to our honeymoon:",
-      bankBank: "Bank",
-      bankHolder: "Account holder",
-      bankClabe: "CLABE",
-      bankAccount: "Account",
-      bankCard: "Card",
-      bankSwift: "SWIFT",
-      bankClose: "Close",
-      bankCopied: "Copied!",
     },
     hotels: {
       eyebrow: "Lodging",
       title: "Coming from out of town?",
       note: "Hotel suggestions near the venue — special rates coming soon.",
+      cta: "View map",
     },
     faq: {
       eyebrow: "FAQ",
       title: "Your questions, answered",
       items: [
         {
-          q: "By when do I need to confirm my attendance?",
-          a: "Please RSVP before September 18, 2026. Knowing the final headcount ahead of time helps us a great deal with the seating arrangements.",
+          q: "Can I still confirm my attendance?",
+          a: "Yes! You can still RSVP. Knowing the final headcount helps us a great deal with the seating, so the sooner the better.",
         },
         {
           q: "Can I bring children?",
