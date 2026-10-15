@@ -5,7 +5,8 @@
 // del apellido se quitan títulos ("Pst"), "Fotografo" y nombres de pila del
 // mismo grupo ("Lara Elsie" → "Lara"). El sitio muestra apellido (o nota)
 // solo en nombres de una palabra cuyo primer nombre se repite.
-// Cambios sobre la hoja: "Jorge Alberto" → "Jorge Mi Brother".
+// Cambios sobre la hoja: "Jorge Alberto" → "Jorge Mi Brother"; sin "Papi Talli";
+// `apodos` = otros nombres con los que alguien se puede buscar (Xitlalli → Talli).
 export const MESAS = [
   { table: 1, familia: "Calderon Ponce", names: ["Rolando", "Adriana", "Matias"] },
   { table: 1, familia: "Flores Rojas", names: ["Lucy", "Gerardo"] },
@@ -47,7 +48,7 @@ export const MESAS = [
   { table: 8, familia: "Angeles", names: ["Lucila"] },
   { table: 8, familia: "Alvarez Angeles", names: ["Joan", "Lidia"] },
   { table: 8, familia: "Mejia", names: ["Janeth", "Fermin"] },
-  { table: 8, familia: "Lopez", names: ["Jano", "Xitlalli"] },
+  { table: 8, familia: "Lopez", names: ["Jano", "Xitlalli"], apodos: {"Xitlalli": ["Talli"]} },
   { table: 9, familia: "Cortes", names: ["Daniel", "Ana", "Sharon", "Julia"] },
   { table: 9, familia: "Vargas", names: ["Jorge", "Evita", "Eva"] },
   { table: 9, familia: "Palma", names: ["Chavita", "Chivis", "Jonathan", "Perla"] },
@@ -57,7 +58,6 @@ export const MESAS = [
   { table: 10, familia: "Lara", names: ["Elsie", "Miguel"] },
   { table: 10, familia: "Servin", names: ["Monica", "Lupita"] },
   { table: 10, familia: "Calzada", names: ["Alma", "Ramon"] },
-  { table: 11, familia: "Lopez Jano", names: ["Papi Talli"] },
   { table: 11, familia: "", names: ["Fabian"] },
   { table: 11, familia: "Gomez Ruiz", names: ["Christian", "Mariana"] },
   { table: 11, familia: "Gomez Farfan", names: ["Cristobal", "Melissa"] },

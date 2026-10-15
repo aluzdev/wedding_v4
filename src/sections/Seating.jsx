@@ -1,5 +1,5 @@
-import { useMemo, useRef, useState } from 'react'
-import { Search, X } from 'lucide-react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { ChevronRight, Search, X } from 'lucide-react'
 import { useLang } from '../i18n.jsx'
 import { MESAS } from '../content/mesas.js'
 
@@ -36,28 +36,43 @@ function displayName(name, group) {
   return nota ? `${name} (${nota})` : name
 }
 
-// índice: un registro por persona, con su grupo y su mesa; el apellido
-// también se puede buscar ("Monica Servin", "Servin")
+// índice: un registro por persona, con su grupo y su mesa
 const PEOPLE = MESAS.flatMap((g, gi) =>
   g.names.map((name) => ({
     name,
+    familia: g.familia,
     label: displayName(name, g),
     group: gi,
     table: g.table,
-    key: norm(`${name} ${g.familia}`),
-    words: norm(`${name} ${g.familia}`).split(' '),
+    nameKey: norm(name),
+    // los apodos cuentan como nombre ("Talli" encuentra a Xitlalli)
+    nameWords: [...norm(name).split(' '), ...(g.apodos?.[name] || []).map(norm)],
+    fullKey: norm(`${name} ${g.familia}`),
+    famWords: norm(g.familia).split(' ').filter(Boolean),
   })),
 )
 
-// coincide si el nombre (o cualquiera de sus palabras) empieza con lo escrito;
-// primero los que empiezan igual que el nombre completo
+// Primero el nombre: coincide si el nombre (o una de sus palabras) empieza con
+// lo escrito. El apellido solo entra si no hay ningún nombre que coincida
+// ("Servin") o si se escribió nombre y apellido ("Monica Servin"); así "he"
+// muestra a Hector y no a toda la familia Herrera. Cuando alguien aparece por
+// su apellido, la tarjeta lo muestra para que se entienda por qué salió.
 function match(q) {
-  const hits = []
+  const byName = []
+  const bySurname = []
   for (const p of PEOPLE) {
-    if (p.key.startsWith(q)) hits.push({ ...p, rank: 0 })
-    else if (p.words.some((w) => w.startsWith(q)) || (q.includes(' ') && p.key.includes(q)))
-      hits.push({ ...p, rank: 1 })
+    if (p.nameKey.startsWith(q)) byName.push({ ...p, rank: 0 })
+    else if (p.nameWords.some((w) => w.startsWith(q))) byName.push({ ...p, rank: 1 })
+    else if (
+      p.fullKey.startsWith(q) ||
+      (q.includes(' ') && p.fullKey.includes(q)) ||
+      p.famWords.some((w) => w.startsWith(q))
+    ) {
+      const withSurname = p.familia && !p.label.includes(p.familia) ? `${p.name} ${p.familia}` : p.label
+      bySurname.push({ ...p, label: withSurname, rank: 2 })
+    }
   }
+  const hits = byName.length && !q.includes(' ') ? byName : [...byName, ...bySurname]
   return hits.sort((a, b) => a.rank - b.rank || a.table - b.table || a.name.localeCompare(b.name))
 }
 
@@ -91,43 +106,58 @@ function readSaved() {
 export default function Seating() {
   const { t } = useLang()
   const s = t.seating
-  const [query, setQuery] = useState('')
+  // al volver al sitio se restaura a quien ya se buscó: su nombre queda escrito
   const [picked, setPicked] = useState(readSaved) // { name, group, table }
-  const [announce, setAnnounce] = useState('')
+  const [query, setQuery] = useState(() => (picked ? labelOf(picked) : ''))
   const resultRef = useRef(null)
   const inputRef = useRef(null)
 
   const { hits, fallback } = useMemo(() => search(query), [query])
   const typed = norm(query).length >= 2
 
-  function pick(p) {
-    const sel = { name: p.name, group: p.group, table: p.table }
-    setPicked(sel)
-    setAnnounce(`${displayName(p.name, MESAS[p.group])}, ${s.yourTableIs} ${p.table}`)
+  // La respuesta aparece sola: si lo escrito deja una sola persona, o si se
+  // eligió una de la lista (el nombre elegido se completa en el buscador).
+  const current = useMemo(() => {
+    if (picked && norm(query) === norm(labelOf(picked))) return picked
+    if (hits.length === 1) return hits[0]
+    return null
+  }, [picked, query, hits])
+
+  // recuerda a la persona mostrada (para el día de la boda) y la anuncia
+  const currentKey = current ? `${current.group}-${current.name}` : ''
+  const announce = current ? `${labelOf(current)}, ${s.yourTableIs} ${current.table}` : ''
+  useEffect(() => {
+    if (!current) return
+    const sel = { name: current.name, group: current.group, table: current.table }
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(sel)) } catch { /* sin storage */ }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentKey])
+
+  function choose(p) {
+    setPicked({ name: p.name, group: p.group, table: p.table })
+    setQuery(labelOf(p))
     inputRef.current?.blur()
-    // lleva la vista al resultado una vez pintado (el teclado ya se cerró)
+    // lleva la vista a la respuesta una vez pintada (el teclado ya se cerró)
     setTimeout(() => resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60)
   }
 
   function reset() {
     setPicked(null)
     setQuery('')
-    setAnnounce('')
     try { localStorage.removeItem(STORAGE_KEY) } catch { /* sin storage */ }
-    requestAnimationFrame(() => inputRef.current?.focus())
+    inputRef.current?.focus()
+    inputRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
-  // tecla "Buscar"/Enter del teclado: con un solo resultado lo elige; si hay
-  // varios, cierra el teclado para que se vea la lista completa
+  // tecla "Buscar"/Enter: cierra el teclado para que se vea la respuesta o la lista
   function onSubmit(e) {
     e.preventDefault()
-    if (hits.length === 1) pick(hits[0])
-    else inputRef.current?.blur()
+    inputRef.current?.blur()
+    if (current) setTimeout(() => resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60)
   }
 
   let status = ''
-  if (typed) {
+  if (typed && !current) {
     if (hits.length === 0) status = s.notFound.replace('{q}', query.trim())
     else if (fallback) status = s.fallback.replace('{q}', query.trim()).replace('{first}', fallback)
     else status = s.pickOne
@@ -153,87 +183,101 @@ export default function Seating() {
           <h2 className="mx-auto max-w-xl font-display text-[clamp(2rem,6vw,3.25rem)] italic leading-[1.1] text-balance">
             {s.title}
           </h2>
-          {!picked && (
-            <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-ink/70 sm:text-base">{s.intro}</p>
-          )}
+          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-ink/70 sm:text-base">{s.intro}</p>
         </header>
 
-        {/* anuncio para lectores de pantalla (persistente: la lista se desmonta) */}
+        {/* anuncio para lectores de pantalla */}
         <p className="sr-only" aria-live="polite">{announce}</p>
 
-        {/* contenedor persistente: .reveal solo se observa una vez al cargar,
-            así que nunca va en un bloque que se monta y desmonta */}
+        {/* contenedor persistente: .reveal solo se observa una vez al cargar */}
         <div className="reveal">
-          {picked ? (
-            <Result ref={resultRef} s={s} picked={picked} onReset={reset} />
-          ) : (
-            <form role="search" onSubmit={onSubmit} className="mt-8">
-              <label htmlFor="mesa-buscar" className="mb-2 block text-sm font-medium text-ink/80">
-                {s.label}
-              </label>
-              <div className="relative">
-                <Search
-                  aria-hidden="true"
-                  className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-moss"
-                  strokeWidth={2}
-                />
-                <input
-                  ref={inputRef}
-                  id="mesa-buscar"
-                  type="search"
-                  inputMode="search"
-                  enterKeyHint="search"
-                  autoComplete="off"
-                  autoCorrect="off"
-                  autoCapitalize="words"
-                  spellCheck={false}
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder={s.placeholder}
-                  aria-describedby="mesa-estado"
-                  className="h-14 w-full appearance-none rounded-2xl bg-white pl-12 pr-12 text-lg text-ink caret-moss shadow-sm ring-1 ring-ink/15 placeholder:text-ink/70 focus:outline-none focus:ring-2 focus:ring-moss [&::-webkit-search-cancel-button]:hidden"
-                />
-                {query && (
-                  <button
-                    type="button"
-                    onClick={() => { setQuery(''); inputRef.current?.focus() }}
-                    aria-label={s.clear}
-                    className="absolute right-1.5 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-ink/70 hover:bg-ink/5 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
-                  >
-                    <X aria-hidden="true" className="h-5 w-5" />
-                  </button>
-                )}
-              </div>
-
-              <p id="mesa-estado" aria-live="polite" className="mt-3 min-h-5 text-sm leading-relaxed text-ink/75">
-                {status}
-              </p>
-
-              {hits.length > 0 && (
-                <ul className="mt-2 space-y-2.5">
-                  {hits.map((p) => (
-                    <li key={`${p.group}-${p.name}`}>
-                      <button
-                        type="button"
-                        onClick={() => pick(p)}
-                        className="seat-row flex min-h-16 w-full items-center justify-between gap-4 rounded-2xl bg-white px-4 py-3 text-left shadow-sm ring-1 ring-ink/10 active:bg-sage/15 hover:ring-moss/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
-                      >
-                        <span className="min-w-0 font-display text-xl leading-snug text-ink">{p.label}</span>
-                        <span className="flex shrink-0 flex-col items-center leading-none text-moss">
-                          <span className="text-xs font-medium uppercase tracking-[0.12em]">{s.table}</span>
-                          <span className="mt-1 font-display text-3xl tabular-nums">{p.table}</span>
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+          {/* el buscador siempre visible: buscar a alguien más es cambiar el nombre */}
+          <form role="search" onSubmit={onSubmit} className="mt-8">
+            <label htmlFor="mesa-buscar" className="mb-2 block text-sm font-medium text-ink/80">
+              {s.label}
+            </label>
+            <div className="relative">
+              <Search
+                aria-hidden="true"
+                className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-moss"
+                strokeWidth={2}
+              />
+              <input
+                ref={inputRef}
+                id="mesa-buscar"
+                type="search"
+                inputMode="search"
+                enterKeyHint="search"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="words"
+                spellCheck={false}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder={s.placeholder}
+                aria-describedby="mesa-estado"
+                className="h-14 w-full appearance-none rounded-2xl bg-white pl-12 pr-12 text-lg text-ink caret-moss shadow-sm ring-1 ring-ink/15 placeholder:text-ink/70 focus:outline-none focus:ring-2 focus:ring-moss [&::-webkit-search-cancel-button]:hidden"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={reset}
+                  aria-label={s.clear}
+                  className="absolute right-1.5 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full text-ink/70 hover:bg-ink/5 hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
+                >
+                  <X aria-hidden="true" className="h-5 w-5" />
+                </button>
               )}
-            </form>
-          )}
+            </div>
+
+            {/* "¿Cuál eres tú?" es la pregunta del momento: va con voz de título,
+                no de nota; los demás avisos (no encontrado) siguen chicos */}
+            <p
+              id="mesa-estado"
+              aria-live="polite"
+              className={
+                status === s.pickOne
+                  ? 'mb-1 mt-6 text-center font-display text-2xl leading-snug text-ink sm:text-3xl'
+                  : 'mt-3 text-sm leading-relaxed text-ink/75'
+              }
+            >
+              {status}
+            </p>
+
+            {!current && hits.length > 0 && (
+              <ul className="mt-3 space-y-2.5">
+                {hits.map((p) => (
+                  <li key={`${p.group}-${p.name}`}>
+                    <button
+                      type="button"
+                      onClick={() => choose(p)}
+                      className="seat-row flex min-h-16 w-full items-center gap-3 rounded-2xl bg-white py-3 pl-4 pr-3 text-left shadow-sm ring-1 ring-ink/10 active:bg-sage/15 hover:ring-moss/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-moss"
+                    >
+                      <span className="min-w-0 flex-1">
+                        <span className="block font-display text-xl leading-snug text-ink">{p.label}</span>
+                        <span className="mt-0.5 block text-sm font-medium text-moss">{s.seeSeat}</span>
+                      </span>
+                      <span className="flex shrink-0 flex-col items-center leading-none text-moss">
+                        <span className="text-xs font-medium uppercase tracking-[0.12em]">{s.table}</span>
+                        <span className="mt-1 font-display text-3xl tabular-nums">{p.table}</span>
+                      </span>
+                      <ChevronRight aria-hidden="true" className="h-5 w-5 shrink-0 text-moss" strokeWidth={2} />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </form>
+
+          {current && <Result key={currentKey} ref={resultRef} s={s} picked={current} onReset={reset} />}
         </div>
       </div>
     </section>
   )
+}
+
+function labelOf(p) {
+  return displayName(p.name, MESAS[p.group])
 }
 
 function Result({ ref, s, picked, onReset }) {
@@ -245,10 +289,10 @@ function Result({ ref, s, picked, onReset }) {
   )
 
   return (
-    <div ref={ref} className="mt-8 scroll-mt-20">
+    <div ref={ref} className="mt-6 scroll-mt-6">
       <div className="seat-reveal rounded-2xl bg-white px-6 pb-7 pt-6 text-center shadow-md ring-1 ring-ink/10">
         <p className="font-display text-lg text-ink/80">
-          {displayName(picked.name, MESAS[picked.group])}, {s.yourTableIs}
+          {labelOf(picked)}, {s.yourTableIs}
         </p>
         <p className="mt-1 font-display text-[clamp(5.5rem,30vw,8rem)] leading-none text-moss tabular-nums">
           {picked.table}
@@ -290,7 +334,9 @@ function Result({ ref, s, picked, onReset }) {
 // Plano del jardín, redibujado del croquis del salón (misma orientación:
 // entrada abajo a la derecha). Coordenadas en unidades del viewBox (610 de
 // ancho): en un celular de 390px se ve a ~0.56×, por eso los textos van a
-// 24+ unidades (≈13.5px) y los números a 32 (≈18px).
+// 24+ unidades (≈13.5px) y los números a 30 (≈17px). Los números van en la
+// letra de texto (no Fraunces): son datos, y Fraunces solo se carga en 400, así
+// que la negrita de la mesa resaltada sería sintética y deformaría el "8".
 const TABLES = {
   4: [51, 80], 3: [136, 79], 1: [379, 78], 2: [460, 77],
   5: [80, 180], 6: [53, 286], 8: [80, 376],
@@ -372,11 +418,10 @@ function Plan({ table, s }) {
                 strokeWidth="2"
               />
               <text
-                x={cx} y={cy + 11} textAnchor="middle"
-                fontSize="32"
-                fontWeight={on ? 600 : 500}
+                x={cx} y={cy + 10} textAnchor="middle"
+                fontSize="30"
+                fontWeight={on ? 700 : 600}
                 fill={on ? 'var(--color-linen)' : INK}
-                style={DISPLAY}
               >
                 {n}
               </text>
