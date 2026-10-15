@@ -6,6 +6,7 @@ import Hero from './sections/Hero.jsx'
 import Story from './sections/Story.jsx'
 import Ceremony from './sections/Ceremony.jsx'
 import Location from './sections/Location.jsx'
+import Seating from './sections/Seating.jsx'
 import Modals from './sections/Modals.jsx'
 import Registry from './sections/Registry.jsx'
 import Rsvp from './sections/Rsvp.jsx'
@@ -22,6 +23,7 @@ function Page() {
         <Story />
         <Ceremony />
         <Location />
+        <Seating />
         <Modals />
         <Registry />
         <Rsvp />

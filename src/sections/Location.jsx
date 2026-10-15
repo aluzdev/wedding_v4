@@ -1,16 +1,28 @@
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useLang } from '../i18n.jsx'
 import { config } from '../content/content.js'
+// logos oficiales (simple-icons, CC0) — solo se empaquetan estos dos
+import { siGooglemaps, siWaze } from 'simple-icons'
 
 // "Cómo llegar": misma gramática que las otras secciones crema (Regalos,
 // Fotos): título Fraunces itálico, enredadera en la esquina y píldora salvia.
-// El mapa se ve normal; cualquier clic abre un selector Google Maps / Waze.
+// El mapa se ve normal; tocarlo abre un selector Google Maps / Waze. Debajo,
+// dos botones directos (Maps y Waze) que abren la ruta sin preguntar.
 // ponytail: embed por query (?q=…&output=embed) — no requiere API key.
 const PLACE = `${config.venueName}, ${config.venueAddress}`
 const MAP_SRC = `https://www.google.com/maps?q=${encodeURIComponent(PLACE)}&output=embed`
 // El botón traza la ruta (acción distinta al "abrir" de la tarjeta de Google).
 const DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(PLACE)}`
 const WAZE_URL = `https://waze.com/ul?q=${encodeURIComponent(PLACE)}&navigate=yes`
+
+function BrandIcon({ icon, className }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="currentColor" aria-hidden="true">
+      <path d={icon.path} />
+    </svg>
+  )
+}
 
 export default function Location() {
   const { t, lang } = useLang()
@@ -55,23 +67,39 @@ export default function Location() {
           <button
             type="button"
             onClick={() => setOpen(true)}
-            aria-label={t.location.cta}
+            aria-label={t.location.mapTitle}
             className="absolute inset-0 z-10 cursor-pointer bg-transparent"
           />
         </div>
 
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          className="reveal mt-8 inline-flex items-center gap-2 rounded-full bg-sage/30 px-7 py-3 text-sm font-medium tracking-wide text-moss ring-1 ring-moss/20 transition duration-200 ease-out hover:scale-[1.04] hover:bg-sage/50"
-        >
-          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor" aria-hidden="true">
-            <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z" />
-          </svg>
-          {t.location.cta}
-        </button>
+        {/* botones directos: abren la app (o la web) con la ruta ya trazada.
+            El selector (modal) solo aparece al tocar el mapa. */}
+        {/* colores de marca: azul Google (#1A73E8, el tono accesible de Google
+            para botones; 4.5:1 con blanco) y cian Waze (#33CCFF, texto oscuro) */}
+        <div className="reveal mx-auto mt-8 flex max-w-xs flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:justify-center">
+          <a
+            href={DIRECTIONS_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex w-full items-center justify-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold tracking-wide shadow-md transition duration-200 ease-out hover:scale-[1.03] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-cream sm:w-auto bg-[#1A73E8] text-white hover:bg-[#1765CC] focus-visible:ring-[#1A73E8]"
+          >
+            <BrandIcon icon={siGooglemaps} className="h-5 w-5" />
+            {t.location.cta}
+          </a>
+          <a
+            href={WAZE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex w-full items-center justify-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold tracking-wide shadow-md transition duration-200 ease-out hover:scale-[1.03] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-cream sm:w-auto bg-[#33CCFF] text-[#0A2540] hover:bg-[#1FC2F9] focus-visible:ring-[#0A2540]"
+          >
+            <BrandIcon icon={siWaze} className="h-5 w-5" />
+            {t.location.ctaWaze}
+          </a>
+        </div>
 
-        {open ? (
+        {/* portal a <body>: fuera de la sección (overflow/transform/z-index)
+            para que el modal cubra toda la pantalla */}
+        {open ? createPortal(
           <div
             className="fixed inset-0 z-50 flex items-end justify-center bg-night/70 px-4 py-6 backdrop-blur-sm sm:items-center"
             onClick={() => setOpen(false)}
@@ -89,8 +117,9 @@ export default function Location() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
-                  className="rounded-full bg-sage/30 px-6 py-3 text-sm font-medium text-moss ring-1 ring-moss/20 transition hover:bg-sage/50"
+                  className="inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold shadow-sm transition bg-[#1A73E8] text-white hover:bg-[#1765CC]"
                 >
+                  <BrandIcon icon={siGooglemaps} className="h-5 w-5" />
                   Google Maps
                 </a>
                 <a
@@ -98,8 +127,9 @@ export default function Location() {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
-                  className="rounded-full bg-sage/30 px-6 py-3 text-sm font-medium text-moss ring-1 ring-moss/20 transition hover:bg-sage/50"
+                  className="inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold shadow-sm transition bg-[#33CCFF] text-[#0A2540] hover:bg-[#1FC2F9]"
                 >
+                  <BrandIcon icon={siWaze} className="h-5 w-5" />
                   Waze
                 </a>
                 <button
@@ -111,7 +141,8 @@ export default function Location() {
                 </button>
               </div>
             </div>
-          </div>
+          </div>,
+          document.body,
         ) : null}
       </div>
     </section>

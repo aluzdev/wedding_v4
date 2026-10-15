@@ -28,13 +28,14 @@ export default function Photos() {
           {t.photos.title}
         </h2>
 
-        {/* 500×500 webp sin pérdida (2× exacto del original 1000px, aplanado
-            sobre blanco) — ≥2× del tamaño máximo mostrado (208px). */}
+        {/* QR en forma de corazón → álbum de Google Photos. 800×800 webp
+            (≥2× del tamaño máximo mostrado, 208px). Nombre nuevo para que el
+            CDN no sirva el QR viejo desde caché. */}
         <img
-          src="/qr.webp"
+          src="/qr-fotos.webp"
           alt={t.photos.title}
-          width="500"
-          height="500"
+          width="800"
+          height="800"
           loading="lazy"
           decoding="async"
           className="mt-9 h-44 w-44 rounded-2xl bg-white p-2 shadow-lg ring-1 ring-ink/10 sm:h-52 sm:w-52"

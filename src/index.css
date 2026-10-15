@@ -163,3 +163,29 @@ html {
     transform: none;
   }
 }
+
+/* "Encuentra tu mesa": las tarjetas de resultado ocupan todo el ancho; el
+   crecimiento global al hover las encimaría, así que ahí solo cambia el anillo */
+#mesa .seat-row:hover {
+  transform: none;
+}
+
+/* "Encuentra tu mesa": el número aparece y la mesa late en el plano */
+@media (prefers-reduced-motion: no-preference) {
+  .seat-reveal {
+    animation: seat-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes seat-reveal {
+    from { opacity: 0; transform: translateY(10px) scale(0.98); filter: blur(4px); }
+    to { opacity: 1; transform: none; filter: none; }
+  }
+  .seat-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: seat-pulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  }
+  @keyframes seat-pulse {
+    0% { opacity: 0.9; transform: scale(0.92); }
+    70%, 100% { opacity: 0; transform: scale(1.18); }
+  }
+}

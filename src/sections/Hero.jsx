@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { Armchair, Clock, MapPin } from 'lucide-react'
 import { useLang } from '../i18n.jsx'
 
 export default function Hero() {
@@ -101,6 +102,24 @@ export default function Hero() {
             <path d="M10 0C13 6 20 8 20 13a10 10 0 0 1-20 0C0 8 7 6 10 0Z" />
           </svg>
         </div>
+
+        {/* atajos: bajan a "Cómo llegar", a la ceremonia (hora) y a "Encuentra tu mesa" */}
+        <nav aria-label={t.hero.shortcutsLabel} className="mt-10 flex flex-wrap items-center justify-center gap-3">
+          {[
+            { href: '#como-llegar', Icon: MapPin, label: t.hero.directionsCta },
+            { href: '#ceremonia', Icon: Clock, label: t.hero.whenCta },
+            { href: '#mesa', Icon: Armchair, label: t.hero.seatCta },
+          ].map(({ href, Icon, label }) => (
+            <a
+              key={href}
+              href={href}
+              className="group inline-flex items-center justify-center gap-2 rounded-full bg-night/45 py-2.5 pl-4 pr-5 text-sm font-medium tracking-wide text-linen ring-1 ring-linen/50 backdrop-blur-sm [text-shadow:none] transition duration-200 ease-out hover:scale-[1.04] hover:bg-linen hover:text-night focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-linen"
+            >
+              <Icon aria-hidden="true" className="h-[18px] w-[18px] text-sage transition-colors group-hover:text-moss" strokeWidth={2} />
+              {label}
+            </a>
+          ))}
+        </nav>
       </div>
 
       {/* scroll cue */}
