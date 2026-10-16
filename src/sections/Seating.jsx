@@ -259,7 +259,7 @@ export default function Seating() {
                       </span>
                       <span className="flex shrink-0 flex-col items-center leading-none text-moss">
                         <span className="text-xs font-medium uppercase tracking-[0.12em]">{s.table}</span>
-                        <span className="mt-1 font-display text-3xl tabular-nums">{p.table}</span>
+                        <span className="mt-1 text-3xl font-normal tabular-nums">{p.table}</span>
                       </span>
                       <ChevronRight aria-hidden="true" className="h-5 w-5 shrink-0 text-moss" strokeWidth={2} />
                     </button>
@@ -294,7 +294,9 @@ function Result({ ref, s, picked, onReset }) {
         <p className="font-display text-lg text-ink/80">
           {labelOf(picked)}, {s.yourTableIs}
         </p>
-        <p className="mt-1 font-display text-[clamp(5.5rem,30vw,8rem)] leading-none text-moss tabular-nums">
+        {/* número en la letra de texto: el "8" de Fraunces en tamaño grande tiene
+            el círculo de arriba mayor y se lee como si estuviera de cabeza */}
+        <p className="mt-2 text-[clamp(5rem,28vw,7.5rem)] font-light leading-none tracking-tight text-moss tabular-nums">
           {picked.table}
         </p>
 
